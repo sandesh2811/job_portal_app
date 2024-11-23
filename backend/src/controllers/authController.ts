@@ -1,6 +1,9 @@
 import { RequestHandler } from "express";
 import NewUserModel from "../models/registerModel";
 import { comparePasswords } from "../utils/bcrypt";
+import { generateJwtToken } from "../utils/jwtToken";
+
+// Handling user registration
 
 export const Register: RequestHandler = async (req, res): Promise<any> => {
   try {
@@ -27,6 +30,8 @@ export const Register: RequestHandler = async (req, res): Promise<any> => {
   }
 };
 
+// Handling user login
+
 export const Login: RequestHandler = async (req, res): Promise<any> => {
   try {
     const { password, username } = req.body;
@@ -40,12 +45,33 @@ export const Login: RequestHandler = async (req, res): Promise<any> => {
     const passwordsMatch = await comparePasswords(password, user.password);
 
     if (passwordsMatch) {
+      const jwtToken = generateJwtToken(user.username, user._id as string);
+      res.cookie("token", jwtToken, {
+        httpOnly: true,
+        maxAge: 15 * 60 * 1000,
+        // secure:true
+      });
+
       return res.status(200).json({ message: "Login successful" });
     } else {
       return res
         .status(401)
         .json({ message: "Incorrect username or password!" });
     }
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error!" });
+  }
+};
+
+// Handling user logout
+
+export const Logout: RequestHandler = async (req, res): Promise<any> => {
+  try {
+    if (!req.cookies.token) {
+      return res.status(404).json({ message: "Couldn't logout!" });
+    }
+    res.clearCookie("token");
+    return res.status(200).json({ message: "Removed session!" });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error!" });
   }

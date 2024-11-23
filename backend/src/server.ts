@@ -10,10 +10,6 @@ import authRouter from "./routes/authRoute";
 
 const app: Application = express();
 
-app.get("/", (req, res) => {
-  res.status(200).json({ message: "Welcome to job portal app!" });
-});
-
 // Middlewares
 
 // Enables us to use json data
@@ -31,6 +27,19 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 
 // Routes
+
+app.get("/", async (req, res): Promise<any> => {
+  const cookie = req.cookies.token;
+
+  if (cookie) {
+    console.log("Session exists!");
+  } else {
+    console.log("Session doesn't exists!");
+    return res.status(404).json({ message: "Please login to continue!" });
+  }
+
+  return res.status(200).json({ message: "Welcome to job portal app!" });
+});
 
 app.use("/api/auth", authRouter);
 
