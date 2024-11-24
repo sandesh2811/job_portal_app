@@ -6,7 +6,10 @@ import cors from "cors";
 import express, { Application } from "express";
 import connectToDatabase from "./config/dbConnect";
 import cookieParser from "cookie-parser";
-import authRouter from "./routes/authRoute";
+import authRouter from "./routes/AuthRoute/authRoute";
+import checkUserSession from "./middleware/authMiddleware/checkSession";
+import errorMiddleware from "./middleware/errorMiddleware/error";
+import jobRouter from "./routes/JobRoute/jobRoute";
 
 const app: Application = express();
 
@@ -28,20 +31,16 @@ app.use(cookieParser());
 
 // Routes
 
-app.get("/", async (req, res): Promise<any> => {
-  const cookie = req.cookies.token;
-
-  if (cookie) {
-    console.log("Session exists!");
-  } else {
-    console.log("Session doesn't exists!");
-    return res.status(404).json({ message: "Please login to continue!" });
-  }
-
+app.get("/", checkUserSession, async (req, res): Promise<any> => {
   return res.status(200).json({ message: "Welcome to job portal app!" });
 });
 
+// Extracting the data stored in token and sending the res.
 app.use("/api/auth", authRouter);
+
+app.use("/api/jobs", jobRouter);
+
+app.use(errorMiddleware);
 
 app.listen(process.env.PORT, async () => {
   console.log(`Server is running in port ${process.env.PORT}`);

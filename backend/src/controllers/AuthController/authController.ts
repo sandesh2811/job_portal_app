@@ -1,13 +1,13 @@
 import { RequestHandler } from "express";
-import NewUserModel from "../models/registerModel";
-import { comparePasswords } from "../utils/bcrypt";
-import { generateJwtToken } from "../utils/jwtToken";
+import NewUserModel from "../../models/RegistrationModel/registerModel";
+import { comparePasswords } from "../../utils/bcrypt";
+import { generateJwtToken } from "../../utils/jwtToken";
 
 // Handling user registration
 
 export const Register: RequestHandler = async (req, res): Promise<any> => {
   try {
-    const { email, password, username } = req.body;
+    const { email, password, username, role } = req.body;
 
     const userExists = await NewUserModel.findOne({ email });
 
@@ -19,6 +19,7 @@ export const Register: RequestHandler = async (req, res): Promise<any> => {
         email,
         password,
         username,
+        role,
       });
 
       return res
@@ -34,7 +35,7 @@ export const Register: RequestHandler = async (req, res): Promise<any> => {
 
 export const Login: RequestHandler = async (req, res): Promise<any> => {
   try {
-    const { password, username } = req.body;
+    const { username, password } = req.body;
 
     const user = await NewUserModel.findOne({ username });
 
@@ -45,7 +46,7 @@ export const Login: RequestHandler = async (req, res): Promise<any> => {
     const passwordsMatch = await comparePasswords(password, user.password);
 
     if (passwordsMatch) {
-      const jwtToken = generateJwtToken(user.username, user._id as string);
+      const jwtToken = generateJwtToken(user.username, user.role);
       res.cookie("token", jwtToken, {
         httpOnly: true,
         maxAge: 15 * 60 * 1000,
@@ -59,6 +60,7 @@ export const Login: RequestHandler = async (req, res): Promise<any> => {
         .json({ message: "Incorrect username or password!" });
     }
   } catch (error) {
+    console.log("Error from controller!");
     return res.status(500).json({ message: "Internal server error!" });
   }
 };
