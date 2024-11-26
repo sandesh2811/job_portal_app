@@ -46,7 +46,11 @@ export const Login: RequestHandler = async (req, res): Promise<any> => {
     const passwordsMatch = await comparePasswords(password, user.password);
 
     if (passwordsMatch) {
-      const jwtToken = generateJwtToken(user.username, user.role);
+      const jwtToken = generateJwtToken(
+        user.username,
+        user._id as string,
+        user.role
+      );
       res.cookie("token", jwtToken, {
         httpOnly: true,
         maxAge: 15 * 60 * 1000,

@@ -13,6 +13,7 @@ export const CreateJob: RequestHandler = async (req, res): Promise<any> => {
     experience,
     status,
     companyName,
+    location,
     createdBy,
   } = req.body;
 
@@ -26,6 +27,7 @@ export const CreateJob: RequestHandler = async (req, res): Promise<any> => {
       experience,
       status,
       companyName,
+      location,
       createdBy,
     });
 
@@ -33,6 +35,8 @@ export const CreateJob: RequestHandler = async (req, res): Promise<any> => {
       .status(201)
       .json({ message: "Job created successfully!", newJob });
   } catch (error) {
+    console.log("Error from controller", error);
+
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

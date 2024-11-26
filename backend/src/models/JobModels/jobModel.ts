@@ -10,7 +10,7 @@ interface NewJob extends Document {
   status: string;
   companyName: string;
   location: string;
-  createdBy: string;
+  createdBy: Schema.Types.ObjectId;
 }
 
 // Defining the job schema
@@ -31,7 +31,7 @@ const NewJobSchema = new Schema<NewJob>(
     },
     required: {
       type: String || Number,
-      required: [true, "Job type cannot be empty!"],
+      required: [true, "Number of required candidates cannot be empty!"],
     },
     position: {
       type: String,
@@ -54,7 +54,8 @@ const NewJobSchema = new Schema<NewJob>(
       required: [true, "Location cannot be empty!"],
     },
     createdBy: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: [true, "Job createdBy cannot be empty!"],
     },
   },

@@ -10,6 +10,8 @@ const verifyJobData =
       req.body = verifiedJobData;
       next();
     } catch (error: any) {
+      console.log("Error from middleware", error.errors[0].path[0]);
+
       next(error.errors[0].message);
     }
   };

@@ -10,6 +10,7 @@ import authRouter from "./routes/AuthRoute/authRoute";
 import checkUserSession from "./middleware/authMiddleware/checkSession";
 import errorMiddleware from "./middleware/errorMiddleware/error";
 import jobRouter from "./routes/JobRoute/jobRoute";
+import jobApplicationRouter from "./routes/JobApplicationRoute/jobApplicationRoute";
 
 const app: Application = express();
 
@@ -35,10 +36,12 @@ app.get("/", checkUserSession, async (req, res): Promise<any> => {
   return res.status(200).json({ message: "Welcome to job portal app!" });
 });
 
-// Extracting the data stored in token and sending the res.
 app.use("/api/auth", authRouter);
 
+// Need to change the delete and update route dynamic
 app.use("/api/jobs", jobRouter);
+
+app.use("/api/jobApplication", jobApplicationRouter);
 
 app.use(errorMiddleware);
 

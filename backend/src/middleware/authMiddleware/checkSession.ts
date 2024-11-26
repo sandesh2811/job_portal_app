@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import jwt from "jsonwebtoken";
+import { verifyJwtToken } from "../../utils/jwtToken";
 
 // 1) Check if the user has session. Session can be obtained from cookie.
 // 2) Send response based on whether session exists or not. If session doesn't exists then redirect user to the login page
@@ -9,11 +9,7 @@ const checkUserSession: RequestHandler = async (req, res): Promise<any> => {
 
   if (userSession) {
     // console.log("Session exists! User logged in successfully!");
-    const userDataFromToken = await jwt.verify(
-      userSession,
-      process.env.JWT_SECRET_KEY as string
-    );
-    console.log(userDataFromToken);
+    const userDataFromToken = verifyJwtToken(userSession);
 
     return res.status(200).json({
       message: "User logged in successfully!",
