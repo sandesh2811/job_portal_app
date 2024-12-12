@@ -1,4 +1,10 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
+
+interface userData extends JwtPayload {
+  username: string;
+  userId: string;
+  role: string;
+}
 
 export const generateJwtToken = (
   username: string,
@@ -7,7 +13,7 @@ export const generateJwtToken = (
 ): string => {
   const jwtPayload = {
     username: username,
-    id: userId,
+    userId: userId,
     role: role,
   };
   const token = jwt.sign(jwtPayload, process.env.JWT_SECRET_KEY as string, {
@@ -20,7 +26,7 @@ export const verifyJwtToken = (token: string) => {
   const userDataFromToken = jwt.verify(
     token,
     process.env.JWT_SECRET_KEY as string
-  );
+  ) as userData;
 
   return userDataFromToken;
 };
