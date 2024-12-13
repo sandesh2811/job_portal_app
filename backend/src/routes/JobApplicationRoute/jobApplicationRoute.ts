@@ -12,6 +12,6 @@ jobApplicationRouter.route("/apply/:id").post(ApplyForJob);
 
 // For employer
 jobApplicationRouter.route("/").get(GetJobsPostedByEmployer);
-jobApplicationRouter.route("/review").post(ReviewJobApplications);
+jobApplicationRouter.route("/review/:id").patch(ReviewJobApplications);
 
 export default jobApplicationRouter;

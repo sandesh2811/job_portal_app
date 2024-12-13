@@ -86,8 +86,6 @@ export const GetJobsPostedByEmployer: RequestHandler = async (
       message: `List of jobs posted by ${userData.username}`,
       jobApplicationsToTheJob,
     });
-
-    // console.log(jobApplicationsToTheJob);
   } catch (error) {
     return res.status(500).json({
       message: "Error from application controller : Internal Server Error!",
@@ -98,11 +96,25 @@ export const GetJobsPostedByEmployer: RequestHandler = async (
 
 // Review the applications for the job
 
+// Get the selected application id from the URL params
+// Update the status of the particular application for the job
+
 export const ReviewJobApplications: RequestHandler = async (
   req,
   res
 ): Promise<any> => {
+  const applicationId = req.params.id;
+  const { status } = req.body;
   try {
+    const updatedApplication = await JobApplicationModel.findByIdAndUpdate(
+      applicationId,
+      { $set: { status } },
+      { new: true }
+    );
+
+    return res
+      .status(200)
+      .json({ message: "Status Updated!", updatedApplication });
   } catch (error) {
     return res.status(500).json({
       message: "Error from application controller : Internal Server Error!",
