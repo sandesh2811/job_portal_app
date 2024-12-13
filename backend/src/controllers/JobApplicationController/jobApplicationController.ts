@@ -58,15 +58,15 @@ export const ApplyForJob: RequestHandler = async (req, res): Promise<any> => {
   }
 };
 
-// Review the applications for the job
+// Getting the list of jobs posted by the employer
 
-// Gets all the job applications for a job posted by a specific employer
-// Gets the employer id from the cookie
-// Matches the id of the employer with the list of job which contains the created by field for showing the list of jobs created by the particular employer
-// Gets the application list by comparing jobid
-// Changes the status of the application (Like accepted , rejected or pending)
+// Get the userid from the token
+// Get all the jobs created by user in the jobs model
+// Extract the job ids of the all the jobs posted by a particular employer
+// Match the job ids of the array with the job ids of the applications
+// Return the job applications list
 
-export const ReviewJobApplications: RequestHandler = async (
+export const GetJobsPostedByEmployer: RequestHandler = async (
   req,
   res
 ): Promise<any> => {
@@ -82,8 +82,27 @@ export const ReviewJobApplications: RequestHandler = async (
     const jobApplicationsToTheJob = await JobApplicationModel.find({
       jobId: { $in: jobIds },
     });
+    return res.status(200).json({
+      message: `List of jobs posted by ${userData.username}`,
+      jobApplicationsToTheJob,
+    });
 
-    console.log(jobApplicationsToTheJob);
+    // console.log(jobApplicationsToTheJob);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error from application controller : Internal Server Error!",
+      error,
+    });
+  }
+};
+
+// Review the applications for the job
+
+export const ReviewJobApplications: RequestHandler = async (
+  req,
+  res
+): Promise<any> => {
+  try {
   } catch (error) {
     return res.status(500).json({
       message: "Error from application controller : Internal Server Error!",
