@@ -14,7 +14,7 @@ const verfiyLoginCredentials =
       req.body = validData;
       next();
     } catch (error: any) {
-      console.log("Error from middleware");
+      console.log("Error from middleware", error);
 
       next(error.errors[0].message);
     }

@@ -1,6 +1,8 @@
 import { RequestHandler } from "express";
 import JobApplicationModel from "../../models/JobApplicationModel/jobApplicationModel";
 import { verifyJwtToken } from "../../utils/jwtToken";
+import NewJobModel from "../../models/JobModels/jobModel";
+import mongoose from "mongoose";
 
 // Applier applying to the job
 
@@ -17,13 +19,20 @@ export const ApplyForJob: RequestHandler = async (req, res): Promise<any> => {
     const sessionToken = req.cookies.token;
     const { fullname, phonenumber, experience, email } = req.body;
     const jwtData = verifyJwtToken(sessionToken);
+    const convertedJobId = new mongoose.Types.ObjectId(jobId);
 
-    const isJobAvailable = await JobApplicationModel.findOne({ jobId });
+    const isJobAvailable = await NewJobModel.findById(jobId);
+    const applications = await JobApplicationModel.find({
+      jobId: convertedJobId,
+    });
 
     if (!isJobAvailable) {
       return res.status(404).json({ message: "Job not found!" });
     } else if (isJobAvailable) {
-      if (isJobAvailable.applierId.toString() === jwtData.userId) {
+      const hasApplied = applications.some((application) => {
+        return application.applierId.toString() === jwtData.userId;
+      });
+      if (hasApplied) {
         return res.status(400).json({ message: "Already applied to this job" });
       } else {
         const newJobApplication = await JobApplicationModel.create({
@@ -41,6 +50,40 @@ export const ApplyForJob: RequestHandler = async (req, res): Promise<any> => {
         });
       }
     }
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error from application controller : Internal Server Error!",
+      error,
+    });
+  }
+};
+
+// Review the applications for the job
+
+// Gets all the job applications for a job posted by a specific employer
+// Gets the employer id from the cookie
+// Matches the id of the employer with the list of job which contains the created by field for showing the list of jobs created by the particular employer
+// Gets the application list by comparing jobid
+// Changes the status of the application (Like accepted , rejected or pending)
+
+export const ReviewJobApplications: RequestHandler = async (
+  req,
+  res
+): Promise<any> => {
+  try {
+    const token = req.cookies.token;
+    const userData = verifyJwtToken(token);
+
+    const jobsCreatedByUser = await NewJobModel.find({
+      createdBy: userData.userId,
+    });
+    const jobIds = jobsCreatedByUser.map((job) => job._id);
+
+    const jobApplicationsToTheJob = await JobApplicationModel.find({
+      jobId: { $in: jobIds },
+    });
+
+    console.log(jobApplicationsToTheJob);
   } catch (error) {
     return res.status(500).json({
       message: "Error from application controller : Internal Server Error!",
