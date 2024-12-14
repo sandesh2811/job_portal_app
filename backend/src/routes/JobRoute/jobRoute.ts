@@ -13,7 +13,7 @@ const jobRouter = express.Router();
 jobRouter
   .route("/")
   .post(verifyJobData(createdJobSchema), verifyUserRole, CreateJob);
-jobRouter.route("/").put(UpdateJob);
+jobRouter.route("/:id").patch(UpdateJob);
 jobRouter.route("/").delete(DeleteJob);
 
 export default jobRouter;

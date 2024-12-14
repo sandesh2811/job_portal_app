@@ -1,5 +1,18 @@
 import { RequestHandler } from "express";
 import NewJobModel from "../../models/JobModels/jobModel";
+import { Schema } from "mongoose";
+
+type UpdatedDataByEmployer = {
+  title?: string;
+  description?: string;
+  salary?: string | number;
+  required?: string | number;
+  position?: string;
+  experience?: string | number;
+  status?: string;
+  companyName?: string;
+  location?: string;
+};
 
 // Handling job creation by employer
 
@@ -44,12 +57,40 @@ export const CreateJob: RequestHandler = async (req, res): Promise<any> => {
 // Handling job updation by employer
 
 export const UpdateJob: RequestHandler = async (req, res): Promise<any> => {
-  const { jobId } = req.body;
+  const jobId = req.params.id;
+  const {
+    title,
+    description,
+    salary,
+    required,
+    position,
+    experience,
+    status,
+    companyName,
+    location,
+  } = req.body;
+  const updatedAttributes: UpdatedDataByEmployer = {};
+
+  if (title) updatedAttributes.title = title;
+  if (description) updatedAttributes.description = description;
+  if (salary) updatedAttributes.salary = salary;
+  if (required) updatedAttributes.required = required;
+  if (position) updatedAttributes.position = position;
+  if (experience) updatedAttributes.experience = experience;
+  if (status) updatedAttributes.status = status;
+  if (companyName) updatedAttributes.companyName = companyName;
+  if (location) updatedAttributes.location = location;
+
+  console.log(updatedAttributes);
 
   try {
-    const job = await NewJobModel.findOne({ _id: jobId });
+    const job = await NewJobModel.findByIdAndUpdate(
+      { _id: jobId },
+      { $set: updatedAttributes },
+      { new: true }
+    );
 
-    return res.status(201).json({ message: "Job updated successfully!" });
+    return res.status(201).json({ message: "Job updated successfully!", job });
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });
   }
