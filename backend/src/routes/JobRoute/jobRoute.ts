@@ -14,6 +14,6 @@ jobRouter
   .route("/")
   .post(verifyJobData(createdJobSchema), verifyUserRole, CreateJob);
 jobRouter.route("/:id").patch(UpdateJob);
-jobRouter.route("/").delete(DeleteJob);
+jobRouter.route("/:id").delete(DeleteJob);
 
 export default jobRouter;

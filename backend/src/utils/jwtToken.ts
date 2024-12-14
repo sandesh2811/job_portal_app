@@ -1,10 +1,5 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
-
-interface userData extends JwtPayload {
-  username: string;
-  userId: string;
-  role: string;
-}
+import jwt from "jsonwebtoken";
+import { userData } from "../TypeDeclarations/types";
 
 export const generateJwtToken = (
   username: string,

@@ -1,18 +1,6 @@
 import { RequestHandler } from "express";
 import NewJobModel from "../../models/JobModels/jobModel";
-import { Schema } from "mongoose";
-
-type UpdatedDataByEmployer = {
-  title?: string;
-  description?: string;
-  salary?: string | number;
-  required?: string | number;
-  position?: string;
-  experience?: string | number;
-  status?: string;
-  companyName?: string;
-  location?: string;
-};
+import { UpdatedDataByEmployer } from "../../TypeDeclarations/types";
 
 // Handling job creation by employer
 
@@ -102,7 +90,7 @@ export const UpdateJob: RequestHandler = async (req, res): Promise<any> => {
 // If job does not exists then send a response else if the job is found then delete the job and send required response
 
 export const DeleteJob: RequestHandler = async (req, res): Promise<any> => {
-  const { jobId } = req.body;
+  const jobId = req.params.id;
 
   try {
     const job = await NewJobModel.findOne({ _id: jobId });
