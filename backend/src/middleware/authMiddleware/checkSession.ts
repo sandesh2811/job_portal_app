@@ -12,7 +12,7 @@ const checkUserSession: RequestHandler = async (req, res): Promise<any> => {
     const userDataFromToken = verifyJwtToken(userSession);
 
     return res.status(200).json({
-      message: "User logged in successfully!",
+      message: "Authenticated!",
       userDetails: userDataFromToken,
     });
   } else {

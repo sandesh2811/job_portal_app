@@ -53,8 +53,9 @@ export const Login: RequestHandler = async (req, res): Promise<any> => {
       );
       res.cookie("token", jwtToken, {
         httpOnly: true,
+        secure: false,
+        sameSite: "none",
         maxAge: 15 * 60 * 1000,
-        // secure:true
       });
 
       return res.status(200).json({ message: "Login successful" });

@@ -22,7 +22,7 @@ app.use(express.json());
 // Helps to tackle cors error
 const corsOptions = {
   origin: process.env.APP_ORIGIN,
-  methods: "GET , POST , PUT ,DELETE , PATCH , HEAD",
+  methods: ["GET , POST , PUT ,DELETE , PATCH , HEAD"],
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -32,7 +32,7 @@ app.use(cookieParser());
 
 // Routes
 
-app.get("/", checkUserSession, async (req, res): Promise<any> => {
+app.get("/home", checkUserSession, async (req, res): Promise<any> => {
   return res.status(200).json({ message: "Welcome to job portal app!" });
 });
 
