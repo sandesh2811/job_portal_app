@@ -1,5 +1,3 @@
-import Login from "@/Components/Login/Login";
-
 export default function Home() {
-  return <></>;
+  return <div className="h-screen bg-orange-400">Hii</div>;
 }

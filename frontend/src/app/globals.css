@@ -13,7 +13,10 @@
 
 /* @media (prefers-color-scheme: dark) {
   :root {
-    
+   --background: #f8f8f8;
+  --primary--text: #0a0a0a;
+  --secondary--text: #f3f4f9;
+  --CTA-buttons: #2c6b3d;
   }
 } */
 

@@ -11,7 +11,7 @@ const Form = () => {
             Log into your account
           </h1>
           <span className="text-sm leading-5 text-secondaryText">
-            Enter your username and password to login to you account
+            Enter your username and password to login to your account
           </span>
         </div>
       </div>

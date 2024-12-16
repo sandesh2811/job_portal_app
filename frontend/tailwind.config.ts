@@ -16,6 +16,10 @@ export default {
         secondaryText: "var(--secondary--text)",
         CTA_Buttons: "var(--CTA-buttons)",
       },
+      screens: {
+        mid: "630px",
+        midLg: "950px",
+      },
     },
     fontFamily: {
       Epilogue: ["Epilogue", "sans-serif"],
