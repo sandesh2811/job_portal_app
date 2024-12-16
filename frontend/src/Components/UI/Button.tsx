@@ -31,10 +31,12 @@ const ButtonVariants = cva("rounded-md border-none", {
   variants: {
     buttonType: {
       AuthButtons: "text-primaryText bg-CTA_Buttons",
+      Apply: "bg-CTA_Buttons",
     },
     size: {
       small: "text-sm px-2 py-1 ",
-      medium: "text-xl px-5 py-4",
+      medium: "text-md px-3 py-2",
+      large: "text-lg px-5 py-4",
     },
   },
   defaultVariants: {

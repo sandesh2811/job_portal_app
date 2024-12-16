@@ -31,7 +31,7 @@ const Navbar = () => {
   const [toggleNav, setToggleNav] = useState<boolean>(false);
 
   return (
-    <div className="relative overflow-x-hidden midLg:w-[850px] xl:w-[1050px] mx-auto bg-blue-600 flex justify-between p-4 h-[8vh] text-primaryText tracking-wide">
+    <div className="relative overflow-x-hidden midLg:max-w-[850px] xl:max-w-[1050px] mx-auto bg-blue-600 flex justify-between p-4 h-[8vh] text-primaryText tracking-wide">
       <h1 className="text-xl">Find Jobs</h1>
 
       {/* Laptop Links Configuration */}

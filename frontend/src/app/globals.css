@@ -5,10 +5,10 @@
 @tailwind utilities;
 
 :root {
-  --background: #f8f8f8;
+  --background: #f3f4e5;
   --primary--text: #0a0a0a;
   --secondary--text: #f3f4f9;
-  --CTA-buttons: #2c6b3d;
+  --CTA-buttons: #ffffff;
 }
 
 /* @media (prefers-color-scheme: dark) {
