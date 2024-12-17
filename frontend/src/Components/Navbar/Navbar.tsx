@@ -9,13 +9,14 @@ const NavbarLinks = [
     title: "Home",
     href: "/",
   },
-  {
-    title: "About",
-    href: "/about",
-  },
+
   {
     title: "Jobs",
     href: "/jobs",
+  },
+  {
+    title: "About",
+    href: "/about",
   },
   {
     title: "Contact",

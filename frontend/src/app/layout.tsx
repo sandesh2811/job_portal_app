@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/Components/Navbar/Navbar";
+import Footer from "@/Components/Home/Footer";
 
 export const metadata: Metadata = {
   title: "Find Jobs",
@@ -17,6 +18,7 @@ export default function RootLayout({
       <body className="font-Epilogue">
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
