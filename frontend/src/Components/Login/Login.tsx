@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Login = () => {
   return (
-    <div className="h-[80vh] flex flex-col justify-center items-center px-4 bg-primaryText text-background midLg:max-w-[850px] xl:max-w-[1050px] mx-auto tracking-wide">
+    <div className="h-[80vh] flex flex-col justify-center items-center px-4 midLg:max-w-[850px] xl:max-w-[1050px] mx-auto tracking-wide">
       <div className="w-full min-h-[50vh] p-3 flex flex-col justify-evenly gap-3 border-2 border-secondaryText mid:w-[550px] mid:p-8 rounded-md">
         {/* Headings */}
         <div>

@@ -65,7 +65,7 @@ export const Login: RequestHandler = async (req, res): Promise<any> => {
         .json({ message: "Incorrect username or password!" });
     }
   } catch (error) {
-    console.log("Error from controller!");
+    console.log("Error from controller!", error);
     return res.status(500).json({ message: "Internal server error!" });
   }
 };

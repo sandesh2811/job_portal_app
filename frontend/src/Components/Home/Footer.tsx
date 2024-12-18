@@ -4,7 +4,7 @@ const Others = ["Privacy Policy", "Terms of use", "FAQs"];
 
 const Footer = () => {
   return (
-    <div className="min-h-[10vh] bg-blue-600 midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 gap-4 flex flex-col tracking-wide">
+    <div className="min-h-[10vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 gap-4 flex flex-col tracking-wide">
       <div className="flex flex-wrap justify-between gap-4">
         {/* Contact */}
         <div className="flex flex-col gap-2">

@@ -4,7 +4,7 @@ import { GoArrowRight } from "react-icons/go";
 
 const Hero = () => {
   return (
-    <div className="min-h-[50vh] bg-orange-400 midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 flex flex-col justify-center gap-2 mid:text-center mid:items-center">
+    <div className="min-h-[50vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 flex flex-col justify-center gap-2 mid:text-center mid:items-center">
       {/* Title Section */}
 
       <div className="flex flex-col gap-2">

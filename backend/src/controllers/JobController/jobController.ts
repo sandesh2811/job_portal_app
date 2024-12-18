@@ -121,3 +121,19 @@ export const GetAllJobs: RequestHandler = async (req, res): Promise<any> => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+// Get a single job based on id
+
+export const GetSingleJob: RequestHandler = async (req, res): Promise<any> => {
+  const id = req.params.id;
+  try {
+    const job = await NewJobModel.findById(id);
+    if (!job) {
+      return res.status(404).json({ message: "Cannot find any job!" });
+    } else {
+      return res.status(200).json({ message: "Required Job", job });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};

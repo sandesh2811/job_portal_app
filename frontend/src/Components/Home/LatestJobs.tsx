@@ -5,9 +5,13 @@ import Button from "@/Components/UI/Button";
 
 const LatestJobs = () => {
   return (
-    <div className="min-h-[80vh] bg-blue-600 midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 gap-4 flex flex-col justify-evenly tracking-wide">
+    <div className="min-h-[80vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 gap-4 flex flex-col justify-evenly tracking-wide ">
       <h2 className="text-2xl font-semibold">Latest Job Postings</h2>
-      <div className="flex flex-col gap-6 mid:items-center md:flex-row flex-wrap md:justify-center ">
+      <div
+        className="flex flex-col gap-6 mid:items-center 
+      md:grid grid-cols-2 grid-rows-2 place-content-center place-items-center
+      "
+      >
         <Card>
           {/* Top */}
           <div className="flex flex-col gap-1">
@@ -29,7 +33,7 @@ const LatestJobs = () => {
             <Button
               buttonType="Apply"
               size="small"
-              className="text-primaryText flex gap-2 items-center "
+              className=" bg-background text-primaryText  flex gap-2 items-center "
             >
               Apply <GoArrowRight />
             </Button>
@@ -56,7 +60,7 @@ const LatestJobs = () => {
             <Button
               buttonType="Apply"
               size="small"
-              className="text-primaryText flex gap-2 items-center "
+              className="bg-background text-primaryText flex gap-2 items-center "
             >
               Apply <GoArrowRight />
             </Button>
@@ -83,7 +87,7 @@ const LatestJobs = () => {
             <Button
               buttonType="Apply"
               size="small"
-              className="text-primaryText flex gap-2 items-center "
+              className="bg-background text-primaryText flex gap-2 items-center "
             >
               Apply <GoArrowRight />
             </Button>
@@ -110,7 +114,7 @@ const LatestJobs = () => {
             <Button
               buttonType="Apply"
               size="small"
-              className="text-primaryText flex gap-2 items-center "
+              className="bg-background text-primaryText flex gap-2 items-center "
             >
               Apply <GoArrowRight />
             </Button>

@@ -5,9 +5,9 @@
 @tailwind utilities;
 
 :root {
-  --background: #f3f4e5;
-  --primary--text: #0a0a0a;
-  /* --secondary--text: #f3f4f9; */
+  /* Very light mint */
+  --background: #121212;
+  --primary--text: #f3f4f9;
   --secondary--text: rgb(243, 244, 249, 0.7);
   --CTA-buttons: #ffffff;
 }

@@ -15,14 +15,6 @@ const NavbarLinks = [
     href: "/jobs",
   },
   {
-    title: "About",
-    href: "/about",
-  },
-  {
-    title: "Contact",
-    href: "/contact",
-  },
-  {
     title: "Login",
     href: "/login",
   },
@@ -32,12 +24,12 @@ const Navbar = () => {
   const [toggleNav, setToggleNav] = useState<boolean>(false);
 
   return (
-    <div className="relative overflow-x-hidden midLg:max-w-[850px] xl:max-w-[1050px] mx-auto bg-blue-600 flex justify-between p-4 h-[8vh] text-primaryText tracking-wide">
+    <div className="relative overflow-x-hidden midLg:max-w-[850px] xl:max-w-[1050px] bg-[#] mx-auto flex justify-between p-4 h-[8vh] text-primaryText tracking-wide">
       <h1 className="text-xl">Find Jobs</h1>
 
       {/* Laptop Links Configuration */}
 
-      <nav className="hidden w-[400px] xl:w-[550px] md:flex justify-between items-center text-lg">
+      <nav className="hidden w-[400px] md:flex justify-between items-center text-lg">
         {NavbarLinks.map((link) => {
           return (
             <Link key={link.title} href={link.href}>

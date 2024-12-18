@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-Epilogue">
+      <body className="font-Epilogue text-primaryText">
         <Navbar />
         {children}
         <Footer />

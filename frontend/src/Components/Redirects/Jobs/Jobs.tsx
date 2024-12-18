@@ -31,16 +31,21 @@ const Jobs = () => {
 
   return (
     <>
-      <div className="min-h-[80vh] bg-yellow-400 midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col  gap-6">
+      <div className="min-h-[80vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col  gap-6">
         {/* Searching Section */}
         <div className="flex justify-center mid:justify-start">
-          <Input type="string" name="search" placeholder="Search..." />
+          <Input
+            type="string"
+            name="search"
+            placeholder="Search..."
+            className="rounded-none"
+          />
           <Button className="rounded-none">Search</Button>
         </div>
 
         {/*Jobs Section*/}
         {!loading && (
-          <div className="flex flex-col gap-4 mid:items-center md:flex-row flex-wrap md:justify-center">
+          <div className="flex flex-col gap-4 mid:items-center md:grid grid-cols-2 grid-rows-2 place-content-center place-items-center">
             {allJobs.map((job: JobType) => (
               <Card key={job._id}>
                 {/* Top */}
@@ -55,7 +60,7 @@ const Jobs = () => {
                 {/* Footer */}
                 <div className="flex justify-between items-center ">
                   <Link
-                    href="/"
+                    href={`jobs/${job._id}`}
                     className="flex gap-2 items-center underline underline-offset-4 text-sm"
                   >
                     See more <GoArrowRight />
@@ -63,7 +68,7 @@ const Jobs = () => {
                   <Button
                     buttonType="Apply"
                     size="small"
-                    className="text-primaryText flex gap-2 items-center "
+                    className=" bg-background text-primaryText flex gap-2 items-center "
                   >
                     Apply <GoArrowRight />
                   </Button>
