@@ -26,20 +26,21 @@ const Input = ({
       type={type}
       name={name}
       placeholder={placeholder}
+      autoComplete="false"
     />
   );
 };
 
 export default Input;
 
-const InputVariants = cva("rounded-sm bg-transparent", {
+const InputVariants = cva("rounded-md bg-transparent ", {
   variants: {
     inputVars: {
       primary: "border-[1px] border-secondaryText",
     },
     inputBoxSize: {
       sm: "text-sm px-2 py-1",
-      md: "text-md px-3 py-2",
+      md: "text-md px-3 py-3",
     },
   },
   defaultVariants: {

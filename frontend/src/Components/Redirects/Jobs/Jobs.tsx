@@ -31,16 +31,16 @@ const Jobs = () => {
 
   return (
     <>
-      <div className="min-h-[80vh] bg-yellow-400 midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col gap-6">
+      <div className="min-h-[80vh] bg-yellow-400 midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col  gap-6">
         {/* Searching Section */}
-        <div className="flex justify-center">
+        <div className="flex justify-center mid:justify-start">
           <Input type="string" name="search" placeholder="Search..." />
           <Button className="rounded-none">Search</Button>
         </div>
 
         {/*Jobs Section*/}
         {!loading && (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 mid:items-center md:flex-row flex-wrap md:justify-center">
             {allJobs.map((job: JobType) => (
               <Card key={job._id}>
                 {/* Top */}

@@ -11,7 +11,7 @@ const Hero = () => {
         <h1 className="text-4xl font-semibold mid:text-[45px]">
           Find jobs in companies that you want to work in.
         </h1>
-        <span className="text-sm font-light text-secondaryText mid:text-base">
+        <span className="text-sm font-light mid:text-base">
           Hire or apply for a job in a much easier way.
         </span>
       </div>

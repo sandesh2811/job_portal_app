@@ -30,7 +30,7 @@ export default Button;
 const ButtonVariants = cva("rounded-md border-none", {
   variants: {
     buttonType: {
-      AuthButtons: "text-primaryText bg-CTA_Buttons",
+      AuthButtons: "text-primaryText bg-CTA_Buttons font-medium",
       Apply: "bg-CTA_Buttons",
     },
     size: {
