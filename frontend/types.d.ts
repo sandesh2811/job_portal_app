@@ -1,3 +1,5 @@
+// For jobs that are fetched
+
 type JobType = {
   _id: string;
   title: string;
@@ -10,4 +12,12 @@ type JobType = {
   companyName: string;
   location: string;
   createdBy: Schema.Types.ObjectId;
+};
+
+// For job that is dynamically fetched
+
+type JobProps = {
+  params: {
+    id: string;
+  };
 };

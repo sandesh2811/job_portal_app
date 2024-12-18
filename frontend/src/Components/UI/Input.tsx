@@ -26,7 +26,6 @@ const Input = ({
       type={type}
       name={name}
       placeholder={placeholder}
-      autoComplete="false"
     />
   );
 };
