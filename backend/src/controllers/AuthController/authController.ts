@@ -36,6 +36,7 @@ export const Register: RequestHandler = async (req, res): Promise<any> => {
 export const Login: RequestHandler = async (req, res): Promise<any> => {
   try {
     const { username, password } = req.body;
+    console.log(password, username);
 
     const user = await NewUserModel.findOne({ username });
 
@@ -54,7 +55,7 @@ export const Login: RequestHandler = async (req, res): Promise<any> => {
       res.cookie("token", jwtToken, {
         httpOnly: true,
         secure: false,
-        sameSite: "none",
+        sameSite: "strict",
         maxAge: 15 * 60 * 1000,
       });
 

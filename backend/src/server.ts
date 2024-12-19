@@ -29,10 +29,11 @@ app.use(cors(corsOptions));
 
 // Enables us to use cookies
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 
 // Routes
 
-app.get("/home", checkUserSession, async (req, res): Promise<any> => {
+app.get("/home", async (req, res): Promise<any> => {
   return res.status(200).json({ message: "Welcome to job portal app!" });
 });
 
