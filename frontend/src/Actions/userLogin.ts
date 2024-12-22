@@ -1,3 +1,5 @@
+"use server";
+
 import { LoginType } from "@/Components/UI/Form";
 
 const userLogin = async (data: LoginType) => {
@@ -16,7 +18,8 @@ const userLogin = async (data: LoginType) => {
       },
     });
 
-    return postToDatabase;
+    const responseData = await postToDatabase.json();
+    return responseData;
   } catch (error) {
     console.log("Error:", error);
   }

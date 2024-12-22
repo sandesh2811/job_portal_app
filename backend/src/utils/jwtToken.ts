@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import { userData } from "../TypeDeclarations/types";
 
 export const generateJwtToken = (
   username: string,

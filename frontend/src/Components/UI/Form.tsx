@@ -33,9 +33,12 @@ const Form = () => {
   });
   const router = useRouter();
 
-  const loginUser = async (data: LoginType) => {
+  const loginUser: SubmitHandler<LoginType> = async (data: LoginType) => {
     const res = await userLogin(data);
-    if (res?.ok) {
+    const { userData } = res;
+
+    if (res.success) {
+      localStorage.setItem("userData", JSON.stringify(userData));
       router.push("/");
       reset();
     } else {

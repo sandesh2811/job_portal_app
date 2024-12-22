@@ -16,28 +16,42 @@ import mongoose from "mongoose";
 export const ApplyForJob: RequestHandler = async (req, res): Promise<any> => {
   try {
     const jobId = req.params.id;
-    const sessionToken = req.cookies.token;
-    const { fullname, phonenumber, experience, email } = req.body;
-    const jwtData = verifyJwtToken(sessionToken);
+    // const sessionToken = req.cookies.token;
+
+    // Applier id is alternative approach
+    const { applierId, fullname, phonenumber, experience, email } = req.body;
+    console.log(applierId);
+
+    // const jwtData = verifyJwtToken(sessionToken);
     const convertedJobId = new mongoose.Types.ObjectId(jobId);
 
     const isJobAvailable = await NewJobModel.findById(jobId);
+    console.log(typeof isJobAvailable);
+
     const applications = await JobApplicationModel.find({
       jobId: convertedJobId,
     });
 
     if (!isJobAvailable) {
-      return res.status(404).json({ message: "Job not found!" });
+      console.log("Job available console");
+
+      return res
+        .status(404)
+        .json({ success: false, message: "Job not found!" });
     } else if (isJobAvailable) {
       const hasApplied = applications.some((application) => {
-        return application.applierId.toString() === jwtData.userId;
+        return application.applierId.toString() === applierId;
+        // return application.applierId.toString() === jwtData.userId;
       });
       if (hasApplied) {
-        return res.status(400).json({ message: "Already applied to this job" });
+        console.log("Already applied to job console");
+        return res
+          .status(400)
+          .json({ success: false, message: "Already applied to this job" });
       } else {
         const newJobApplication = await JobApplicationModel.create({
           jobId,
-          applierId: jwtData.userId,
+          applierId,
           fullname,
           phonenumber,
           experience,
@@ -45,6 +59,7 @@ export const ApplyForJob: RequestHandler = async (req, res): Promise<any> => {
         });
 
         return res.status(200).json({
+          success: true,
           message: "Applied to the job successfully!",
           newJobApplication,
         });
@@ -52,6 +67,7 @@ export const ApplyForJob: RequestHandler = async (req, res): Promise<any> => {
     }
   } catch (error) {
     return res.status(500).json({
+      success: false,
       message: "Error from application controller : Internal Server Error!",
       error,
     });
@@ -71,11 +87,15 @@ export const GetJobsPostedByEmployer: RequestHandler = async (
   res
 ): Promise<any> => {
   try {
-    const token = req.cookies.token;
-    const userData = verifyJwtToken(token);
+    // const token = req.cookies.token;
+    // const userData = verifyJwtToken(token);
+
+    // Alternative approach
+    const { applierId } = req.body;
 
     const jobsCreatedByUser = await NewJobModel.find({
-      createdBy: userData.userId,
+      // createdBy: userData.userId,
+      createdBy: applierId,
     });
     const jobIds = jobsCreatedByUser.map((job) => job._id);
 
@@ -83,7 +103,8 @@ export const GetJobsPostedByEmployer: RequestHandler = async (
       jobId: { $in: jobIds },
     });
     return res.status(200).json({
-      message: `List of jobs posted by ${userData.username}`,
+      // message: `List of jobs posted by ${userData.username}`,
+      message: "List of all jobs!",
       jobApplicationsToTheJob,
     });
   } catch (error) {

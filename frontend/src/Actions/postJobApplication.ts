@@ -2,7 +2,11 @@
 
 import { JobApplicationType } from "@/Components/Redirects/JobApplication/Form/JobApplicationForm";
 
-const postJobApplication = async (id: string, data: JobApplicationType) => {
+const postJobApplication = async (
+  id: string,
+  data: JobApplicationType,
+  userId: string
+) => {
   const { fullname, email, phonenumber, experience } = data;
 
   try {
@@ -13,7 +17,7 @@ const postJobApplication = async (id: string, data: JobApplicationType) => {
         credentials: "include",
         body: JSON.stringify({
           jobId: id,
-          applierId: "675a87dc89807ad9e57dadd5",
+          applierId: userId,
           fullname,
           email,
           phonenumber,
@@ -22,9 +26,9 @@ const postJobApplication = async (id: string, data: JobApplicationType) => {
         headers: { "Content-Type": "application/json" },
       }
     );
-    console.log("Server action running!", postApplication);
 
     const messageFromBackend = await postApplication.json();
+    return messageFromBackend;
   } catch (error) {
     console.log("Oops! Something went wrong!", error);
   }

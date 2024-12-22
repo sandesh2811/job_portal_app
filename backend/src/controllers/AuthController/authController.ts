@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import NewUserModel from "../../models/RegistrationModel/registerModel";
 import { comparePasswords } from "../../utils/bcrypt";
 import { generateJwtToken } from "../../utils/jwtToken";
+import mongoose from "mongoose";
 
 // Handling user registration
 
@@ -52,18 +53,31 @@ export const Login: RequestHandler = async (req, res): Promise<any> => {
         user._id as string,
         user.role
       );
+
       res.cookie("token", jwtToken, {
         httpOnly: true,
         secure: false,
-        sameSite: "strict",
+        sameSite: "none",
         maxAge: 15 * 60 * 1000,
       });
 
-      return res.status(200).json({ message: "Login successful" });
+      // Alternative approach!
+      const userId = user._id as mongoose.Types.ObjectId;
+      const convertedUserId = userId.toString();
+
+      const userData = {
+        userName: user.username,
+        userId: convertedUserId,
+        role: user.role,
+      };
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Login successful", userData });
     } else {
       return res
         .status(401)
-        .json({ message: "Incorrect username or password!" });
+        .json({ success: false, message: "Incorrect username or password!" });
     }
   } catch (error) {
     console.log("Error from controller!", error);

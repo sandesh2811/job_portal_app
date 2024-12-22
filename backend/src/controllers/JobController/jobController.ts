@@ -1,6 +1,5 @@
 import { RequestHandler } from "express";
 import NewJobModel from "../../models/JobModels/jobModel";
-import { UpdatedDataByEmployer } from "../../TypeDeclarations/types";
 
 // Handling job creation by employer
 
