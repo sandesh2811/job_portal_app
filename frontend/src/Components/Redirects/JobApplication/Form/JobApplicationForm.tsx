@@ -11,6 +11,8 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/Store/store";
 
 // Zod
 const JobApplicationSchema = z.object({
@@ -41,16 +43,15 @@ const JobApplicationForm = ({ params }: JobProps) => {
   });
   const [applicationRes, setapplicationRes] = useState<string>("");
   const router = useRouter();
-
-  const localStorageData = localStorage.getItem("userData");
-  // @ts-expect-error
-  const { userId } = JSON.parse(localStorageData);
+  const { loginData } = useSelector(
+    (state: RootState) => state.loginDataReducer
+  );
 
   const handleApplicationSubmit: SubmitHandler<JobApplicationType> = async (
     data
   ) => {
     const { id } = await params;
-    const res = await postJobApplication(id, data, userId);
+    const res = await postJobApplication(id, data, loginData.userId);
 
     setapplicationRes(res.message);
     setTimeout(() => {

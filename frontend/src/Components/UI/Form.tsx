@@ -7,6 +7,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import userLogin from "@/Actions/userLogin";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/Store/store";
+import { getLoginData } from "@/Store/Features/userLoginState";
 
 // Zod
 const LoginSchema = z.object({
@@ -32,13 +35,14 @@ const Form = () => {
     mode: "onChange",
   });
   const router = useRouter();
+  const dispatch: AppDispatch = useDispatch();
 
   const loginUser: SubmitHandler<LoginType> = async (data: LoginType) => {
     const res = await userLogin(data);
     const { userData } = res;
 
     if (res.success) {
-      localStorage.setItem("userData", JSON.stringify(userData));
+      dispatch(getLoginData(userData));
       router.push("/");
       reset();
     } else {

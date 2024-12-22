@@ -32,7 +32,7 @@ export const ApplyForJob: RequestHandler = async (req, res): Promise<any> => {
       jobId: convertedJobId,
     });
 
-    if (!isJobAvailable) {
+    if (isJobAvailable) {
       console.log("Job available console");
 
       return res
