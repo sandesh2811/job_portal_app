@@ -39,7 +39,7 @@ const InputVariants = cva("rounded-md bg-transparent ", {
     },
     inputBoxSize: {
       sm: "text-sm px-2 py-1",
-      md: "text-md px-3 py-3",
+      md: "text-md p-3 ",
     },
   },
   defaultVariants: {

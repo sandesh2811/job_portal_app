@@ -89,7 +89,6 @@ export const GetJobApplicationsPostedByEmployer: RequestHandler = async (
     // Alternative approach
     // const { creatorId } = req.body;
     const creatorId = req.params.id;
-    console.log(creatorId);
 
     const jobsCreatedByUser = await NewJobModel.find({
       // createdBy: userData.userId,

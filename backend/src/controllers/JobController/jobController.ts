@@ -18,6 +18,8 @@ export const CreateJob: RequestHandler = async (req, res): Promise<any> => {
     createdBy,
   } = req.body;
 
+  const convertedId = new mongoose.Types.ObjectId(createdBy);
+
   try {
     const newJob = await NewJobModel.create({
       title,
@@ -29,16 +31,18 @@ export const CreateJob: RequestHandler = async (req, res): Promise<any> => {
       status,
       companyName,
       location,
-      createdBy,
+      createdBy: convertedId,
     });
 
     return res
       .status(201)
-      .json({ message: "Job created successfully!", newJob });
+      .json({ success: true, message: "Job created successfully!", newJob });
   } catch (error) {
     console.log("Error from controller", error);
 
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
   }
 };
 

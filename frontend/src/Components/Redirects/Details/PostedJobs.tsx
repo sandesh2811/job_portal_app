@@ -1,22 +1,24 @@
 "use client";
 
 import GetJobsPostedByEmployer from "@/utils/Hooks/GetJobsPostedByEmployer";
+
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
 const PostedJobs = () => {
   const { id } = useParams();
 
+  //   Check if the is is of type string or not
   const userId = typeof id === "string" ? id : "";
 
+  // Fetch the jobs posted by employer
   const { postedJobs } = GetJobsPostedByEmployer(userId);
 
+  //   Format the date to basic date only and replace it with the original created date
   const newPostedJobs = postedJobs.map((job) => {
     const date = new Date(job.createdAt).toLocaleDateString();
     return { ...job, createdAt: date };
   });
-
-  console.log(newPostedJobs);
 
   return (
     <div className="min-h-[80vh]">

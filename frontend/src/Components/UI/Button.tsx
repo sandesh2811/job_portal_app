@@ -36,7 +36,7 @@ const ButtonVariants = cva("rounded-md border-none", {
     size: {
       small: "text-sm px-2 py-1 ",
       medium: "text-md px-3 py-2",
-      large: "text-lg px-5 py-4",
+      large: "px-10 py-2",
     },
   },
   defaultVariants: {
