@@ -1,8 +1,11 @@
 "use client";
 
+import { RootState } from "@/Store/store";
 import Link from "next/link";
 import { useState } from "react";
+
 import { FiMenu, FiX } from "react-icons/fi";
+import { useSelector } from "react-redux";
 
 const NavbarLinks = [
   {
@@ -22,6 +25,9 @@ const NavbarLinks = [
 
 const Navbar = () => {
   const [toggleNav, setToggleNav] = useState<boolean>(false);
+  const { loginData } = useSelector(
+    (state: RootState) => state.loginDataReducer
+  );
 
   return (
     <div className="relative overflow-x-hidden midLg:max-w-[850px] xl:max-w-[1050px] bg-[#] mx-auto flex justify-between p-4 h-[8vh] text-primaryText tracking-wide">
@@ -30,12 +36,20 @@ const Navbar = () => {
       {/* Laptop Links Configuration */}
 
       <nav className="hidden w-[400px] md:flex justify-between items-center text-lg">
-        {NavbarLinks.map((link) => {
-          return (
-            <Link key={link.title} href={link.href}>
-              {link.title}
-            </Link>
-          );
+        {NavbarLinks.map((link, idx) => {
+          if (link.title === "Login" && loginData.userName !== "") {
+            return (
+              <Link key={idx} href={`/details/${loginData.userId}`}>
+                {loginData.userName}
+              </Link>
+            );
+          } else {
+            return (
+              <Link key={link.title} href={link.href}>
+                {link.title}
+              </Link>
+            );
+          }
         })}
       </nav>
 

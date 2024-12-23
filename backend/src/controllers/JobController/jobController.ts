@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import NewJobModel from "../../models/JobModels/jobModel";
+import mongoose from "mongoose";
 
 // Handling job creation by employer
 
@@ -131,6 +132,30 @@ export const GetSingleJob: RequestHandler = async (req, res): Promise<any> => {
       return res.status(404).json({ message: "Cannot find any job!" });
     } else {
       return res.status(200).json({ message: "Required Job", job });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+// Get job posted by an employer
+
+export const GetJobsPostedByEmployer: RequestHandler = async (
+  req,
+  res
+): Promise<any> => {
+  const id = req.params.id;
+  const convertedId = new mongoose.Types.ObjectId(id);
+
+  try {
+    const jobs = await NewJobModel.find({ createdBy: convertedId });
+
+    if (!jobs) {
+      return res.status(404).json({ message: "Cannot find any job!" });
+    } else {
+      return res
+        .status(200)
+        .json({ message: "All jobs posted by employer", jobs });
     }
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });

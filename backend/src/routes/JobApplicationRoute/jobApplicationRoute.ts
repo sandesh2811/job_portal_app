@@ -1,7 +1,7 @@
 import express from "express";
 import {
   ApplyForJob,
-  GetJobsPostedByEmployer,
+  GetJobApplicationsPostedByEmployer,
   ReviewJobApplications,
 } from "../../controllers/JobApplicationController/jobApplicationController";
 
@@ -11,7 +11,7 @@ const jobApplicationRouter = express.Router();
 jobApplicationRouter.route("/apply/:id").post(ApplyForJob);
 
 // For employer
-jobApplicationRouter.route("/").get(GetJobsPostedByEmployer);
+jobApplicationRouter.route("/:id").get(GetJobApplicationsPostedByEmployer);
 jobApplicationRouter.route("/review/:id").patch(ReviewJobApplications);
 
 export default jobApplicationRouter;

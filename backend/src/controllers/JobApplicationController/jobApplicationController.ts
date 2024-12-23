@@ -20,21 +20,17 @@ export const ApplyForJob: RequestHandler = async (req, res): Promise<any> => {
 
     // Applier id is alternative approach
     const { applierId, fullname, phonenumber, experience, email } = req.body;
-    console.log(applierId);
 
     // const jwtData = verifyJwtToken(sessionToken);
     const convertedJobId = new mongoose.Types.ObjectId(jobId);
 
     const isJobAvailable = await NewJobModel.findById(jobId);
-    console.log(typeof isJobAvailable);
 
     const applications = await JobApplicationModel.find({
       jobId: convertedJobId,
     });
 
     if (isJobAvailable) {
-      console.log("Job available console");
-
       return res
         .status(404)
         .json({ success: false, message: "Job not found!" });
@@ -82,7 +78,7 @@ export const ApplyForJob: RequestHandler = async (req, res): Promise<any> => {
 // Match the job ids of the array with the job ids of the applications
 // Return the job applications list
 
-export const GetJobsPostedByEmployer: RequestHandler = async (
+export const GetJobApplicationsPostedByEmployer: RequestHandler = async (
   req,
   res
 ): Promise<any> => {
@@ -91,11 +87,13 @@ export const GetJobsPostedByEmployer: RequestHandler = async (
     // const userData = verifyJwtToken(token);
 
     // Alternative approach
-    const { applierId } = req.body;
+    // const { creatorId } = req.body;
+    const creatorId = req.params.id;
+    console.log(creatorId);
 
     const jobsCreatedByUser = await NewJobModel.find({
       // createdBy: userData.userId,
-      createdBy: applierId,
+      createdBy: creatorId,
     });
     const jobIds = jobsCreatedByUser.map((job) => job._id);
 
