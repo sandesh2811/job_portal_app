@@ -1,14 +1,18 @@
 "use client";
 
+// import GetSingleJob from "@/utils/Hooks/Jobs/SingleJob/GetSingleJob";
+
 import Button from "@/Components/UI/Button";
-import Link from "next/link";
-import { useEffect, useState } from "react";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 
-const Skills = ["React", "Javascript", "Tailwind CSS", "Nodejs"];
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+export const Skills = ["React", "Javascript", "Tailwind CSS", "Nodejs"];
 
 const SingleJob = ({ params }: JobProps) => {
   const [job, setJob] = useState<JobType>();
+
   const getSingleJob = async () => {
     const { id } = await params;
     try {

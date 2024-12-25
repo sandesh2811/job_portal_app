@@ -1,6 +1,8 @@
 "use client";
 
 import postJobApplication from "@/Actions/postJobApplication";
+import GetLoginData from "@/utils/Hooks/GetLoginData";
+
 import Button from "@/Components/UI/Button";
 import Input from "@/Components/UI/Input";
 import Toast from "@/Components/UI/Toast";
@@ -11,8 +13,6 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
-import { RootState } from "@/Store/store";
 
 // Zod
 const JobApplicationSchema = z.object({
@@ -43,9 +43,8 @@ const JobApplicationForm = ({ params }: JobProps) => {
   });
   const [applicationRes, setapplicationRes] = useState<string>("");
   const router = useRouter();
-  const { loginData } = useSelector(
-    (state: RootState) => state.loginDataReducer
-  );
+
+  const { loginData } = GetLoginData();
 
   const handleApplicationSubmit: SubmitHandler<JobApplicationType> = async (
     data

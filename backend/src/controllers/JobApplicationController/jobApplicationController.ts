@@ -169,3 +169,27 @@ export const GetJobApplicationsAppliedByApplier: RequestHandler = async (
     });
   }
 };
+
+// Get single job application
+
+export const GetSingleJobApplication: RequestHandler = async (
+  req,
+  res
+): Promise<any> => {
+  const applicationId = req.params.id;
+
+  try {
+    const singleJob = await JobApplicationModel.findById(
+      applicationId
+    ).populate("jobId");
+
+    return res
+      .status(200)
+      .json({ message: "Required job application!", singleJob });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error from application controller : Internal Server Error!",
+      error,
+    });
+  }
+};

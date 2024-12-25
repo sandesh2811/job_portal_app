@@ -1,6 +1,7 @@
 "use client";
 
 import GetAppliedJobsByApplier from "@/utils/Hooks/GetAppliedJobsByApplier";
+
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
@@ -18,14 +19,31 @@ const AppliedJobs = () => {
       {/* For mobile screens */}
 
       {appliedJobs.map((appliedJob) => (
-        <Link key={appliedJob._id} href="#" className="mid:hidden">
-          <div className="flex flex-col gap-2 border-b-[1.2px]  cursor-pointer lg:hover:bg-white/20 duration-300 ease-in-out py-4 mid:flex-row mid:justify-between">
-            <span>{appliedJob.fullname}</span>
-
+        // <Link key={appliedJob._id} href="#" className="mid:hidden">
+        <div
+          key={appliedJob._id}
+          className="flex justify-between items-center gap-2 border-b-[1.2px]  cursor-pointer py-4 mid:hidden"
+        >
+          <div className="flex flex-col gap-2">
             <span className="text-sm">{appliedJob.jobId.title}</span>
-            <span className="text-sm">{appliedJob.status}</span>
+            <span>{appliedJob.jobId.position}</span>
+            <span
+              className={
+                appliedJob.status === "Accepted"
+                  ? "text-green-500 text-sm"
+                  : appliedJob.status === "Rejected"
+                  ? "text-red-500 text-sm"
+                  : "text-sm"
+              }
+            >
+              {appliedJob.status}
+            </span>
           </div>
-        </Link>
+          {/* <span className="underline underline-offset-4 text-sm cursor-pointer">
+              Details
+            </span> */}
+        </div>
+        // </Link>
       ))}
 
       {/* For laptop screens */}
@@ -34,26 +52,33 @@ const AppliedJobs = () => {
         <thead className="border-b-[1.3px]">
           <tr>
             <th className="w-1/5 font-normal py-6">Job Title</th>
-            <th className="w-1/5 font-normal py-6">Full Name</th>
+            <th className="w-1/5 font-normal py-6">Position</th>
             <th className="w-1/5 font-normal py-6">Status</th>
           </tr>
         </thead>
         <tbody>
           {appliedJobs.map((appliedJob) => (
-            <tr
-              key={appliedJob._id}
-              className="border-b-[1.3px] hover:bg-white/20 duration-300 ease-in-out cursor-pointer"
-            >
+            <tr key={appliedJob._id} className="border-b-[1.3px]">
               <td className=" w-1/5 py-6 text-center px-5">
                 {appliedJob.jobId.title}
               </td>
               <td className=" w-1/5 py-6 text-center px-5">
-                {appliedJob.fullname}
+                {appliedJob.jobId.position}
               </td>
-
-              <td className=" w-1/5 py-6 text-center px-5">
+              <td
+                className={
+                  appliedJob.status === "Accepted"
+                    ? "text-green-500 w-1/5 py-6 text-center px-5"
+                    : appliedJob.status === "Rejected"
+                    ? "text-red-500 w-1/5 py-6 text-center px-5"
+                    : "w-1/5 py-6 text-center px-5"
+                }
+              >
                 {appliedJob.status}
               </td>
+              {/* <td className="w-1/5 py-6 text-center px-5 underline underline-offset-4 text-sm cursor-pointer">
+                <Link href="#">Details</Link>
+              </td> */}
             </tr>
           ))}
         </tbody>

@@ -3,10 +3,11 @@
 import GetJobApplications from "@/utils/Hooks/GetJobApplications";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 const JobApplicationsForJob = () => {
   const { id } = useParams();
+  const router = useRouter();
 
   //   Check if the is is of type string or not
   const userId = typeof id === "string" ? id : "";
@@ -14,12 +15,21 @@ const JobApplicationsForJob = () => {
   //   Fetch job applications
   const { jobApplications } = GetJobApplications(userId);
 
+  // Redirect user
+  const RedirectUser = (id: string) => {
+    router.push(`/jobapplicationdetails/${id}`);
+  };
+
   return (
     <div className="min-h-[80vh]">
       {/* For mobile screens */}
 
       {jobApplications.map((application) => (
-        <Link key={application._id} href="#" className="mid:hidden">
+        <Link
+          key={application._id}
+          href={`/jobapplicationdetails/${application._id}`}
+          className="mid:hidden"
+        >
           <div className="flex flex-col gap-2 border-b-[1.2px]  cursor-pointer lg:hover:bg-white/20 duration-300 ease-in-out py-4 mid:flex-row mid:justify-between">
             <span>{application.fullname}</span>
             <span className="text-sm">{application.email}</span>
@@ -41,6 +51,7 @@ const JobApplicationsForJob = () => {
         <tbody>
           {jobApplications.map((application) => (
             <tr
+              onClick={() => RedirectUser(application._id)}
               key={application._id}
               className="border-b-[1.3px] hover:bg-white/20 duration-300 ease-in-out cursor-pointer"
             >

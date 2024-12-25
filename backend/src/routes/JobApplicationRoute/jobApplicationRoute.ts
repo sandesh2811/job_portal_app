@@ -3,6 +3,7 @@ import {
   ApplyForJob,
   GetJobApplicationsAppliedByApplier,
   GetJobApplicationsPostedByEmployer,
+  GetSingleJobApplication,
   ReviewJobApplications,
 } from "../../controllers/JobApplicationController/jobApplicationController";
 
@@ -16,6 +17,7 @@ jobApplicationRouter
 
 // For employer
 jobApplicationRouter.route("/:id").get(GetJobApplicationsPostedByEmployer);
+jobApplicationRouter.route("/details/:id").get(GetSingleJobApplication);
 jobApplicationRouter.route("/review/:id").patch(ReviewJobApplications);
 
 export default jobApplicationRouter;

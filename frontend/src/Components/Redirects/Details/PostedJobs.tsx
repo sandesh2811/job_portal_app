@@ -1,12 +1,11 @@
-"use client";
-
-import GetJobsPostedByEmployer from "@/utils/Hooks/GetJobsPostedByEmployer";
+import GetJobsPostedByEmployer from "@/utils/Hooks/Posted Jobs/GetJobsPostedByEmployer";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 const PostedJobs = () => {
   const { id } = useParams();
+  const router = useRouter();
 
   //   Check if the is is of type string or not
   const userId = typeof id === "string" ? id : "";
@@ -19,6 +18,11 @@ const PostedJobs = () => {
     const date = new Date(job.createdAt).toLocaleDateString();
     return { ...job, createdAt: date };
   });
+
+  // Redirect user to specific jobdetails
+  const RedirectUser = () => {
+    router.push(`/jobdetails/${id}`);
+  };
 
   return (
     <div className="min-h-[80vh]">
@@ -51,6 +55,7 @@ const PostedJobs = () => {
             <tr
               key={job._id}
               className="border-b-[1.3px] hover:bg-white/20 duration-300 ease-in-out cursor-pointer"
+              onClick={() => RedirectUser()}
             >
               <td className=" w-1/5 py-6 text-center px-5">
                 {job.companyName}
