@@ -26,9 +26,9 @@ type JobProps = {
 
 // For the job applications of a particular job
 
-type JobApplicationType = {
+type JobApplicationType<T> = {
   _id: string;
-  jobId: string;
+  jobId: T;
   applierId: string;
   fullname: string;
   phonenumber: string;

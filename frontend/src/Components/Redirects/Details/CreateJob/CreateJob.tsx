@@ -3,16 +3,15 @@
 import Button from "@/Components/UI/Button";
 import Input from "@/Components/UI/Input";
 import Toast from "@/Components/UI/Toast";
+import { GoX } from "react-icons/go";
 
-import { RootState } from "@/Store/store";
 import postNewJob from "@/Actions/Create Job/postNewJob";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
 import { z } from "zod";
-import { GoX } from "react-icons/go";
+import GetLoginData from "@/utils/Hooks/GetLoginData";
 
 const CreateJobSchema = z.object({
   title: z
@@ -69,10 +68,10 @@ const CreateJob = () => {
     resolver: zodResolver(CreateJobSchema),
     mode: "onChange",
   });
+
   const [jobCreationRes, setjobCreationRes] = useState<string>("");
-  const { loginData } = useSelector(
-    (state: RootState) => state.loginDataReducer
-  );
+
+  const { loginData } = GetLoginData();
   const { userId } = loginData;
 
   const handleJobCreation: SubmitHandler<CreateJobType> = async (

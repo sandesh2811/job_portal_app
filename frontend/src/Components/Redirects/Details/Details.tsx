@@ -1,5 +1,6 @@
 "use client";
 
+import AppliedJobs from "./AppliedJobs";
 import CreateJob from "./CreateJob/CreateJob";
 import Filters from "./Filters";
 import JobApplicationsForJob from "./JobApplicationsForJob";
@@ -17,6 +18,7 @@ const Details = () => {
       {pathname.startsWith("/postedjobs") && <PostedJobs />}
       {pathname.startsWith("/jobapplications") && <JobApplicationsForJob />}
       {pathname.startsWith("/createjob") && <CreateJob />}
+      {pathname.startsWith("/appliedjobs") && <AppliedJobs />}
     </div>
   );
 };

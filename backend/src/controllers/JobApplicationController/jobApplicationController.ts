@@ -140,3 +140,32 @@ export const ReviewJobApplications: RequestHandler = async (
     });
   }
 };
+
+// Get the job applications applied by the applier
+
+// Get the selected user id from the URL params
+// Filter the job applications by matching the applier Id with the id coming from the url params.
+
+export const GetJobApplicationsAppliedByApplier: RequestHandler = async (
+  req,
+  res
+): Promise<any> => {
+  const applierId = req.params.id;
+  try {
+    const jobApplicationsByApplier = await JobApplicationModel.find({
+      applierId,
+    }).populate("jobId");
+
+    return res.status(200).json({
+      success: true,
+      message: "All jobs applied by applier!",
+      jobApplicationsByApplier,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error from application controller : Internal Server Error!",
+      error,
+    });
+  }
+};

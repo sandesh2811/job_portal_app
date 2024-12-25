@@ -9,6 +9,7 @@ const GetJobsPostedByEmployer = (id: string) => {
       setLoading(true);
       const res = await fetch(`http://localhost:5000/api/jobs/employer/${id}`, {
         method: "GET",
+        credentials: "include",
       });
       const data = await res.json();
       const { jobs } = data;
