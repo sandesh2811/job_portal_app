@@ -50,30 +50,23 @@ export const CreateJob: RequestHandler = async (req, res): Promise<any> => {
 
 export const UpdateJob: RequestHandler = async (req, res): Promise<any> => {
   const jobId = req.params.id;
-  const {
-    title,
-    description,
-    salary,
-    required,
-    position,
-    experience,
-    status,
-    companyName,
-    location,
-  } = req.body;
+  const { updatedData } = req.body;
+  console.log(updatedData);
+
   const updatedAttributes: UpdatedDataByEmployer = {};
 
-  if (title) updatedAttributes.title = title;
-  if (description) updatedAttributes.description = description;
-  if (salary) updatedAttributes.salary = salary;
-  if (required) updatedAttributes.required = required;
-  if (position) updatedAttributes.position = position;
-  if (experience) updatedAttributes.experience = experience;
-  if (status) updatedAttributes.status = status;
-  if (companyName) updatedAttributes.companyName = companyName;
-  if (location) updatedAttributes.location = location;
-
-  console.log(updatedAttributes);
+  if (updatedData.title) updatedAttributes.title = updatedData.title;
+  if (updatedData.description)
+    updatedAttributes.description = updatedData.description;
+  if (updatedData.salary) updatedAttributes.salary = updatedData.salary;
+  if (updatedData.required) updatedAttributes.required = updatedData.required;
+  if (updatedData.position) updatedAttributes.position = updatedData.position;
+  if (updatedData.experience)
+    updatedAttributes.experience = updatedData.experience;
+  if (updatedData.status) updatedAttributes.status = updatedData.status;
+  if (updatedData.companyName)
+    updatedAttributes.companyName = updatedData.companyName;
+  if (updatedData.location) updatedAttributes.location = updatedData.location;
 
   try {
     const job = await NewJobModel.findByIdAndUpdate(
@@ -82,9 +75,13 @@ export const UpdateJob: RequestHandler = async (req, res): Promise<any> => {
       { new: true }
     );
 
-    return res.status(201).json({ message: "Job updated successfully!", job });
+    return res
+      .status(201)
+      .json({ success: true, message: "Job updated successfully!", job });
   } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
   }
 };
 
@@ -100,13 +97,19 @@ export const DeleteJob: RequestHandler = async (req, res): Promise<any> => {
     const job = await NewJobModel.findOne({ _id: jobId });
 
     if (!job) {
-      return res.status(404).json({ message: "Cannot find and  delete job!" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Cannot find and  delete job!" });
     } else {
       await NewJobModel.deleteOne({ _id: jobId });
-      return res.status(201).json({ message: "Job deleted successfully!" });
+      return res
+        .status(200)
+        .json({ success: true, message: "Job deleted successfully!" });
     }
   } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
   }
 };
 

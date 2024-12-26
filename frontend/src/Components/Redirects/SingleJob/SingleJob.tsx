@@ -33,6 +33,7 @@ const SingleJob = ({ params }: JobProps) => {
   return (
     <div className="min-h-[80vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col justify-center  gap-6 bg-[#282828]/30">
       {/* Job Introduction */}
+
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl mid:text-3xl">{job?.title}</h2>
         <div className="text-sm mid:text-base mb-3 flex flex-col gap-1">
@@ -50,7 +51,9 @@ const SingleJob = ({ params }: JobProps) => {
           Experience: {job?.experience} years
         </span>
       </div>
+
       {/* Required Skills  */}
+
       <div>
         <span className="text-sm mid:text-base">Required Skills:</span>
         {Skills.map((skill, idx) => (
@@ -59,14 +62,18 @@ const SingleJob = ({ params }: JobProps) => {
           </li>
         ))}
       </div>
+
       {/*  Company Details */}
+
       <div className="flex flex-col gap-2">
         <span className="text-sm mid:text-base">
           Company name: {job?.companyName}
         </span>
         <span className="text-sm mid:text-base">Location: {job?.location}</span>
       </div>
+
       {/* CTA Buttons */}
+
       <div className="flex justify-between items-center ">
         <Link
           href="/jobs"

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const GetJobApplications = (id: string) => {
   const [jobApplications, setJobApplications] = useState<
-    JobApplicationType<string>[]
+    JobApplicationType<JobType>[]
   >([]);
   const [loading, setLoading] = useState<boolean>(false);
 

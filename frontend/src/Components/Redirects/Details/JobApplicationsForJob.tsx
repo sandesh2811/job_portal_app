@@ -14,6 +14,7 @@ const JobApplicationsForJob = () => {
 
   //   Fetch job applications
   const { jobApplications } = GetJobApplications(userId);
+  console.log(jobApplications);
 
   // Redirect user
   const RedirectUser = (id: string) => {
@@ -43,7 +44,8 @@ const JobApplicationsForJob = () => {
       <table className="hidden mid:block w-full">
         <thead className="border-b-[1.3px]">
           <tr>
-            <th className="w-1/5 font-normal py-6">Full Name</th>
+            <th className="w-1/5 font-normal py-6">Job Title</th>
+            <th className="w-1/5 font-normal py-6">Applier Name</th>
             <th className="w-1/5 font-normal py-6">Email</th>
             <th className="w-1/5 font-normal py-6">Status</th>
           </tr>
@@ -55,6 +57,9 @@ const JobApplicationsForJob = () => {
               key={application._id}
               className="border-b-[1.3px] hover:bg-white/20 duration-300 ease-in-out cursor-pointer"
             >
+              <td className=" w-1/5 py-6 text-center px-5">
+                {application.jobId.title}
+              </td>
               <td className=" w-1/5 py-6 text-center px-5">
                 {application.fullname}
               </td>

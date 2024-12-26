@@ -4,18 +4,20 @@ import GetSingleJobApplication from "@/utils/Hooks/GetSingleJobApplication";
 import UpdateApplicationStatus from "@/Actions/UpdateApplicationStatus/UpdateApplicationStatus";
 
 import Button from "@/Components/UI/Button";
-import { GoX } from "react-icons/go";
+import { GoArrowLeft, GoX } from "react-icons/go";
 import Toast from "@/Components/UI/Toast";
 
 import { Skills } from "../SingleJob/SingleJob";
 
 import { useParams } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const JobApplicationDetails = () => {
   const { id } = useParams();
   const [status, setStatus] = useState<string>("Pending");
   const [applicationStatusRes, setapplicationStatusRes] = useState<string>("");
+  const router = useRouter();
 
   //   Check if the is is of type string or not
   const applicationId = typeof id === "string" ? id : "";
@@ -84,10 +86,10 @@ const JobApplicationDetails = () => {
 
       <h2 className="text-2xl mid:text-3xl">Applier Details</h2>
 
-      <div className="text-sm mid:text-base mb-3 flex justify-between items-center gap-1">
+      <div className="text-sm mid:text-base mb-3 flex flex-col  gap-4  mid:flex-row justify-between mid:items-center">
         {/* User Details */}
 
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-3">
           <span>Name: {jobApplication?.fullname}</span>
           <span>Experience: {jobApplication?.experience} year</span>
           <span>Phone Number: {jobApplication?.phonenumber}</span>
@@ -100,7 +102,7 @@ const JobApplicationDetails = () => {
         <div>
           <select
             name="applicationStatus"
-            className="bg-transparent  border-[1px] rounded-md p-[13px]"
+            className="bg-transparent  border-[1px] rounded-md p-[13px] w-full"
             value={status}
             onChange={(e) => setStatus(e.target.value)}
           >
@@ -119,7 +121,14 @@ const JobApplicationDetails = () => {
 
       {/* CTA Button */}
 
-      <div className="flex justify-end">
+      <div className="flex justify-between items-center">
+        <span
+          onClick={() => router.back()}
+          className="flex gap-2 items-center underline underline-offset-4 text-sm mid:text-base cursor-pointer"
+        >
+          <GoArrowLeft />
+          Return
+        </span>
         <Button onClick={() => handleJobUpdation()} size="large">
           Update
         </Button>

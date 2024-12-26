@@ -1,64 +1,28 @@
 "use client";
 
-import postNewJob from "@/Actions/Create Job/postNewJob";
+import GetSingleJob from "@/utils/Hooks/Jobs/SingleJob/GetSingleJob";
+import CompareForms from "@/utils/CompareFormData/CompareForm";
+import UpdateJob from "@/Actions/UpdateJob/UpdateJob";
+import DeleteJob from "@/Actions/DeleteJob/DeleteJob";
 
-import Button from "@/Components/UI/Button";
-import Input from "@/Components/UI/Input";
-import Toast from "@/Components/UI/Toast";
-import { GoX } from "react-icons/go";
+import Input from "../UI/Input";
+import Button from "../UI/Button";
+import Toast from "../UI/Toast";
+import { GoArrowLeft, GoX } from "react-icons/go";
 
+import {
+  CreateJobSchema,
+  CreateJobType,
+} from "../Redirects/Details/CreateJob/CreateJob";
+
+import { useParams } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
-import GetLoginData from "@/utils/Hooks/GetLoginData";
+import { useRouter } from "next/navigation";
 
-export const CreateJobSchema = z.object({
-  title: z
-    .string({ message: "Job title is required!" })
-    .min(5, { message: "Job title cannot be less than 5 characters!" })
-    .max(25, { message: "Job title cannot exceed 25 characters!" }),
-  description: z
-    .string({ message: "Job description is required!" })
-    .min(20, { message: "Job description cannot be less than 20 characters!" })
-    .max(300, { message: "Job description cannot exceed 300 characters!" }),
-  salary: z
-    .string({ message: "Salary is required!" })
-    .min(4, { message: "Salary cannot be less than 4 characters!" })
-    .max(50, { message: "Salary cannot exceed 50 characters!" }),
-  required: z
-    .string({ message: "Number of required employee is required!" })
-    .min(1, {
-      message: "Number of required employee cannot be less than 1 characters!",
-    })
-    .max(3, {
-      message: "Number of required employee cannot exceed 3 characters!",
-    }),
-  experience: z
-    .string({ message: "Experience is required!" })
-    .min(1, { message: "Experience cannot be less than 1 characters!" })
-    .max(2, { message: "Experience cannot exceed 2 characters!" }),
-  position: z
-    .string({ message: "Position is required!" })
-    .min(5, { message: "Position cannot be less than 5 characters!" })
-    .max(20, { message: "Position cannot exceed 20 characters!" }),
-  status: z
-    .string({ message: "Status is required!" })
-    .min(5, { message: "Status cannot be less than 5 characters!" })
-    .max(20, { message: "Status cannot exceed 20 characters!" }),
-  companyName: z
-    .string({ message: "Company name is required!" })
-    .min(5, { message: "Company name cannot be less than 5 characters!" })
-    .max(20, { message: "Company name cannot exceed 20 characters!" }),
-  location: z
-    .string({ message: "Location is required!" })
-    .min(4, { message: "Location cannot be less than 5 characters!" })
-    .max(25, { message: "Location cannot exceed 20 characters!" }),
-});
-
-export type CreateJobType = z.infer<typeof CreateJobSchema>;
-
-const CreateJob = () => {
+const JobDetails = () => {
+  const { id } = useParams();
   const {
     register,
     formState: { errors },
@@ -66,38 +30,74 @@ const CreateJob = () => {
     reset,
   } = useForm<CreateJobType>({
     resolver: zodResolver(CreateJobSchema),
-    mode: "onChange",
+    mode: "onSubmit",
   });
+  const [jobSettings, setJobSettings] = useState<string>("");
+  const router = useRouter();
 
-  const [jobCreationRes, setjobCreationRes] = useState<string>("");
+  //   Check if the id is of type string or not
+  const jobId = typeof id === "string" ? id : "";
 
-  const { loginData } = GetLoginData();
-  const { userId } = loginData;
+  //   Get the formData for the selected job
+  const { formData } = GetSingleJob(jobId);
 
-  const handleJobCreation: SubmitHandler<CreateJobType> = async (
-    formData: CreateJobType
-  ) => {
-    const response = await postNewJob(formData, userId);
-    setjobCreationRes(response.message);
+  //   Handling job deletion
+  const handleJobDeletion = async () => {
+    const response = await DeleteJob(jobId);
+    setJobSettings(response.message);
     setTimeout(() => {
-      setjobCreationRes("");
-    }, 2000);
-    reset();
+      setJobSettings("");
+    }, 3000);
+
+    response.success &&
+      setTimeout(() => {
+        router.back();
+      }, 5000);
+  };
+
+  //   Handling job updation
+  const handleJobUpdation: SubmitHandler<CreateJobType> = async (
+    newdata: CreateJobType
+  ) => {
+    // Getting the changed attributes by comparing the two form data's
+
+    const changedAttributes = CompareForms(formData, newdata);
+
+    // Making a PATCH request and getting the response
+
+    const response = await UpdateJob(jobId, changedAttributes);
+
+    // For toast message & routing
+
+    setJobSettings(response.message);
+
+    setTimeout(() => {
+      setJobSettings("");
+    }, 3000);
+
+    response.success &&
+      setTimeout(() => {
+        router.back();
+      }, 5000);
   };
 
   return (
-    <>
-      {/* Create job form */}
-
+    <div className="min-h-[90vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col gap-6 bg-[#282828]/70">
       <form
-        onSubmit={handleSubmit(handleJobCreation)}
+        onSubmit={handleSubmit(handleJobUpdation)}
         className="flex flex-col gap-4"
       >
         {/* Job title and location */}
+
         <div className="flex gap-6">
           <div className="flex flex-col gap-2 w-[50%]">
             <span>Job Title</span>
-            <Input {...register("title")} name="title" type="string" />
+            <Input
+              {...register("title")}
+              name="title"
+              type="string"
+              defaultValue={formData.title}
+            />
             {errors.title && (
               <span className="text-sm text-red-600">
                 {errors.title.message}
@@ -106,7 +106,12 @@ const CreateJob = () => {
           </div>
           <div className="flex flex-col gap-2 w-[50%]">
             <span>Location</span>
-            <Input {...register("location")} name="location" type="string" />
+            <Input
+              {...register("location")}
+              name="location"
+              type="string"
+              defaultValue={formData.location}
+            />
             {errors.location && (
               <span className="text-sm text-red-600">
                 {errors.location.message}
@@ -116,10 +121,16 @@ const CreateJob = () => {
         </div>
 
         {/* Salary and No of required employees */}
+
         <div className="flex  gap-6">
           <div className="flex flex-col gap-2 w-[50%]">
             <span>Salary</span>
-            <Input {...register("salary")} name="salary" type="string" />
+            <Input
+              {...register("salary")}
+              name="salary"
+              type="string"
+              defaultValue={formData.salary}
+            />
             {errors.salary && (
               <span className="text-sm text-red-600">
                 {errors.salary.message}
@@ -128,7 +139,12 @@ const CreateJob = () => {
           </div>
           <div className="flex flex-col gap-2 w-[50%]">
             <span>Required</span>
-            <Input {...register("required")} name="required" type="string" />
+            <Input
+              {...register("required")}
+              name="required"
+              type="string"
+              defaultValue={formData.required}
+            />
             {errors.required && (
               <span className="text-sm text-red-600">
                 {errors.required.message}
@@ -138,6 +154,7 @@ const CreateJob = () => {
         </div>
 
         {/* Experience and Position */}
+
         <div className="flex gap-6">
           <div className="flex flex-col gap-2 w-[50%]">
             <span>Experience</span>
@@ -145,6 +162,7 @@ const CreateJob = () => {
               {...register("experience")}
               name="experience"
               type="string"
+              defaultValue={formData.experience}
             />
             {errors.experience && (
               <span className="text-sm text-red-600">
@@ -154,7 +172,12 @@ const CreateJob = () => {
           </div>
           <div className="flex flex-col gap-2 w-[50%]">
             <span>Position</span>
-            <Input {...register("position")} name="position" type="string" />
+            <Input
+              {...register("position")}
+              name="position"
+              type="string"
+              defaultValue={formData.position}
+            />
             {errors.position && (
               <span className="text-sm text-red-600">
                 {errors.position.message}
@@ -164,6 +187,7 @@ const CreateJob = () => {
         </div>
 
         {/* Job status and Company name */}
+
         <div className="flex gap-6">
           <div className="flex flex-col gap-2 w-[50%]">
             <span>Status</span>
@@ -171,8 +195,14 @@ const CreateJob = () => {
               {...register("status")}
               name="status"
               className="bg-transparent border-[1px] rounded-md p-[13px]"
+              defaultValue={formData.status}
             >
-              <option value="Available">Available</option>
+              <option value="Available" className="text-background">
+                Available
+              </option>
+              <option value="Expired" className="text-background">
+                Expired
+              </option>
             </select>
             {errors.status && (
               <span className="text-sm text-red-600">
@@ -186,6 +216,7 @@ const CreateJob = () => {
               {...register("companyName")}
               name="companyName"
               type="string"
+              defaultValue={formData.companyName}
             />
             {errors.companyName && (
               <span className="text-sm text-red-600">
@@ -196,12 +227,15 @@ const CreateJob = () => {
         </div>
 
         {/* Job description */}
+
         <div className="flex flex-col gap-2 w-full">
           <span>Job Description</span>
           <textarea
+            rows={5}
             {...register("description")}
             name="description"
             className="bg-transparent border-[1px] rounded-md p-2"
+            defaultValue={formData.description}
           ></textarea>
           {errors.description && (
             <span className="text-sm text-red-600">
@@ -211,28 +245,46 @@ const CreateJob = () => {
         </div>
 
         {/* Button */}
-        <div className="flex justify-center mt-3">
-          <Button type="submit" size="large">
-            Create
-          </Button>
+
+        <div className="flex justify-between items-center mt-3">
+          <span
+            onClick={() => router.back()}
+            className="flex gap-2 items-center underline underline-offset-4 text-sm mid:text-base cursor-pointer"
+          >
+            <GoArrowLeft />
+            Return
+          </span>
+          <div className="flex justify-end gap-4">
+            <Button type="submit" size="large">
+              Update
+            </Button>
+            <Button
+              type="button"
+              onClick={() => handleJobDeletion()}
+              size="large"
+            >
+              Delete
+            </Button>
+          </div>
         </div>
       </form>
 
       {/* Toast notification */}
+
       <div
         className={
-          jobCreationRes !== ""
+          jobSettings !== ""
             ? "absolute bottom-12 mid:right-10 right-2"
             : "hidden absolute bottom-12 mid:right-10 right-2"
         }
       >
         <Toast>
-          <span>{jobCreationRes}</span>
+          <span>{jobSettings}</span>
           <GoX size={20} className="absolute top-2 right-2 cursor-pointer" />
         </Toast>
       </div>
-    </>
+    </div>
   );
 };
 
-export default CreateJob;
+export default JobDetails;

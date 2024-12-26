@@ -87,7 +87,6 @@ export const GetJobApplicationsPostedByEmployer: RequestHandler = async (
     // const userData = verifyJwtToken(token);
 
     // Alternative approach
-    // const { creatorId } = req.body;
     const creatorId = req.params.id;
 
     const jobsCreatedByUser = await NewJobModel.find({
@@ -98,7 +97,7 @@ export const GetJobApplicationsPostedByEmployer: RequestHandler = async (
 
     const jobApplicationsToTheJob = await JobApplicationModel.find({
       jobId: { $in: jobIds },
-    });
+    }).populate("jobId");
     return res.status(200).json({
       // message: `List of jobs posted by ${userData.username}`,
       message: "List of all jobs!",

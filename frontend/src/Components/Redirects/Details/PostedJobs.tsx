@@ -20,8 +20,8 @@ const PostedJobs = () => {
   });
 
   // Redirect user to specific jobdetails
-  const RedirectUser = () => {
-    router.push(`/jobdetails/${id}`);
+  const RedirectUser = (jobId: string) => {
+    router.push(`/jobdetails/${jobId}`);
   };
 
   return (
@@ -29,7 +29,11 @@ const PostedJobs = () => {
       {/* For mobile screens */}
 
       {newPostedJobs.map((job) => (
-        <Link key={job._id} href="#" className="mid:hidden">
+        <Link
+          key={job._id}
+          href={`/jobdetails/${job._id}`}
+          className="mid:hidden"
+        >
           <div className="flex flex-col gap-2 border-b-[1.2px]  cursor-pointer lg:hover:bg-white/20 duration-300 ease-in-out py-4 mid:flex-row mid:justify-between">
             <span>{job.companyName}</span>
             <span className="text-sm">{job.title}</span>
@@ -55,7 +59,7 @@ const PostedJobs = () => {
             <tr
               key={job._id}
               className="border-b-[1.3px] hover:bg-white/20 duration-300 ease-in-out cursor-pointer"
-              onClick={() => RedirectUser()}
+              onClick={() => RedirectUser(job._id)}
             >
               <td className=" w-1/5 py-6 text-center px-5">
                 {job.companyName}
