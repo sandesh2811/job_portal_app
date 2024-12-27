@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const GetJobApplications = (id: string) => {
-  const [jobApplications, setJobApplications] = useState<
-    JobApplicationType<JobType>[]
-  >([]);
+const useGetAppliedJobsByApplier = (id: string) => {
+  const [appliedJobs, setAppliedJobs] = useState<JobApplicationType<JobType>[]>(
+    []
+  );
   const [loading, setLoading] = useState<boolean>(false);
 
   // Fetch the jobs posted by an employer
@@ -11,16 +11,16 @@ const GetJobApplications = (id: string) => {
     try {
       setLoading(true);
       const res = await fetch(
-        `http://localhost:5000/api/jobApplication/${id}`,
+        `http://localhost:5000/api/jobApplication/applier/${id}`,
         {
           method: "GET",
           credentials: "include",
         }
       );
       const data = await res.json();
-      const { jobApplicationsToTheJob } = data;
+      const { jobApplicationsByApplier } = data;
 
-      setJobApplications(jobApplicationsToTheJob);
+      setAppliedJobs(jobApplicationsByApplier);
     } catch (error) {
       console.log("Oops something went wrong!", error);
     } finally {
@@ -33,8 +33,8 @@ const GetJobApplications = (id: string) => {
   }, []);
 
   return {
-    jobApplications,
+    appliedJobs,
   };
 };
 
-export default GetJobApplications;
+export default useGetAppliedJobsByApplier;

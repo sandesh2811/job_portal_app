@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const GetJobsPostedByEmployer = (id: string) => {
+const useGetJobsPostedByEmployer = (id: string) => {
   const [postedJobs, setPostedJobs] = useState<JobType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -30,4 +30,4 @@ const GetJobsPostedByEmployer = (id: string) => {
   };
 };
 
-export default GetJobsPostedByEmployer;
+export default useGetJobsPostedByEmployer;

@@ -1,4 +1,4 @@
-import GetJobsPostedByEmployer from "@/utils/Hooks/Posted Jobs/GetJobsPostedByEmployer";
+import GetJobsPostedByEmployer from "@/utils/Hooks/Jobs/PostedJobs/useGetJobsPostedByEmployer";
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";

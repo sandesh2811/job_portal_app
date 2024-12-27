@@ -1,8 +1,7 @@
 "use client";
 
-import GetAppliedJobsByApplier from "@/utils/Hooks/GetAppliedJobsByApplier";
+import useGetAppliedJobsByApplier from "@/utils/Hooks/Jobs/AppliedJobsByApplier/useGetAppliedJobsByApplier";
 
-import Link from "next/link";
 import { useParams } from "next/navigation";
 
 const AppliedJobs = () => {
@@ -12,7 +11,7 @@ const AppliedJobs = () => {
   const userId = typeof id === "string" ? id : "";
 
   //   Fetch job applications
-  const { appliedJobs } = GetAppliedJobsByApplier(userId);
+  const { appliedJobs } = useGetAppliedJobsByApplier(userId);
 
   return (
     <div className="min-h-[80vh]">

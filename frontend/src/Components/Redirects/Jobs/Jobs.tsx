@@ -6,29 +6,10 @@ import Input from "@/Components/UI/Input";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import useGetAllJobs from "@/utils/Hooks/Jobs/AllJobs/useGetAllJobs";
 
 const Jobs = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [allJobs, setAllJobs] = useState<JobType[]>([]);
-
-  const getAllJobs = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch("http://localhost:5000/api/jobs", {
-        method: "GET",
-      });
-      const data = await res.json();
-      setAllJobs(data.jobs);
-      setLoading(false);
-    } catch (error) {
-      console.log("Error: ", error);
-    }
-  };
-
-  useEffect(() => {
-    getAllJobs();
-  }, []);
+  const { loading, allJobs } = useGetAllJobs();
 
   return (
     <>

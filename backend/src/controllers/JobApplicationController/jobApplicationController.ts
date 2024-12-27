@@ -30,7 +30,7 @@ export const ApplyForJob: RequestHandler = async (req, res): Promise<any> => {
       jobId: convertedJobId,
     });
 
-    if (isJobAvailable) {
+    if (!isJobAvailable) {
       return res
         .status(404)
         .json({ success: false, message: "Job not found!" });

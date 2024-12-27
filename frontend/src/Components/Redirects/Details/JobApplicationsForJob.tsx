@@ -1,6 +1,6 @@
 "use client";
 
-import GetJobApplications from "@/utils/Hooks/GetJobApplications";
+import useGetJobApplications from "@/utils/Hooks/Jobs/JobApplicationsToJob/useGetJobApplications";
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ const JobApplicationsForJob = () => {
   const userId = typeof id === "string" ? id : "";
 
   //   Fetch job applications
-  const { jobApplications } = GetJobApplications(userId);
+  const { jobApplications } = useGetJobApplications(userId);
   console.log(jobApplications);
 
   // Redirect user

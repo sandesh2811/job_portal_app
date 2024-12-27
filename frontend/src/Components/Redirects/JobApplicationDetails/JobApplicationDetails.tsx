@@ -1,6 +1,6 @@
 "use client";
 
-import GetSingleJobApplication from "@/utils/Hooks/GetSingleJobApplication";
+import useGetSingleJobApplication from "@/utils/Hooks/Jobs/SingleJobApplication/useGetSingleJobApplication";
 import UpdateApplicationStatus from "@/Actions/UpdateApplicationStatus/UpdateApplicationStatus";
 
 import Button from "@/Components/UI/Button";
@@ -23,7 +23,7 @@ const JobApplicationDetails = () => {
   const applicationId = typeof id === "string" ? id : "";
 
   //   Fetch single job
-  const { jobApplication } = GetSingleJobApplication(applicationId);
+  const { jobApplication } = useGetSingleJobApplication(applicationId);
 
   //   Job Updation Response
   const handleJobUpdation = async () => {

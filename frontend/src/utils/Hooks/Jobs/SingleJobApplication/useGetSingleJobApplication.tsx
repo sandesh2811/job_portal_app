@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const GetSingleJobApplication = (applicationId: string) => {
+const useGetSingleJobApplication = (applicationId: string) => {
   const [jobApplication, setJobApplication] =
     useState<JobApplicationType<JobType>>();
   const getSingleJob = async () => {
@@ -25,4 +25,4 @@ const GetSingleJobApplication = (applicationId: string) => {
   };
 };
 
-export default GetSingleJobApplication;
+export default useGetSingleJobApplication;

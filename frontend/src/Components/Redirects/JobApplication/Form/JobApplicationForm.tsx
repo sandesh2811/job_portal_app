@@ -1,6 +1,6 @@
 "use client";
 
-import postJobApplication from "@/Actions/postJobApplication";
+import postJobApplication from "@/Actions/PostJobApplication/postJobApplication";
 import GetLoginData from "@/utils/Hooks/GetLoginData";
 
 import Button from "@/Components/UI/Button";
