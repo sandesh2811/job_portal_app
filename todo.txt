@@ -1,0 +1,9 @@
+--- Make an api for latest job posting and display it in the frontend (done)
+--- Refine/Redesign the home page
+--- Fix navbar issue
+
+--- Prefix the hooks with use
+--- Make a custom hook for the data fetching which are inside the components (Separate the logic and UI)
+
+
+--- Learn react query

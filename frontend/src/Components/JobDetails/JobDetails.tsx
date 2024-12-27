@@ -23,17 +23,16 @@ import { useRouter } from "next/navigation";
 
 const JobDetails = () => {
   const { id } = useParams();
+  const [jobSettings, setJobSettings] = useState<string>("");
+  const router = useRouter();
   const {
     register,
     formState: { errors },
     handleSubmit,
-    reset,
   } = useForm<CreateJobType>({
     resolver: zodResolver(CreateJobSchema),
     mode: "onSubmit",
   });
-  const [jobSettings, setJobSettings] = useState<string>("");
-  const router = useRouter();
 
   //   Check if the id is of type string or not
   const jobId = typeof id === "string" ? id : "";
@@ -83,6 +82,8 @@ const JobDetails = () => {
 
   return (
     <div className="min-h-[90vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col gap-6 bg-[#282828]/70">
+      {/* Form */}
+
       <form
         onSubmit={handleSubmit(handleJobUpdation)}
         className="flex flex-col gap-4"

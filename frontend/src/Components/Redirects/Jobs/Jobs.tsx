@@ -3,9 +3,10 @@
 import Button from "@/Components/UI/Button";
 import Card from "@/Components/UI/Card";
 import Input from "@/Components/UI/Input";
+import { GoArrowLeft, GoArrowRight } from "react-icons/go";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 
 const Jobs = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -65,13 +66,15 @@ const Jobs = () => {
                   >
                     See more <GoArrowRight />
                   </Link>
-                  <Button
-                    buttonType="Apply"
-                    size="small"
-                    className=" bg-background text-primaryText flex gap-2 items-center "
-                  >
-                    Apply <GoArrowRight />
-                  </Button>
+                  <Link href={`/apply/${job?._id}`}>
+                    <Button
+                      buttonType="Apply"
+                      size="small"
+                      className=" bg-background text-primaryText flex gap-2 items-center "
+                    >
+                      Apply <GoArrowRight />
+                    </Button>
+                  </Link>
                 </div>
               </Card>
             ))}

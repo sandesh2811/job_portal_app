@@ -109,9 +109,6 @@ const JobApplicationDetails = () => {
             <option className="text-background" value={jobApplication?.status}>
               {jobApplication?.status}
             </option>
-            <option className="text-background" value="Accepted">
-              Accepted
-            </option>
             <option className="text-background" value="Rejected">
               Rejected
             </option>

@@ -4,6 +4,7 @@ import {
   DeleteJob,
   GetAllJobs,
   GetJobsPostedByEmployer,
+  GetLatestJobPostings,
   GetSingleJob,
   UpdateJob,
 } from "../../controllers/JobController/jobController";
@@ -21,6 +22,7 @@ jobRouter.route("/:id").patch(UpdateJob);
 jobRouter.route("/:id").delete(DeleteJob);
 
 jobRouter.route("/").get(GetAllJobs);
+jobRouter.route("/latestjobs").get(GetLatestJobPostings);
 jobRouter.route("/:id").get(GetSingleJob);
 jobRouter.route("/employer/:id").get(GetJobsPostedByEmployer);
 

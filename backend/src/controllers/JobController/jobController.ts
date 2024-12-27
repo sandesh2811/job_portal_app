@@ -168,3 +168,21 @@ export const GetJobsPostedByEmployer: RequestHandler = async (
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+// Get the latest job postings
+
+export const GetLatestJobPostings: RequestHandler = async (
+  req,
+  res
+): Promise<any> => {
+  try {
+    const latestJobs = await NewJobModel.aggregate([
+      { $sort: { createdAt: -1 } },
+      { $limit: 4 },
+    ]);
+
+    return res.status(200).json({ message: "All Jobs", latestJobs });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
