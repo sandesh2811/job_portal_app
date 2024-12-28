@@ -1,15 +1,34 @@
 "use client";
 
+import useGetAllJobs from "@/utils/Hooks/Jobs/AllJobs/useGetAllJobs";
+import {
+  DecreasePageNumber,
+  IncreasePageNumber,
+} from "@/utils/Pagination/SetPageNumber";
+import { searchQuery } from "@/utils/Pagination/SetSearchQuery";
+
 import Button from "@/Components/UI/Button";
 import Card from "@/Components/UI/Card";
 import Input from "@/Components/UI/Input";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 
 import Link from "next/link";
-import useGetAllJobs from "@/utils/Hooks/Jobs/AllJobs/useGetAllJobs";
+import { useState } from "react";
 
 const Jobs = () => {
-  const { loading, allJobs } = useGetAllJobs();
+  const {
+    loading,
+    allJobs,
+    totalPages,
+    pageNumber,
+    jobLimit,
+    setPageNumber,
+    setSearchQuery,
+  } = useGetAllJobs();
+  const [userInput, setUserInput] = useState<string>("");
+
+  // Checks if the total page number is null or undefined. If it is undefined or null it returns the value 0  else returns the total page number
+  const checkedTotalPageNumber = totalPages ?? 0;
 
   return (
     <>
@@ -21,53 +40,92 @@ const Jobs = () => {
             name="search"
             placeholder="Search..."
             className="rounded-none"
+            autoComplete="off"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
           />
-          <Button className="rounded-none">Search</Button>
+          <Button
+            className="rounded-none"
+            onClick={() => searchQuery(userInput, setSearchQuery)}
+          >
+            Search
+          </Button>
         </div>
 
         {/*Jobs Section*/}
         {!loading && (
           <div className="flex flex-col gap-4 mid:items-center md:grid grid-cols-2 grid-rows-2 place-content-center place-items-center">
-            {allJobs.map((job: JobType) => (
-              <Card key={job._id}>
-                {/* Top */}
-                <div className="flex flex-col gap-1">
-                  <h3 className="text-2xl">{job.title}</h3>
-                  <div className="flex flex-col justify-between">
-                    <span className="text-sm">{job.companyName}</span>
-                    <span className="text-sm">{job.location}</span>
+            {allJobs.length === 0 ? (
+              <h3 className="h-[60vh] w-full bg-slate-400">
+                Couldn't find any jobs!
+              </h3>
+            ) : (
+              allJobs.map((job: JobType) => (
+                <Card key={job._id}>
+                  {/* Top */}
+                  <div className="flex flex-col gap-1">
+                    <h3 className="text-2xl">{job.title}</h3>
+                    <div className="flex flex-col justify-between">
+                      <span className="text-sm">{job.companyName}</span>
+                      <span className="text-sm">{job.location}</span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Footer */}
-                <div className="flex justify-between items-center ">
-                  <Link
-                    href={`jobs/${job._id}`}
-                    className="flex gap-2 items-center underline underline-offset-4 text-sm"
-                  >
-                    See more <GoArrowRight />
-                  </Link>
-                  <Link href={`/apply/${job?._id}`}>
-                    <Button
-                      buttonType="Apply"
-                      size="small"
-                      className=" bg-background text-primaryText flex gap-2 items-center "
+                  {/* Footer */}
+                  <div className="flex justify-between items-center ">
+                    <Link
+                      href={`jobs/${job._id}`}
+                      className="flex gap-2 items-center underline underline-offset-4 text-sm"
                     >
-                      Apply <GoArrowRight />
-                    </Button>
-                  </Link>
-                </div>
-              </Card>
-            ))}
+                      See more <GoArrowRight />
+                    </Link>
+                    <Link href={`/apply/${job?._id}`}>
+                      <Button
+                        buttonType="Apply"
+                        size="small"
+                        className=" bg-background text-primaryText flex gap-2 items-center "
+                      >
+                        Apply <GoArrowRight />
+                      </Button>
+                    </Link>
+                  </div>
+                </Card>
+              ))
+            )}
           </div>
         )}
 
         {/* Pagination */}
         <div className="flex justify-between items-center">
-          <Button size="small" className="flex gap-1 items-center">
+          <Button
+            size="small"
+            className={
+              pageNumber === 1 || pageNumber <= 0
+                ? "flex gap-1 items-center cursor-not-allowed"
+                : "flex gap-1 items-center"
+            }
+            disabled={pageNumber === 1 || pageNumber <= 0}
+            onClick={() => DecreasePageNumber(setPageNumber)}
+          >
             <GoArrowLeft /> Prev
           </Button>
-          <Button size="small" className="flex gap-1 items-center">
+          <Button
+            size="small"
+            className={
+              pageNumber === checkedTotalPageNumber ||
+              pageNumber > checkedTotalPageNumber ||
+              (userInput !== "" && allJobs.length < jobLimit)
+                ? "flex gap-1 items-center cursor-not-allowed"
+                : "flex gap-1 items-center"
+            }
+            disabled={
+              (pageNumber === checkedTotalPageNumber ||
+                pageNumber > checkedTotalPageNumber ||
+                (userInput !== "" && allJobs.length < jobLimit)) &&
+              true
+            }
+            onClick={() => IncreasePageNumber(setPageNumber)}
+          >
             Next <GoArrowRight />
           </Button>
         </div>

@@ -117,12 +117,25 @@ export const DeleteJob: RequestHandler = async (req, res): Promise<any> => {
 // Need to add pagination. For that need to apply aggregation pipeline for the db query
 
 export const GetAllJobs: RequestHandler = async (req, res): Promise<any> => {
+  const { page, limit, searchQuery } = req.query;
+
+  const pageNumber: number = parseInt(page as string) || 1;
+  const jobLimit: number = parseInt(limit as string) || 4;
+  const userSearchedQuery: string = (searchQuery as string) || "";
+
   try {
-    const jobs = await NewJobModel.find();
+    const jobs = await NewJobModel.aggregate([
+      { $match: { title: { $regex: userSearchedQuery, $options: "i" } } },
+      { $skip: (pageNumber - 1) * jobLimit },
+      { $limit: jobLimit },
+    ]);
+    const countDocuments = await NewJobModel.countDocuments();
+    const totalPages = Math.ceil(countDocuments / jobLimit);
+
     if (!jobs) {
       return res.status(404).json({ message: "Cannot find any job!" });
     } else {
-      return res.status(200).json({ message: "All Jobs", jobs });
+      return res.status(200).json({ message: "All Jobs", jobs, totalPages });
     }
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });
