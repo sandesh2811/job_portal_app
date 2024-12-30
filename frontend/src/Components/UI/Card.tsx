@@ -30,13 +30,13 @@ export default Card;
 const CardVariants = cva("rounded-md p-3 tracking-wide shadow-md", {
   variants: {
     CardStyle: {
-      Jobs: " border-[1.5px] border-primaryText flex flex-col justify-between",
+      Jobs: "bg-primaryText text-background  flex flex-col justify-between",
       Services:
-        "border-[1.5px] border-primaryText flex flex-col items-center gap-3 text-center",
+        "bg-primaryText text-background flex flex-col items-center gap-3 text-center",
     },
     CardSize: {
       PrimarySize:
-        "min-h-[30vh] w-[290px] mid:w-[600px] md:w-[360px] xl:w-[450px]",
+        "min-h-[30vh] w-[290px] mid:w-[600px] md:w-[360px] xl:w-[495px]",
     },
   },
   defaultVariants: {

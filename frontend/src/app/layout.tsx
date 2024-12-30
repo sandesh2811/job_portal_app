@@ -17,11 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-Epilogue text-primaryText">
-        <Providers>
-          <Navbar />
-          {children}
-          <Footer />
-        </Providers>
+        <div className="relative overflow-x-hidden">
+          <Providers>
+            <Navbar />
+            {children}
+            <Footer />
+          </Providers>
+        </div>
       </body>
     </html>
   );

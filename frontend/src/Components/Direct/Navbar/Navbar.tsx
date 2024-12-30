@@ -1,10 +1,10 @@
 "use client";
 
+import { FiMenu, FiX } from "react-icons/fi";
+
 import { RootState } from "@/Store/store";
 import Link from "next/link";
 import { useState } from "react";
-
-import { FiMenu, FiX } from "react-icons/fi";
 import { useSelector } from "react-redux";
 
 const NavbarLinks = [
@@ -30,7 +30,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="relative overflow-x-hidden midLg:max-w-[850px] xl:max-w-[1050px] bg-[#] mx-auto flex justify-between p-4 h-[8vh] text-primaryText tracking-wide">
+    <div className="midLg:max-w-[850px] xl:max-w-[1050px] mx-auto flex justify-between p-4 h-[8vh] text-primaryText tracking-wide">
       <h1 className="text-xl">Find Jobs</h1>
 
       {/* Laptop Links Configuration */}
@@ -40,7 +40,7 @@ const Navbar = () => {
           if (link.title === "Login" && loginData.userName !== "") {
             return (
               <Link key={idx} href={`/details/${loginData.userId}`}>
-                {loginData.userName}
+                Dashboard
               </Link>
             );
           } else {
@@ -72,12 +72,20 @@ const Navbar = () => {
           <FiX size={25} onClick={() => setToggleNav(false)} />
         </div>
         <div className="px-4 flex flex-col items-end justify-evenly h-[80vh] text-lg mid:text-xl">
-          {NavbarLinks.map((link) => {
-            return (
-              <Link key={link.title} href={link.href}>
-                {link.title}
-              </Link>
-            );
+          {NavbarLinks.map((link, idx) => {
+            if (link.title === "Login" && loginData.userName !== "") {
+              return (
+                <Link key={idx} href={`/details/${loginData.userId}`}>
+                  Dashboard
+                </Link>
+              );
+            } else {
+              return (
+                <Link key={link.title} href={link.href}>
+                  {link.title}
+                </Link>
+              );
+            }
           })}
         </div>
       </nav>

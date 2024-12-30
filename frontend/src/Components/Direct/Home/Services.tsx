@@ -21,7 +21,7 @@ const ServicesList = [
 const Services = () => {
   return (
     <div className="min-h-[60vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 gap-4 flex flex-col tracking-wide">
-      <h2 className="text-2xl font-semibold">Our Services</h2>
+      <h2 className="text-4xl font-semibold">Our Services</h2>
       <div className="flex flex-col gap-6 mid:items-center md:grid grid-cols-2 grid-rows-2 place-content-center place-items-center">
         {ServicesList.map((service, idx) => (
           <Card CardStyle="Services" key={idx}>

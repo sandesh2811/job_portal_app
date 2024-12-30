@@ -1,7 +1,7 @@
-import Form from "@/Components/UI/Form";
 import Link from "next/link";
+import Form from "./Form";
 
-const Login = () => {
+const Register = () => {
   return (
     <div className="h-[80vh] flex flex-col justify-center items-center px-4 midLg:max-w-[850px] xl:max-w-[1050px] mx-auto tracking-wide">
       <div className="w-full min-h-[50vh] p-3 flex flex-col justify-evenly gap-3 border-2 border-secondaryText mid:w-[550px] mid:p-8 rounded-md">
@@ -9,7 +9,7 @@ const Login = () => {
         <div>
           <div>
             <h3 className="text-xl font-semibold leading-5 mid:text-2xl">
-              Log into your account
+              Register for your account
             </h3>
             <span className="text-sm leading-5 text-secondaryText">
               Enter your username and password to login to your account
@@ -22,11 +22,9 @@ const Login = () => {
 
         {/* Register redirect */}
         <div className="flex gap-1 items-center justify-center text-secondaryText">
-          <span className="text-sm">Don&apos;t have an account?</span>
-          <Link href="/register">
-            <span className="text-sm underline underline-offset-3 ">
-              Register
-            </span>
+          <span className="text-sm">Already have an account?</span>
+          <Link href="/login">
+            <span className="text-sm underline underline-offset-3">Login</span>
           </Link>
         </div>
       </div>
@@ -34,4 +32,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

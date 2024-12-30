@@ -32,7 +32,7 @@ const Jobs = () => {
 
   return (
     <>
-      <div className="min-h-[80vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col  gap-6">
+      <div className="min-h-[90vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col justify-evenly  gap-6">
         {/* Searching Section */}
         <div className="flex justify-center mid:justify-start">
           <Input
@@ -98,7 +98,7 @@ const Jobs = () => {
         {/* Pagination */}
         <div className="flex justify-between items-center">
           <Button
-            size="small"
+            size="medium"
             className={
               pageNumber === 1 || pageNumber <= 0
                 ? "flex gap-1 items-center cursor-not-allowed"
@@ -110,7 +110,7 @@ const Jobs = () => {
             <GoArrowLeft /> Prev
           </Button>
           <Button
-            size="small"
+            size="medium"
             className={
               pageNumber === checkedTotalPageNumber ||
               pageNumber > checkedTotalPageNumber ||

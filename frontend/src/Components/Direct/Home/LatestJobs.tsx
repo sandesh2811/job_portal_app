@@ -11,14 +11,13 @@ const LatestJobs = () => {
   const { latestJobsList } = useGetLatestJobs();
 
   return (
-    <div className="min-h-[80vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 gap-4 flex flex-col justify-evenly tracking-wide ">
-      <h2 className="text-2xl font-semibold">Latest Job Postings</h2>
+    <div className="min-h-[80vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 gap-4 flex flex-col justify-evenly tracking-wide">
+      <h2 className="text-4xl font-semibold">Latest Job Postings</h2>
 
       {/* Card Section */}
       <div
-        className="flex flex-col gap-6 mid:items-center 
-      md:grid grid-cols-2 grid-rows-2 place-content-center place-items-center
-      "
+        className="flex flex-col gap-8 mid:items-center 
+      md:grid grid-cols-2 grid-rows-2 place-content-center place-items-center"
       >
         {latestJobsList.map((job) => (
           <Card key={job._id}>
