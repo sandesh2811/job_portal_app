@@ -39,7 +39,6 @@ export const Register: RequestHandler = async (req, res): Promise<any> => {
 export const Login: RequestHandler = async (req, res): Promise<any> => {
   try {
     const { username, password } = req.body;
-    console.log(password, username);
 
     const user = await NewUserModel.findOne({ username });
 

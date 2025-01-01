@@ -1,7 +1,8 @@
-import { RequestHandler } from "express";
-import JobApplicationModel from "../../models/JobApplicationModel/jobApplicationModel";
 import { verifyJwtToken } from "../../utils/jwtToken";
+import JobApplicationModel from "../../models/JobApplicationModel/jobApplicationModel";
 import NewJobModel from "../../models/JobModels/jobModel";
+
+import { RequestHandler } from "express";
 import mongoose from "mongoose";
 
 // Applier applying to the job
@@ -20,6 +21,7 @@ export const ApplyForJob: RequestHandler = async (req, res): Promise<any> => {
 
     // Applier id is alternative approach
     const { applierId, fullname, phonenumber, experience, email } = req.body;
+    const fileName = req.file?.filename;
 
     // const jwtData = verifyJwtToken(sessionToken);
     const convertedJobId = new mongoose.Types.ObjectId(jobId);
@@ -52,6 +54,7 @@ export const ApplyForJob: RequestHandler = async (req, res): Promise<any> => {
           phonenumber,
           experience,
           email,
+          fileName,
         });
 
         return res.status(200).json({

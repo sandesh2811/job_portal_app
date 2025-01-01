@@ -18,6 +18,7 @@ const JobApplicationDetails = () => {
   const [status, setStatus] = useState<string>("Pending");
   const [applicationStatusRes, setapplicationStatusRes] = useState<string>("");
   const router = useRouter();
+  const [fileName, setFileName] = useState<string>("");
 
   //   Check if the is is of type string or not
   const applicationId = typeof id === "string" ? id : "";
@@ -33,6 +34,19 @@ const JobApplicationDetails = () => {
     setTimeout(() => {
       setapplicationStatusRes("");
     }, 3000);
+  };
+
+  const GetCV = async () => {
+    const res = await fetch(
+      `http://localhost:5000/api/uploads/files/${jobApplication?.fileName}`,
+      { method: "GET", credentials: "include" }
+    );
+    const resData = await res.json();
+    if (resData.success) {
+      setFileName(resData.fileName);
+      window.open(`http://localhost:5000/${fileName}`);
+    }
+    console.log(resData);
   };
 
   return (
@@ -94,7 +108,15 @@ const JobApplicationDetails = () => {
           <span>Experience: {jobApplication?.experience} year</span>
           <span>Phone Number: {jobApplication?.phonenumber}</span>
           <span>Email: {jobApplication?.email}</span>
-          <span>For CV</span>
+          <div className="flex items-center gap-2 justify-center">
+            <span>CV:</span>
+            <span
+              className="cursor-pointer underline underline-offset-4"
+              onClick={() => GetCV()}
+            >
+              {jobApplication?.fileName}
+            </span>
+          </div>
         </div>
 
         {/* Application Status */}

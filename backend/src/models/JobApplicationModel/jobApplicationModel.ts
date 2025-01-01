@@ -8,6 +8,7 @@ interface JobApplication extends Document {
   experience: string | number;
   email: string;
   status: string;
+  fileName: string;
 }
 
 const JobApplicationSchema = new Schema<JobApplication>({
@@ -38,6 +39,10 @@ const JobApplicationSchema = new Schema<JobApplication>({
   status: {
     type: String,
     default: "Pending",
+  },
+  fileName: {
+    type: String,
+    required: [true, "File is required!"],
   },
 });
 

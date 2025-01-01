@@ -35,4 +35,5 @@ type JobApplicationType<T> = {
   experience: string;
   email: string;
   status: string;
+  fileName: string;
 };

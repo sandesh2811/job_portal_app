@@ -1,4 +1,6 @@
 import express from "express";
+import multer from "multer";
+
 import {
   ApplyForJob,
   GetJobApplicationsAppliedByApplier,
@@ -9,8 +11,24 @@ import {
 
 const jobApplicationRouter = express.Router();
 
+// Multer for file uploads
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage });
+
 // For applier
-jobApplicationRouter.route("/apply/:id").post(ApplyForJob);
+jobApplicationRouter
+  .route("/apply/:id")
+  .post(upload.single("file"), ApplyForJob);
+
 jobApplicationRouter
   .route("/applier/:id")
   .get(GetJobApplicationsAppliedByApplier);

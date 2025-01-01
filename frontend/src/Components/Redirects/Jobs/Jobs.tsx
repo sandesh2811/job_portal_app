@@ -14,6 +14,7 @@ import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 
 import Link from "next/link";
 import { useState } from "react";
+import Skeleton from "@/Components/UI/PageSkeleton";
 
 const Jobs = () => {
   const {
@@ -52,46 +53,42 @@ const Jobs = () => {
           </Button>
         </div>
 
+        {/* <Skeleton /> */}
+
         {/*Jobs Section*/}
         {!loading && (
           <div className="flex flex-col gap-4 mid:items-center md:grid grid-cols-2 grid-rows-2 place-content-center place-items-center">
-            {allJobs.length === 0 ? (
-              <h3 className="h-[60vh] w-full bg-slate-400">
-                Couldn't find any jobs!
-              </h3>
-            ) : (
-              allJobs.map((job: JobType) => (
-                <Card key={job._id}>
-                  {/* Top */}
-                  <div className="flex flex-col gap-1">
-                    <h3 className="text-2xl">{job.title}</h3>
-                    <div className="flex flex-col justify-between">
-                      <span className="text-sm">{job.companyName}</span>
-                      <span className="text-sm">{job.location}</span>
-                    </div>
+            {allJobs.map((job: JobType) => (
+              <Card key={job._id}>
+                {/* Top */}
+                <div className="flex flex-col gap-1">
+                  <h3 className="text-2xl">{job.title}</h3>
+                  <div className="flex flex-col justify-between">
+                    <span className="text-sm">{job.companyName}</span>
+                    <span className="text-sm">{job.location}</span>
                   </div>
+                </div>
 
-                  {/* Footer */}
-                  <div className="flex justify-between items-center ">
-                    <Link
-                      href={`jobs/${job._id}`}
-                      className="flex gap-2 items-center underline underline-offset-4 text-sm"
+                {/* Footer */}
+                <div className="flex justify-between items-center ">
+                  <Link
+                    href={`jobs/${job._id}`}
+                    className="flex gap-2 items-center underline underline-offset-4 text-sm"
+                  >
+                    See more <GoArrowRight />
+                  </Link>
+                  <Link href={`/apply/${job?._id}`}>
+                    <Button
+                      buttonType="Apply"
+                      size="small"
+                      className=" bg-background text-primaryText flex gap-2 items-center "
                     >
-                      See more <GoArrowRight />
-                    </Link>
-                    <Link href={`/apply/${job?._id}`}>
-                      <Button
-                        buttonType="Apply"
-                        size="small"
-                        className=" bg-background text-primaryText flex gap-2 items-center "
-                      >
-                        Apply <GoArrowRight />
-                      </Button>
-                    </Link>
-                  </div>
-                </Card>
-              ))
-            )}
+                      Apply <GoArrowRight />
+                    </Button>
+                  </Link>
+                </div>
+              </Card>
+            ))}
           </div>
         )}
 

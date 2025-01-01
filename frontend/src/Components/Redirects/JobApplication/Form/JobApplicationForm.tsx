@@ -27,6 +27,14 @@ const JobApplicationSchema = z.object({
     .string({ message: "Experience is required" })
     .max(2, { message: "Experience cannot be more than 2 digits!" }),
   email: z.string({ message: "Email is required" }).email(),
+  file: z.any().refine(
+    (file) => {
+      return (
+        file && file[0] instanceof File && file[0].type === "application/pdf"
+      );
+    },
+    { message: "Only PDF files are allowed" }
+  ),
 });
 
 export type JobApplicationType = z.infer<typeof JobApplicationSchema>;
@@ -47,10 +55,23 @@ const JobApplicationForm = ({ params }: JobProps) => {
   const { loginData } = GetLoginData();
 
   const handleApplicationSubmit: SubmitHandler<JobApplicationType> = async (
-    data
+    data: any
   ) => {
+    console.log(data);
     const { id } = await params;
-    const res = await postJobApplication(id, data, loginData.userId);
+    console.log(data.file[0]);
+
+    const formData = new FormData();
+
+    // Appending all the form data into new form data for only required data.
+    formData.append("applierId", loginData.userId);
+    formData.append("fullname", data.fullname);
+    formData.append("phonenumber", data.phonenumber);
+    formData.append("experience", data.experience);
+    formData.append("email", data.email);
+    formData.append("file", data.file[0]);
+
+    const res = await postJobApplication(id, formData);
 
     setapplicationRes(res.message);
     setTimeout(() => {
@@ -74,7 +95,12 @@ const JobApplicationForm = ({ params }: JobProps) => {
       >
         <div className="flex flex-col gap-2">
           <span>Full Name</span>
-          <Input {...register("fullname")} name="fullname" type="string" />
+          <Input
+            {...register("fullname")}
+            name="fullname"
+            type="string"
+            autoComplete="off"
+          />
           {errors.fullname && (
             <span className="text-sm text-red-600">
               {errors.fullname.message}
@@ -87,6 +113,7 @@ const JobApplicationForm = ({ params }: JobProps) => {
             {...register("phonenumber")}
             name="phonenumber"
             type="string"
+            autoComplete="off"
           />
           {errors.phonenumber && (
             <span className="text-sm text-red-600">
@@ -96,7 +123,12 @@ const JobApplicationForm = ({ params }: JobProps) => {
         </div>
         <div className="flex flex-col gap-2">
           <span>Experience</span>
-          <Input {...register("experience")} name="experience" type="string" />
+          <Input
+            {...register("experience")}
+            name="experience"
+            type="string"
+            autoComplete="off"
+          />
           {errors.experience && (
             <span className="text-sm text-red-600">
               {errors.experience.message}
@@ -105,9 +137,28 @@ const JobApplicationForm = ({ params }: JobProps) => {
         </div>
         <div className="flex flex-col gap-2">
           <span>Email</span>
-          <Input {...register("email")} name="email" type="string" />
+          <Input
+            {...register("email")}
+            name="email"
+            type="string"
+            autoComplete="off"
+          />
           {errors.email && (
             <span className="text-sm text-red-600">{errors.email.message}</span>
+          )}
+        </div>
+        <div className="flex flex-col gap-2">
+          <span>CV</span>
+          <Input
+            {...register("file")}
+            name="file"
+            type="file"
+            autoComplete="off"
+          />
+          {errors.file && (
+            <span className="text-sm text-red-600">
+              {(errors.file as any)?.message}
+            </span>
           )}
         </div>
         <Button type="submit">Submit</Button>

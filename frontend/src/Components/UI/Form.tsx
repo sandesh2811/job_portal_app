@@ -1,11 +1,13 @@
 "use client";
 
+import userLogin from "@/Actions/userLogin";
+
 import Input from "@/Components/UI/Input";
 import Button from "@/Components/UI/Button";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
-import userLogin from "@/Actions/userLogin";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/Store/store";
@@ -59,6 +61,7 @@ const Form = () => {
           type="text"
           name="username"
           placeholder="eg: Ram"
+          autoComplete="off"
         />
         {errors.username && (
           <span className="text-sm text-red-600">
@@ -68,7 +71,12 @@ const Form = () => {
       </div>
       <div className="flex flex-col gap-2">
         <span className="font-medium">Password</span>
-        <Input {...register("password")} type="password" name="password" />
+        <Input
+          {...register("password")}
+          type="password"
+          name="password"
+          autoComplete="off"
+        />
         {errors.password && (
           <span className="text-sm text-red-600">
             {errors.password.message}
