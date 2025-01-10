@@ -13,8 +13,7 @@ const JobApplicationsForJob = () => {
   const userId = typeof id === "string" ? id : "";
 
   //   Fetch job applications
-  const { jobApplications } = useGetJobApplications(userId);
-  console.log(jobApplications);
+  const { loading, jobApplications } = useGetJobApplications(userId);
 
   // Redirect user
   const RedirectUser = (id: string) => {
@@ -25,23 +24,37 @@ const JobApplicationsForJob = () => {
     <div className="min-h-[80vh]">
       {/* For mobile screens */}
 
-      {jobApplications.map((application) => (
-        <Link
-          key={application._id}
-          href={`/jobapplicationdetails/${application._id}`}
-          className="mid:hidden"
-        >
-          <div className="flex flex-col gap-2 border-b-[1.2px]  cursor-pointer lg:hover:bg-white/20 duration-300 ease-in-out py-4 mid:flex-row mid:justify-between">
-            <span>{application.fullname}</span>
-            <span className="text-sm">{application.email}</span>
-            <span className="text-sm">{application.status}</span>
-          </div>
-        </Link>
-      ))}
+      {loading ? (
+        <h3>"No applications found"</h3>
+      ) : (
+        jobApplications.map((application) => (
+          <Link
+            key={application._id}
+            href={`/jobapplicationdetails/${application._id}`}
+            className="mid:hidden"
+          >
+            <div className="flex flex-col gap-2 border-b-[1.2px]  cursor-pointer lg:hover:bg-white/20 duration-300 ease-in-out py-4 mid:flex-row mid:justify-between">
+              <span>{application.fullname}</span>
+              <span className="text-sm">{application.email}</span>
+              <span
+                className={
+                  application.status === "Accepted"
+                    ? "text-green-500 text-sm"
+                    : application.status === "Rejected"
+                    ? "text-red-500 text-sm"
+                    : "text-sm"
+                }
+              >
+                {application.status}
+              </span>
+            </div>
+          </Link>
+        ))
+      )}
 
       {/* For laptop screens */}
 
-      <table className="hidden mid:block w-full">
+      <table className="hidden mid:block w-full ">
         <thead className="border-b-[1.3px]">
           <tr>
             <th className="w-1/5 font-normal py-6">Job Title</th>
@@ -66,7 +79,15 @@ const JobApplicationsForJob = () => {
               <td className=" w-1/5 py-6 text-center px-5">
                 {application.email}
               </td>
-              <td className=" w-1/5 py-6 text-center px-5">
+              <td
+                className={
+                  application.status === "Accepted"
+                    ? "text-green-500 w-1/5 py-6 text-center px-5"
+                    : application.status === "Rejected"
+                    ? "text-red-500 w-1/5 py-6 text-center px-5"
+                    : "w-1/5 py-6 text-center px-5"
+                }
+              >
                 {application.status}
               </td>
             </tr>

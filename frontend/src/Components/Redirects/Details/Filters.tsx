@@ -10,7 +10,7 @@ const Filters = () => {
   const { loginData } = GetLoginData();
 
   return (
-    <div className="min-h-[5vh] flex justify-between items-center text-lg">
+    <div className="min-h-[5vh] flex flex-col md:flex-row gap-4 justify-between items-center text-lg">
       <Link href={`/details/${id}`}>Profile</Link>
       {loginData.role === "employer" ? (
         <div className="flex-1 flex gap-4 items-center justify-end">
@@ -19,7 +19,10 @@ const Filters = () => {
           <Link href={`/createjob/${id}`}>Create Job</Link>
         </div>
       ) : (
-        <Link href={`/appliedjobs/${id}`}>Applied Jobs</Link>
+        <div className="flex-1 flex gap-4 items-center justify-end">
+          <Link href={`/appliedjobs/${id}`}>Applied Jobs</Link>
+          <Link href={`/bookmarks/${id}`}>Bookmarks</Link>
+        </div>
       )}
     </div>
   );

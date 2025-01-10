@@ -5,17 +5,17 @@ dotenv.config();
 import cors from "cors";
 import express, { Application } from "express";
 import cookieParser from "cookie-parser";
-import path from "path";
 
 import connectToDatabase from "./config/dbConnect";
 
-import checkUserSession from "./middleware/authMiddleware/checkSession";
 import errorMiddleware from "./middleware/errorMiddleware/error";
 
 import authRouter from "./routes/AuthRoute/authRoute";
 import jobRouter from "./routes/JobRoute/jobRoute";
 import jobApplicationRouter from "./routes/JobApplicationRoute/jobApplicationRoute";
-import ShowCvOfApplicants from "./routes/AuthRoute/cvroute";
+import ShowCvOfApplicants from "./routes/CVRoute/cvroute";
+// import checkUserSession from "./middleware/authMiddleware/checkSession";
+import saveBookmarks from "./routes/BookmarkRoute/bookmarkRoute";
 
 const app: Application = express();
 
@@ -37,6 +37,8 @@ app.use(cors(corsOptions));
 
 // Enables us to use cookies
 app.use(cookieParser());
+
+// Enables us to use url values
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
@@ -57,6 +59,10 @@ app.use("/api/jobApplication", jobApplicationRouter);
 // Cv Route
 app.use("/api/uploads", ShowCvOfApplicants);
 
+// Bookmarks Route
+app.use("/api/bookmarks", saveBookmarks);
+
+// Error middleware
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, async () => {

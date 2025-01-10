@@ -7,8 +7,6 @@ import Button from "@/Components/UI/Button";
 import { GoArrowLeft, GoX } from "react-icons/go";
 import Toast from "@/Components/UI/Toast";
 
-import { Skills } from "../SingleJob/SingleJob";
-
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -33,6 +31,7 @@ const JobApplicationDetails = () => {
 
     setTimeout(() => {
       setapplicationStatusRes("");
+      router.back();
     }, 3000);
   };
 
@@ -46,7 +45,6 @@ const JobApplicationDetails = () => {
       setFileName(resData.fileName);
       window.open(`http://localhost:5000/${fileName}`);
     }
-    console.log(resData);
   };
 
   return (
@@ -61,7 +59,8 @@ const JobApplicationDetails = () => {
           <p>{jobApplication?.jobId.description}</p>
         </div>
         <span className="text-sm mid:text-base">
-          Salary: Rs {jobApplication?.jobId.salary}
+          Salary: Rs {jobApplication?.jobId.salaryFrom} -{" "}
+          {jobApplication?.jobId.salaryTo}
         </span>
         <span className="text-sm mid:text-base">
           Type: {jobApplication?.jobId.position} Remote
@@ -77,12 +76,9 @@ const JobApplicationDetails = () => {
       {/* Required Skills  */}
 
       <div>
-        <span className="text-sm mid:text-base">Required Skills:</span>
-        {Skills.map((skill, idx) => (
-          <li key={idx} className=" text-sm mid:text-base">
-            {skill}
-          </li>
-        ))}
+        <span className="text-sm mid:text-base">
+          Required Skills: {jobApplication?.jobId.skills}
+        </span>
       </div>
 
       {/*  Company Details */}
@@ -131,6 +127,9 @@ const JobApplicationDetails = () => {
             <option className="text-background" value={jobApplication?.status}>
               {jobApplication?.status}
             </option>
+            <option className="text-background" value="Accepted">
+              Accepted
+            </option>
             <option className="text-background" value="Rejected">
               Rejected
             </option>
@@ -158,8 +157,8 @@ const JobApplicationDetails = () => {
       <div
         className={
           applicationStatusRes !== ""
-            ? "absolute bottom-12 mid:right-10 right-2"
-            : "hidden absolute bottom-12 mid:right-10 right-2"
+            ? "absolute top-5 mid:right-10 right-2"
+            : "hidden absolute top-5 mid:right-10 right-2"
         }
       >
         <Toast>

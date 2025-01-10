@@ -1,6 +1,7 @@
 "use client";
 
 import postNewJob from "@/Actions/Create Job/postNewJob";
+import GetLoginData from "@/utils/Hooks/GetLoginData";
 
 import Button from "@/Components/UI/Button";
 import Input from "@/Components/UI/Input";
@@ -11,7 +12,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import GetLoginData from "@/utils/Hooks/GetLoginData";
 
 export const CreateJobSchema = z.object({
   title: z
@@ -22,17 +22,30 @@ export const CreateJobSchema = z.object({
     .string({ message: "Job description is required!" })
     .min(20, { message: "Job description cannot be less than 20 characters!" })
     .max(300, { message: "Job description cannot exceed 300 characters!" }),
-  salary: z
-    .string({ message: "Salary is required!" })
+  salaryFrom: z
+    .string({ message: "Lowest salary is required!" })
+    .min(4, { message: "Salary cannot be less than 4 characters!" })
+    .max(50, { message: "Salary cannot exceed 50 characters!" }),
+  salaryTo: z
+    .string({ message: "Highest Salary is required!" })
     .min(4, { message: "Salary cannot be less than 4 characters!" })
     .max(50, { message: "Salary cannot exceed 50 characters!" }),
   required: z
-    .string({ message: "Number of required employee is required!" })
+    .string({ message: "Number of required candidates is required!" })
     .min(1, {
-      message: "Number of required employee cannot be less than 1 characters!",
+      message:
+        "Number of required candidates cannot be less than 1 characters!",
     })
     .max(3, {
-      message: "Number of required employee cannot exceed 3 characters!",
+      message: "Number of required candidates cannot exceed 3 characters!",
+    }),
+  skills: z
+    .string({ message: "Number of required skills is required!" })
+    .min(5, {
+      message: "Number of required skills cannot be less than 5 characters!",
+    })
+    .max(40, {
+      message: "Number of required skills cannot exceed 40 characters!",
     }),
   experience: z
     .string({ message: "Experience is required!" })
@@ -115,23 +128,27 @@ const CreateJob = () => {
           </div>
         </div>
 
-        {/* Salary and No of required employees */}
+        {/* Salary */}
         <div className="flex  gap-6">
           <div className="flex flex-col gap-2 w-[50%]">
-            <span>Salary</span>
-            <Input {...register("salary")} name="salary" type="string" />
-            {errors.salary && (
+            <span>Salary From</span>
+            <Input
+              {...register("salaryFrom")}
+              name="salaryFrom"
+              type="string"
+            />
+            {errors.salaryFrom && (
               <span className="text-sm text-red-600">
-                {errors.salary.message}
+                {errors.salaryFrom.message}
               </span>
             )}
           </div>
           <div className="flex flex-col gap-2 w-[50%]">
-            <span>Required</span>
-            <Input {...register("required")} name="required" type="string" />
-            {errors.required && (
+            <span>Salary To</span>
+            <Input {...register("salaryTo")} name="salaryTo" type="string" />
+            {errors.salaryTo && (
               <span className="text-sm text-red-600">
-                {errors.required.message}
+                {errors.salaryTo.message}
               </span>
             )}
           </div>
@@ -163,8 +180,31 @@ const CreateJob = () => {
           </div>
         </div>
 
-        {/* Job status and Company name */}
+        {/* No of required employees and required skills  */}
+
         <div className="flex gap-6">
+          <div className="flex flex-col gap-2 w-[50%]">
+            <span>Required Candidates</span>
+            <Input {...register("required")} name="required" type="string" />
+            {errors.required && (
+              <span className="text-sm text-red-600">
+                {errors.required.message}
+              </span>
+            )}
+          </div>
+          <div className="flex flex-col gap-2 w-[50%]">
+            <span>Required Skills</span>
+            <Input {...register("skills")} name="skills" type="string" />
+            {errors.skills && (
+              <span className="text-sm text-red-600">
+                {errors.skills.message}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Job status and Company name */}
+        <div className="flex gap-6 items-center">
           <div className="flex flex-col gap-2 w-[50%]">
             <span>Status</span>
             <select

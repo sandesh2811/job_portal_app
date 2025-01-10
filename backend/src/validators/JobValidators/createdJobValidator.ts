@@ -7,8 +7,11 @@ const createdJobSchema = z.object({
   description: z
     .string({ required_error: "Description cannot be empty!" })
     .min(10, { message: "Description must be of atleast 10 characters long!" }),
-  salary: z
-    .string({ required_error: "Salary cannot be empty!" })
+  salaryFrom: z
+    .string({ required_error: "Lowest salary cannot be empty!" })
+    .min(4, { message: "Salary must be of atleast 4 characters long!" }),
+  salaryTo: z
+    .string({ required_error: "Highest salary cannot be empty!" })
     .min(4, { message: "Salary must be of atleast 4 characters long!" }),
   required: z
     .string({
@@ -17,6 +20,17 @@ const createdJobSchema = z.object({
     .min(1, {
       message:
         "Number of required candidates must be of atleast 1 characters long!",
+    }),
+  skills: z
+    .string({
+      required_error: "Required skills cannot be empty!",
+    })
+    .min(5, {
+      message:
+        "Number of required skills must be of atleast 5 characters long!",
+    })
+    .max(40, {
+      message: "Number of required skills cannot excced 40 characters",
     }),
   position: z
     .string({ required_error: "Position cannot be empty!" })

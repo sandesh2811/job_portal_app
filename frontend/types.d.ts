@@ -5,8 +5,10 @@ type JobType = {
   _id: string;
   title: string;
   description: string;
-  salary: string | number;
+  salaryFrom: string | number;
+  salaryTo: string | number;
   required: string | number;
+  skills: string;
   position: string;
   experience: string | number;
   status: string;
@@ -14,6 +16,7 @@ type JobType = {
   location: string;
   createdAt: Date;
   updatedAt: Date;
+  expiresAt: Date;
 };
 
 // For job that is dynamically fetched
@@ -36,4 +39,50 @@ type JobApplicationType<T> = {
   email: string;
   status: string;
   fileName: string;
+};
+
+// Bookmark type
+
+type BookmarkType<T> = {
+  _id: string;
+  jobId: T;
+  userId: string;
+};
+
+// Filter modal type
+
+type ModalTypeProps = {
+  setToggleFilters: Dispatch<SetStateAction<boolean>>;
+  setClearFilter: Dispatch<SetStateAction<boolean>>;
+};
+
+// Redux toolkit
+
+// User login data
+
+type LoginDataType = {
+  userName: string;
+  userId: string;
+  role: string;
+};
+
+type LoginState = {
+  loginData: LoginDataType;
+};
+
+// Selected filters by user
+
+type SelectedFiltersType = {
+  title: string;
+  salary: {
+    from: string;
+    to: string;
+  };
+  experience: string;
+  position: string;
+  location: string;
+};
+
+type SelectedFiltersState = {
+  selectedFilters: SelectedFiltersType;
 };

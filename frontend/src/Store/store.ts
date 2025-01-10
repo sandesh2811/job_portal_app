@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import UserLoginData from "./Features/userLoginState";
+import SelectedFilters from "./Features/selectedFilters";
 
 export const GlobalStore = configureStore({
   reducer: {
     loginDataReducer: UserLoginData.reducer,
+    selectedFilters: SelectedFilters.reducer,
   },
 });
 

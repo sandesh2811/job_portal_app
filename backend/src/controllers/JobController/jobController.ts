@@ -1,6 +1,8 @@
 import { RequestHandler } from "express";
 import NewJobModel from "../../models/JobModels/jobModel";
 import mongoose from "mongoose";
+import BookmarkModel from "../../models/BookmarkModel/bookmarkModel";
+import { FilterType, PipelineMatcherType } from "../../Types/types";
 
 // Handling job creation by employer
 
@@ -8,8 +10,10 @@ export const CreateJob: RequestHandler = async (req, res): Promise<any> => {
   const {
     title,
     description,
-    salary,
+    salaryFrom,
+    salaryTo,
     required,
+    skills,
     position,
     experience,
     status,
@@ -20,18 +24,24 @@ export const CreateJob: RequestHandler = async (req, res): Promise<any> => {
 
   const convertedId = new mongoose.Types.ObjectId(createdBy);
 
+  const currentDate = new Date();
+  const expiryDate = currentDate.setDate(currentDate.getDate() + 15);
+
   try {
     const newJob = await NewJobModel.create({
       title,
       description,
-      salary,
+      salaryFrom,
+      salaryTo,
       required,
+      skills,
       position,
       experience,
       status,
       companyName,
       location,
       createdBy: convertedId,
+      expiresAt: expiryDate,
     });
 
     return res
@@ -51,21 +61,33 @@ export const CreateJob: RequestHandler = async (req, res): Promise<any> => {
 export const UpdateJob: RequestHandler = async (req, res): Promise<any> => {
   const jobId = req.params.id;
   const { updatedData } = req.body;
-  console.log(updatedData);
 
   const updatedAttributes: UpdatedDataByEmployer = {};
 
   if (updatedData.title) updatedAttributes.title = updatedData.title;
+
   if (updatedData.description)
     updatedAttributes.description = updatedData.description;
-  if (updatedData.salary) updatedAttributes.salary = updatedData.salary;
+
+  if (updatedData.salaryFrom)
+    updatedAttributes.salaryFrom = updatedData.salaryFrom;
+
+  if (updatedData.salaryTo) updatedAttributes.salaryTo = updatedData.salaryTo;
+
   if (updatedData.required) updatedAttributes.required = updatedData.required;
+
+  if (updatedData.skills) updatedAttributes.skills = updatedData.skills;
+
   if (updatedData.position) updatedAttributes.position = updatedData.position;
+
   if (updatedData.experience)
     updatedAttributes.experience = updatedData.experience;
+
   if (updatedData.status) updatedAttributes.status = updatedData.status;
+
   if (updatedData.companyName)
     updatedAttributes.companyName = updatedData.companyName;
+
   if (updatedData.location) updatedAttributes.location = updatedData.location;
 
   try {
@@ -87,9 +109,6 @@ export const UpdateJob: RequestHandler = async (req, res): Promise<any> => {
 
 // Handling job deletion by employer
 
-// Find the job to be deleted with the help of job id passed by user
-// If job does not exists then send a response else if the job is found then delete the job and send required response
-
 export const DeleteJob: RequestHandler = async (req, res): Promise<any> => {
   const jobId = req.params.id;
 
@@ -101,7 +120,12 @@ export const DeleteJob: RequestHandler = async (req, res): Promise<any> => {
         .status(404)
         .json({ success: false, message: "Cannot find and  delete job!" });
     } else {
+      // Delete the job
       await NewJobModel.deleteOne({ _id: jobId });
+
+      // Deleting the respective bookmarks for the job
+      await BookmarkModel.deleteMany({ jobId: jobId });
+
       return res
         .status(200)
         .json({ success: true, message: "Job deleted successfully!" });
@@ -114,27 +138,67 @@ export const DeleteJob: RequestHandler = async (req, res): Promise<any> => {
 };
 
 // Getting all jobs
-// Need to add pagination. For that need to apply aggregation pipeline for the db query
 
 export const GetAllJobs: RequestHandler = async (req, res): Promise<any> => {
-  const { page, limit, searchQuery } = req.query;
+  const {
+    page,
+    limit,
+    searchQuery,
+    title,
+    salaryFrom,
+    salaryTo,
+    position,
+    experience,
+    location,
+  } = req.query as FilterType;
 
   const pageNumber: number = parseInt(page as string) || 1;
   const jobLimit: number = parseInt(limit as string) || 4;
-  const userSearchedQuery: string = (searchQuery as string) || "";
+
+  const pipeline: PipelineMatcherType<FilterType> = {
+    $match: {},
+  };
+  // Checking which attributes/queries are being passed and adding it to the match aggregation pipeline
+
+  if (title) pipeline.$match.title = { $regex: title, $options: "i" };
+
+  if (searchQuery)
+    pipeline.$match.title = { $regex: searchQuery, $options: "i" };
+
+  if (position)
+    pipeline.$match.position = { $regex: searchQuery, $options: "i" };
+
+  if (location) pipeline.$match.location = { $regex: location, $options: "i" };
+
+  if (experience) pipeline.$match.experience = { $gte: experience };
+
+  if (salaryFrom) pipeline.$match.salaryFrom = { $gte: salaryFrom };
+
+  if (salaryTo) pipeline.$match.salaryTo = { $gte: salaryTo };
 
   try {
     const jobs = await NewJobModel.aggregate([
-      { $match: { title: { $regex: userSearchedQuery, $options: "i" } } },
+      pipeline,
       { $skip: (pageNumber - 1) * jobLimit },
       { $limit: jobLimit },
     ]);
-    const countDocuments = await NewJobModel.countDocuments();
-    const totalPages = Math.ceil(countDocuments / jobLimit);
 
     if (!jobs) {
       return res.status(404).json({ message: "Cannot find any job!" });
     } else {
+      const countDocuments = await NewJobModel.countDocuments();
+      const totalPages = Math.ceil(countDocuments / jobLimit);
+
+      const currentDate = new Date();
+
+      // Update the status of the job to expired
+      const expiredJobs = await NewJobModel.updateMany(
+        {
+          expiresAt: { $lt: currentDate },
+        },
+        { $set: { status: "Expired" } }
+      );
+
       return res.status(200).json({ message: "All Jobs", jobs, totalPages });
     }
   } catch (error) {

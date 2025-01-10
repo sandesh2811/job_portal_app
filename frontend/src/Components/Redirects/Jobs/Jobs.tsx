@@ -6,17 +6,28 @@ import {
   IncreasePageNumber,
 } from "@/utils/Pagination/SetPageNumber";
 import { searchQuery } from "@/utils/Pagination/SetSearchQuery";
+import GetLoginData from "@/utils/Hooks/GetLoginData";
+import setBookmark from "@/Actions/JobBookmarks/SetBookmarks/setBookmark";
 
 import Button from "@/Components/UI/Button";
 import Card from "@/Components/UI/Card";
 import Input from "@/Components/UI/Input";
-import { GoArrowLeft, GoArrowRight } from "react-icons/go";
+import Toast from "@/Components/UI/Toast";
+import {
+  GoArrowLeft,
+  GoArrowRight,
+  GoBookmark,
+  GoBookmarkFill,
+  GoX,
+} from "react-icons/go";
+import JobFilters from "./JobFilters";
 
 import Link from "next/link";
 import { useState } from "react";
-import Skeleton from "@/Components/UI/PageSkeleton";
 
 const Jobs = () => {
+  // Getting all jobs
+
   const {
     loading,
     allJobs,
@@ -26,31 +37,55 @@ const Jobs = () => {
     setPageNumber,
     setSearchQuery,
   } = useGetAllJobs();
+
   const [userInput, setUserInput] = useState<string>("");
+  const [toggleBookmark, setToggleBookmark] = useState<boolean>(false);
+  const [bookmarkStatus, setBookmarkStatus] = useState<string>("");
 
   // Checks if the total page number is null or undefined. If it is undefined or null it returns the value 0  else returns the total page number
   const checkedTotalPageNumber = totalPages ?? 0;
 
+  // Get user login data
+  const { loginData } = GetLoginData();
+
+  // Handle bookmark clicks
+  const handleBookmarks = async (jobId: string, userId: string) => {
+    // Set or remove bookmarks in database
+    const data = await setBookmark(jobId, userId);
+    setToggleBookmark(!toggleBookmark);
+
+    setBookmarkStatus(data?.message);
+
+    setTimeout(() => {
+      setBookmarkStatus("");
+    }, 3000);
+  };
+
   return (
     <>
-      <div className="min-h-[90vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col justify-evenly  gap-6">
-        {/* Searching Section */}
-        <div className="flex justify-center mid:justify-start">
-          <Input
-            type="string"
-            name="search"
-            placeholder="Search..."
-            className="rounded-none"
-            autoComplete="off"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-          />
-          <Button
-            className="rounded-none"
-            onClick={() => searchQuery(userInput, setSearchQuery)}
-          >
-            Search
-          </Button>
+      <div className="min-h-[90vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col justify-evenly  gap-6 relative">
+        <div className="flex justify-between items-center">
+          {/* Searching Section */}
+          <div className="flex justify-center mid:justify-start">
+            <Input
+              type="string"
+              name="search"
+              placeholder="Search..."
+              className="rounded-none"
+              autoComplete="off"
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+            />
+            <Button
+              className="rounded-none"
+              onClick={() => searchQuery(userInput, setSearchQuery)}
+            >
+              Search
+            </Button>
+          </div>
+
+          {/* Filters for job */}
+          <JobFilters />
         </div>
 
         {/* <Skeleton /> */}
@@ -62,7 +97,26 @@ const Jobs = () => {
               <Card key={job._id}>
                 {/* Top */}
                 <div className="flex flex-col gap-1">
-                  <h3 className="text-2xl">{job.title}</h3>
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-2xl">{job.title}</h3>
+                    {!toggleBookmark ? (
+                      <GoBookmark
+                        size={25}
+                        className="cursor-pointer"
+                        onClick={() => {
+                          handleBookmarks(job._id, loginData.userId);
+                        }}
+                      />
+                    ) : (
+                      <GoBookmarkFill
+                        size={25}
+                        className="cursor-pointer"
+                        onClick={() => {
+                          handleBookmarks(job._id, loginData.userId);
+                        }}
+                      />
+                    )}
+                  </div>
                   <div className="flex flex-col justify-between">
                     <span className="text-sm">{job.companyName}</span>
                     <span className="text-sm">{job.location}</span>
@@ -125,6 +179,21 @@ const Jobs = () => {
           >
             Next <GoArrowRight />
           </Button>
+        </div>
+
+        {/* Toast Notification */}
+
+        <div
+          className={
+            bookmarkStatus !== ""
+              ? "absolute top-5 mid:right-10 right-2"
+              : "hidden absolute top-5 mid:right-10 right-2"
+          }
+        >
+          <Toast>
+            <span>{bookmarkStatus}</span>
+            <GoX size={20} className="absolute top-2 right-2 cursor-pointer" />
+          </Toast>
         </div>
       </div>
     </>

@@ -1,14 +1,37 @@
 "use client";
 
+import useGetLatestJobs from "@/utils/Hooks/Jobs/LatestJobs/useGetLatestJobs";
+import GetLoginData from "@/utils/Hooks/GetLoginData";
+import setBookmark from "@/Actions/JobBookmarks/SetBookmarks/setBookmark";
+
 import Card from "@/Components/UI/Card";
-import { GoArrowRight } from "react-icons/go";
+import { GoArrowRight, GoBookmark, GoBookmarkFill } from "react-icons/go";
 import Button from "@/Components/UI/Button";
 
 import Link from "next/link";
-import useGetLatestJobs from "@/utils/Hooks/Jobs/LatestJobs/useGetLatestJobs";
+import { useState } from "react";
 
 const LatestJobs = () => {
   const { latestJobsList } = useGetLatestJobs();
+
+  const [toggleBookmark, setToggleBookmark] = useState<boolean>(false);
+  const [bookmarkStatus, setBookmarkStatus] = useState<string>("");
+
+  // Get user login data
+  const { loginData } = GetLoginData();
+
+  // Handle bookmark clicks
+  const handleBookmarks = async (jobId: string, userId: string) => {
+    // Set or remove bookmarks in database
+    const data = await setBookmark(jobId, userId);
+    setToggleBookmark(!toggleBookmark);
+
+    setBookmarkStatus(data?.message);
+
+    setTimeout(() => {
+      setBookmarkStatus("");
+    }, 3000);
+  };
 
   return (
     <div className="min-h-[80vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 gap-4 flex flex-col justify-evenly tracking-wide">
@@ -23,7 +46,26 @@ const LatestJobs = () => {
           <Card key={job._id}>
             {/* Top */}
             <div className="flex flex-col gap-1">
-              <h3 className="text-2xl">{job.title}</h3>
+              <div className="flex justify-between items-center">
+                <h3 className="text-2xl">{job.title}</h3>
+                {!toggleBookmark ? (
+                  <GoBookmark
+                    size={25}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      handleBookmarks(job._id, loginData.userId);
+                    }}
+                  />
+                ) : (
+                  <GoBookmarkFill
+                    size={25}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      handleBookmarks(job._id, loginData.userId);
+                    }}
+                  />
+                )}
+              </div>
               <div className="flex flex-col justify-between">
                 <span className="text-sm">{job.companyName}</span>
                 <span className="text-sm">{job.location}</span>

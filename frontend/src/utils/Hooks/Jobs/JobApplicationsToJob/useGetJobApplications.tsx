@@ -33,6 +33,7 @@ const useGetJobApplications = (id: string) => {
   }, []);
 
   return {
+    loading,
     jobApplications,
   };
 };

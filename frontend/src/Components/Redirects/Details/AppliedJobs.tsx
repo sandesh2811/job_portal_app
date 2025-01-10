@@ -13,11 +13,16 @@ const AppliedJobs = () => {
   //   Fetch job applications
   const { appliedJobs } = useGetAppliedJobsByApplier(userId);
 
+  // Check if the job if closed/deleted or not
+  const appliedJobsWhichAreAvailable = appliedJobs.filter(
+    (job) => job.jobId !== null
+  );
+
   return (
     <div className="min-h-[80vh]">
       {/* For mobile screens */}
 
-      {appliedJobs.map((appliedJob) => (
+      {appliedJobsWhichAreAvailable.map((appliedJob) => (
         // <Link key={appliedJob._id} href="#" className="mid:hidden">
         <div
           key={appliedJob._id}
@@ -56,7 +61,7 @@ const AppliedJobs = () => {
           </tr>
         </thead>
         <tbody>
-          {appliedJobs.map((appliedJob) => (
+          {appliedJobsWhichAreAvailable.map((appliedJob) => (
             <tr key={appliedJob._id} className="border-b-[1.3px]">
               <td className=" w-1/5 py-6 text-center px-5">
                 {appliedJob.jobId.title}
@@ -75,9 +80,6 @@ const AppliedJobs = () => {
               >
                 {appliedJob.status}
               </td>
-              {/* <td className="w-1/5 py-6 text-center px-5 underline underline-offset-4 text-sm cursor-pointer">
-                <Link href="#">Details</Link>
-              </td> */}
             </tr>
           ))}
         </tbody>

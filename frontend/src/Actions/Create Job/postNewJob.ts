@@ -6,8 +6,10 @@ const postNewJob = async (formData: CreateJobType, userId: string) => {
   const {
     title,
     description,
-    salary,
+    salaryFrom,
+    salaryTo,
     required,
+    skills,
     experience,
     position,
     status,
@@ -22,8 +24,10 @@ const postNewJob = async (formData: CreateJobType, userId: string) => {
       body: JSON.stringify({
         title,
         description,
-        salary,
+        salaryFrom,
+        salaryTo,
         required,
+        skills,
         position,
         experience,
         status,

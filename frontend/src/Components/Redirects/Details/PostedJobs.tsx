@@ -34,10 +34,18 @@ const PostedJobs = () => {
           href={`/jobdetails/${job._id}`}
           className="mid:hidden"
         >
-          <div className="flex flex-col gap-2 border-b-[1.2px]  cursor-pointer lg:hover:bg-white/20 duration-300 ease-in-out py-4 mid:flex-row mid:justify-between">
+          <div className="flex flex-col gap-2 border-b-[1.2px] cursor-pointer py-4 mid:flex-row mid:justify-between">
             <span>{job.companyName}</span>
             <span className="text-sm">{job.title}</span>
-            <span className="text-sm">{job.status}</span>
+            <span
+              className={
+                job.status === "Expired"
+                  ? "text-sm text-red-500"
+                  : "text-sm text-green-500 "
+              }
+            >
+              {job.status}
+            </span>
             <span className="text-sm">{job.createdAt}</span>
           </div>
         </Link>
@@ -65,7 +73,15 @@ const PostedJobs = () => {
                 {job.companyName}
               </td>
               <td className=" w-1/5 py-6 text-center px-5">{job.title}</td>
-              <td className=" w-1/5 py-6 text-center px-5">{job.status}</td>
+              <td
+                className={
+                  job.status === "Expired"
+                    ? "text-red-500 w-1/5 py-6 text-center px-5"
+                    : "text-green-500 w-1/5 py-6 text-center px-5"
+                }
+              >
+                {job.status}
+              </td>
               <td className=" w-1/5 py-6 text-center px-5">{job.createdAt}</td>
             </tr>
           ))}

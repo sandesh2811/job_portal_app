@@ -1,9 +1,12 @@
---- Make an api for latest job posting and display it in the frontend (done)
---- Refine/Redesign the home page
---- Fix navbar issue
+Fix zod validation for job updation.
+Fix Job application updation status issue
+Fix role based access using cookies.
 
---- Prefix the hooks with use (done)
---- Make a custom hook for the data fetching which are inside the components (Separate the logic and UI)
---- Middleware for checking the role
+Fix bookmark icon switching issue.
+Fix setTimeout clearing.
+Fix UI.
+Fix table issues (showing else where there is nothing)
 
---- Learn react query
+
+Add Loading skeleton.
+Format components for cleaner approach.

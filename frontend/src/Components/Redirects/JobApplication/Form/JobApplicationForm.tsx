@@ -33,7 +33,7 @@ const JobApplicationSchema = z.object({
         file && file[0] instanceof File && file[0].type === "application/pdf"
       );
     },
-    { message: "Only PDF files are allowed" }
+    { message: "Cv is required" }
   ),
 });
 
@@ -57,9 +57,7 @@ const JobApplicationForm = ({ params }: JobProps) => {
   const handleApplicationSubmit: SubmitHandler<JobApplicationType> = async (
     data: any
   ) => {
-    console.log(data);
     const { id } = await params;
-    console.log(data.file[0]);
 
     const formData = new FormData();
 
@@ -164,11 +162,12 @@ const JobApplicationForm = ({ params }: JobProps) => {
         <Button type="submit">Submit</Button>
       </form>
 
+      {/* Toast Notification */}
       <div
         className={
           applicationRes !== ""
-            ? "absolute bottom-12 mid:right-10 right-2"
-            : "hidden absolute bottom-12 mid:right-10 right-2"
+            ? "absolute top-5 mid:right-10 right-2"
+            : "hidden absolute top-5 mid:right-10 right-2"
         }
       >
         <Toast>

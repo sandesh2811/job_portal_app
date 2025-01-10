@@ -121,34 +121,39 @@ const JobDetails = () => {
           </div>
         </div>
 
-        {/* Salary and No of required employees */}
+        {/* Salary */}
 
         <div className="flex  gap-6">
+          {/* Salary From */}
+
           <div className="flex flex-col gap-2 w-[50%]">
-            <span>Salary</span>
+            <span>Salary From</span>
             <Input
-              {...register("salary")}
-              name="salary"
+              {...register("salaryFrom")}
+              name="salaryFrom"
               type="string"
-              defaultValue={formData.salary}
+              defaultValue={formData.salaryFrom}
             />
-            {errors.salary && (
+            {errors.salaryFrom && (
               <span className="text-sm text-red-600">
-                {errors.salary.message}
+                {errors.salaryFrom.message}
               </span>
             )}
           </div>
+
+          {/* Salary To */}
+
           <div className="flex flex-col gap-2 w-[50%]">
-            <span>Required</span>
+            <span>Salary To</span>
             <Input
-              {...register("required")}
-              name="required"
+              {...register("salaryTo")}
+              name="salaryTo"
               type="string"
-              defaultValue={formData.required}
+              defaultValue={formData.salaryTo}
             />
-            {errors.required && (
+            {errors.salaryTo && (
               <span className="text-sm text-red-600">
-                {errors.required.message}
+                {errors.salaryTo.message}
               </span>
             )}
           </div>
@@ -227,6 +232,39 @@ const JobDetails = () => {
           </div>
         </div>
 
+        {/* No of required employees and required skills  */}
+
+        <div className="flex gap-6">
+          <div className="flex flex-col gap-2 w-[50%]">
+            <span>Required Candidates</span>
+            <Input
+              {...register("required")}
+              name="required"
+              type="string"
+              defaultValue={formData.required}
+            />
+            {errors.required && (
+              <span className="text-sm text-red-600">
+                {errors.required.message}
+              </span>
+            )}
+          </div>
+          <div className="flex flex-col gap-2 w-[50%]">
+            <span>Required Skills</span>
+            <Input
+              {...register("skills")}
+              name="skills"
+              type="string"
+              defaultValue={formData.skills}
+            />
+            {errors.skills && (
+              <span className="text-sm text-red-600">
+                {errors.skills.message}
+              </span>
+            )}
+          </div>
+        </div>
+
         {/* Job description */}
 
         <div className="flex flex-col gap-2 w-full">
@@ -275,8 +313,8 @@ const JobDetails = () => {
       <div
         className={
           jobSettings !== ""
-            ? "absolute bottom-12 mid:right-10 right-2"
-            : "hidden absolute bottom-12 mid:right-10 right-2"
+            ? "absolute top-5 mid:right-10 right-2"
+            : "hidden absolute top-5 mid:right-10 right-2"
         }
       >
         <Toast>

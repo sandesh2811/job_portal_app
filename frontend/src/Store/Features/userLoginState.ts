@@ -1,15 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type LoginDataType = {
-  userName: string;
-  userId: string;
-  role: string;
-};
-
-type LoginState = {
-  loginData: LoginDataType;
-};
-
 const initialState: LoginState = {
   loginData: {
     userName: "",

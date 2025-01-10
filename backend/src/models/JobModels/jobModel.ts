@@ -3,14 +3,17 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 interface NewJob extends Document {
   title: string;
   description: string;
-  salary: string | number;
+  salaryFrom: string | number;
+  salaryTo: string | number;
   required: string | number;
+  skills: string;
   position: string;
   experience: string | number;
   status: string;
   companyName: string;
   location: string;
   createdBy: Schema.Types.ObjectId;
+  expiresAt: Date;
 }
 
 // Defining the job schema
@@ -25,13 +28,21 @@ const NewJobSchema = new Schema<NewJob>(
       type: String,
       required: [true, "Job description cannot be empty!"],
     },
-    salary: {
+    salaryFrom: {
+      type: String || Number,
+      required: [true, "Job salary cannot be empty!"],
+    },
+    salaryTo: {
       type: String || Number,
       required: [true, "Job salary cannot be empty!"],
     },
     required: {
       type: String || Number,
       required: [true, "Number of required candidates cannot be empty!"],
+    },
+    skills: {
+      type: String || Number,
+      required: [true, "Number of required skills cannot be empty!"],
     },
     position: {
       type: String,
@@ -57,6 +68,9 @@ const NewJobSchema = new Schema<NewJob>(
       type: Schema.Types.ObjectId,
       ref: "User",
       required: [true, "Job createdBy cannot be empty!"],
+    },
+    expiresAt: {
+      type: Date,
     },
   },
   { timestamps: true }

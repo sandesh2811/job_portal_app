@@ -33,6 +33,7 @@ const useGetAppliedJobsByApplier = (id: string) => {
   }, []);
 
   return {
+    loading,
     appliedJobs,
   };
 };
