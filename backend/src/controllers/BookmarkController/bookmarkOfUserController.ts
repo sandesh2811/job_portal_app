@@ -111,10 +111,15 @@ export const getAllBookmarksOfUser: RequestHandler = async (
         (bookmark) => bookmark.jobId !== null
       );
 
+      const jobIdOfBookmarks = bookmarksOfUser.map(
+        (bookmark) => bookmark.jobId
+      );
+
       res.status(201).json({
         success: true,
         message: "All bookmarks obtained successfully!",
         bookmarksOfUser,
+        jobIdOfBookmarks,
       });
     }
   } catch (error) {

@@ -5,10 +5,10 @@
 @tailwind utilities;
 
 :root {
-  /* Very light mint */
   --background: #121212;
+  --secondary--background: #1e3a8a66;
   --primary--text: #f3f4f9;
-  --secondary--text: #d2d2cf;
+  --secondary--text: #dcdcdc;
   --CTA-buttons: #ffffff;
 }
 
@@ -22,13 +22,5 @@
 } */
 
 body {
-  /* color: var(--primary--text); */
   background: var(--background);
 }
-
-/* Colors */
-
-/* Hunter green : #2C6B3D -- Primary, CTA
-Jet black : #0A0A0A -- Primary Text
-Dark Grey : #333333 -- Secondary Text
-OFF White : #F8F8F8 -- Background */

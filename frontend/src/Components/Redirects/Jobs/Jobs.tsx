@@ -23,7 +23,7 @@ import {
 import JobFilters from "./JobFilters";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Jobs = () => {
   // Getting all jobs
@@ -39,8 +39,8 @@ const Jobs = () => {
   } = useGetAllJobs();
 
   const [userInput, setUserInput] = useState<string>("");
-  const [toggleBookmark, setToggleBookmark] = useState<boolean>(false);
   const [bookmarkStatus, setBookmarkStatus] = useState<string>("");
+  const [bookmarkedJobs, setBookmarkedJobs] = useState<BookmarkedJobType>({});
 
   // Checks if the total page number is null or undefined. If it is undefined or null it returns the value 0  else returns the total page number
   const checkedTotalPageNumber = totalPages ?? 0;
@@ -52,7 +52,12 @@ const Jobs = () => {
   const handleBookmarks = async (jobId: string, userId: string) => {
     // Set or remove bookmarks in database
     const data = await setBookmark(jobId, userId);
-    setToggleBookmark(!toggleBookmark);
+
+    // Set the bookmarkedjobs for icon switching
+    setBookmarkedJobs((prev) => ({
+      ...prev,
+      [jobId]: prev[jobId] ?? false ? false : true,
+    }));
 
     setBookmarkStatus(data?.message);
 
@@ -63,7 +68,7 @@ const Jobs = () => {
 
   return (
     <>
-      <div className="min-h-[90vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col justify-evenly  gap-6 relative">
+      <div className="min-h-[90vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col justify-evenly  gap-6 ">
         <div className="flex justify-between items-center">
           {/* Searching Section */}
           <div className="flex justify-center mid:justify-start">
@@ -99,7 +104,7 @@ const Jobs = () => {
                 <div className="flex flex-col gap-1">
                   <div className="flex justify-between items-center">
                     <h3 className="text-2xl">{job.title}</h3>
-                    {!toggleBookmark ? (
+                    {!bookmarkedJobs[job._id] ? (
                       <GoBookmark
                         size={25}
                         className="cursor-pointer"

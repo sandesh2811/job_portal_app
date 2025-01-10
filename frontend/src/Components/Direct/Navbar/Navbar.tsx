@@ -1,8 +1,9 @@
 "use client";
 
+import { RootState } from "@/Store/store";
+
 import { FiMenu, FiX } from "react-icons/fi";
 
-import { RootState } from "@/Store/store";
 import Link from "next/link";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -30,7 +31,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="midLg:max-w-[850px] xl:max-w-[1050px] mx-auto flex justify-between p-4 h-[8vh] text-primaryText tracking-wide">
+    <div className="midLg:max-w-[850px] xl:max-w-[1050px] mx-auto flex justify-between p-4 h-[8vh] text-primaryText tracking-wide bg-bl">
       <h1 className="text-xl">Find Jobs</h1>
 
       {/* Laptop Links Configuration */}
@@ -39,16 +40,32 @@ const Navbar = () => {
         {NavbarLinks.map((link, idx) => {
           if (link.title === "Login" && loginData.userName !== "") {
             return (
-              <Link key={idx} href={`/details/${loginData.userId}`}>
+              <Link
+                key={idx}
+                href={`/details/${loginData.userId}`}
+                className="bg-primaryText text-background px-4 py-2 rounded-md"
+              >
                 Dashboard
               </Link>
             );
           } else {
-            return (
-              <Link key={link.title} href={link.href}>
-                {link.title}
-              </Link>
-            );
+            if (link.title === "Login") {
+              return (
+                <Link
+                  className="bg-primaryText text-background px-4 py-2 rounded-md"
+                  key={link.title}
+                  href={link.href}
+                >
+                  {link.title}
+                </Link>
+              );
+            } else {
+              return (
+                <Link key={link.title} href={link.href}>
+                  {link.title}
+                </Link>
+              );
+            }
           }
         })}
       </nav>

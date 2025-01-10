@@ -49,6 +49,11 @@ type BookmarkType<T> = {
   userId: string;
 };
 
+// Bookmarked Job Type
+type BookmarkedJobType = {
+  [k: string]: boolean;
+};
+
 // Filter modal type
 
 type ModalTypeProps = {

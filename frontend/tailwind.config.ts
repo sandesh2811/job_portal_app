@@ -12,6 +12,7 @@ export default {
     extend: {
       colors: {
         background: "var(--background)",
+        secondaryBackground: "var(--secondary--background)",
         primaryText: "var(--primary--text)",
         secondaryText: "var(--secondary--text)",
         CTA_Buttons: "var(--CTA-buttons)",

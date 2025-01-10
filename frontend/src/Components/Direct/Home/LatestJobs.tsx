@@ -14,7 +14,7 @@ import { useState } from "react";
 const LatestJobs = () => {
   const { latestJobsList } = useGetLatestJobs();
 
-  const [toggleBookmark, setToggleBookmark] = useState<boolean>(false);
+  const [bookmarkedJobs, setBookmarkedJobs] = useState<BookmarkedJobType>({});
   const [bookmarkStatus, setBookmarkStatus] = useState<string>("");
 
   // Get user login data
@@ -24,7 +24,12 @@ const LatestJobs = () => {
   const handleBookmarks = async (jobId: string, userId: string) => {
     // Set or remove bookmarks in database
     const data = await setBookmark(jobId, userId);
-    setToggleBookmark(!toggleBookmark);
+
+    // Set the bookmarkedjobs for icon switching
+    setBookmarkedJobs((prev) => ({
+      ...prev,
+      [jobId]: prev[jobId] ?? false ? false : true,
+    }));
 
     setBookmarkStatus(data?.message);
 
@@ -34,7 +39,7 @@ const LatestJobs = () => {
   };
 
   return (
-    <div className="min-h-[80vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 gap-4 flex flex-col justify-evenly tracking-wide">
+    <div className="min-h-[80vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 gap-4 flex flex-col justify-evenly tracking-wide ">
       <h2 className="text-4xl font-semibold">Latest Job Postings</h2>
 
       {/* Card Section */}
@@ -48,7 +53,7 @@ const LatestJobs = () => {
             <div className="flex flex-col gap-1">
               <div className="flex justify-between items-center">
                 <h3 className="text-2xl">{job.title}</h3>
-                {!toggleBookmark ? (
+                {!bookmarkedJobs[job._id] ? (
                   <GoBookmark
                     size={25}
                     className="cursor-pointer"

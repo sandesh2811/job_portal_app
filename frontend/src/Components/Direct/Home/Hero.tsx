@@ -1,6 +1,8 @@
 import Button from "@/Components/UI/Button";
-import Link from "next/link";
 import { GoArrowRight } from "react-icons/go";
+
+import Link from "next/link";
+import Image from "next/image";
 
 const Hero = () => {
   return (
