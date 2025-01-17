@@ -24,8 +24,8 @@ const JobApplicationsForJob = () => {
     <div className="min-h-[80vh]">
       {/* For mobile screens */}
 
-      {loading ? (
-        <h3>"No applications found"</h3>
+      {jobApplications.length === 0 ? (
+        <span>No job applications for any jobs!</span>
       ) : (
         jobApplications.map((application) => (
           <Link
@@ -54,46 +54,50 @@ const JobApplicationsForJob = () => {
 
       {/* For laptop screens */}
 
-      <table className="hidden mid:block w-full ">
-        <thead className="border-b-[1.3px]">
-          <tr>
-            <th className="w-1/5 font-normal py-6">Job Title</th>
-            <th className="w-1/5 font-normal py-6">Applier Name</th>
-            <th className="w-1/5 font-normal py-6">Email</th>
-            <th className="w-1/5 font-normal py-6">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {jobApplications.map((application) => (
-            <tr
-              onClick={() => RedirectUser(application._id)}
-              key={application._id}
-              className="border-b-[1.3px] hover:bg-white/20 duration-300 ease-in-out cursor-pointer"
-            >
-              <td className=" w-1/5 py-6 text-center px-5">
-                {application.jobId.title}
-              </td>
-              <td className=" w-1/5 py-6 text-center px-5">
-                {application.fullname}
-              </td>
-              <td className=" w-1/5 py-6 text-center px-5">
-                {application.email}
-              </td>
-              <td
-                className={
-                  application.status === "Accepted"
-                    ? "text-green-500 w-1/5 py-6 text-center px-5"
-                    : application.status === "Rejected"
-                    ? "text-red-500 w-1/5 py-6 text-center px-5"
-                    : "w-1/5 py-6 text-center px-5"
-                }
-              >
-                {application.status}
-              </td>
+      {jobApplications.length === 0 ? (
+        <span>No job applications for any jobs!</span>
+      ) : (
+        <table className="hidden mid:block w-full ">
+          <thead className="border-b-[1.3px]">
+            <tr>
+              <th className="w-1/5 font-normal py-6">Job Title</th>
+              <th className="w-1/5 font-normal py-6">Applier Name</th>
+              <th className="w-1/5 font-normal py-6">Email</th>
+              <th className="w-1/5 font-normal py-6">Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {jobApplications.map((application) => (
+              <tr
+                onClick={() => RedirectUser(application._id)}
+                key={application._id}
+                className="border-b-[1.3px] hover:bg-white/20 duration-300 ease-in-out cursor-pointer"
+              >
+                <td className=" w-1/5 py-6 text-center px-5">
+                  {application.jobId.title}
+                </td>
+                <td className=" w-1/5 py-6 text-center px-5">
+                  {application.fullname}
+                </td>
+                <td className=" w-1/5 py-6 text-center px-5">
+                  {application.email}
+                </td>
+                <td
+                  className={
+                    application.status === "Accepted"
+                      ? "text-green-500 w-1/5 py-6 text-center px-5"
+                      : application.status === "Rejected"
+                      ? "text-red-500 w-1/5 py-6 text-center px-5"
+                      : "w-1/5 py-6 text-center px-5"
+                  }
+                >
+                  {application.status}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

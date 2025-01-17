@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 
 const JobApplicationDetails = () => {
   const { id } = useParams();
-  const [status, setStatus] = useState<string>("Pending");
+  const [status, setStatus] = useState<string>("");
   const [applicationStatusRes, setapplicationStatusRes] = useState<string>("");
   const router = useRouter();
   const [fileName, setFileName] = useState<string>("");
@@ -47,6 +47,8 @@ const JobApplicationDetails = () => {
       window.open(`http://localhost:5000/${fileName}`);
     }
   };
+
+  console.log(status);
 
   return (
     <div className="min-h-[90vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col gap-6 bg-[#282828]/70">
@@ -128,12 +130,36 @@ const JobApplicationDetails = () => {
             <option className="text-background" value={jobApplication?.status}>
               {jobApplication?.status}
             </option>
-            <option className="text-background" value="Accepted">
-              Accepted
-            </option>
-            <option className="text-background" value="Rejected">
-              Rejected
-            </option>
+            {jobApplication?.status === "Pending" && (
+              <>
+                <option className="text-background" value="Accepted">
+                  Accepted
+                </option>
+                <option className="text-background" value="Rejected">
+                  Rejected
+                </option>
+              </>
+            )}
+            {jobApplication?.status === "Accepted" && (
+              <>
+                <option className="text-background" value="Pending">
+                  Pending
+                </option>
+                <option className="text-background" value="Rejected">
+                  Rejected
+                </option>
+              </>
+            )}
+            {jobApplication?.status === "Rejected" && (
+              <>
+                <option className="text-background" value="Pending">
+                  Pending
+                </option>
+                <option className="text-background" value="Accepted">
+                  Accepted
+                </option>
+              </>
+            )}
           </select>
         </div>
       </div>
