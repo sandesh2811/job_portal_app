@@ -1,4 +1,4 @@
-import { verifyJwtToken } from "../../utils/jwtToken";
+// import { verifyJwtToken } from "../../utils/jwtToken";
 import JobApplicationModel from "../../models/JobApplicationModel/jobApplicationModel";
 import NewJobModel from "../../models/JobModels/jobModel";
 
@@ -14,7 +14,11 @@ import mongoose from "mongoose";
 //  User shouldn't be able to apply for same job twice.
 // If user has not applied for the same job then post a new job to the database
 
-export const ApplyForJob: RequestHandler = async (req, res): Promise<any> => {
+export const ApplyForJob: RequestHandler<
+  ParamsType,
+  {},
+  JobApplicationType
+> = async (req, res): Promise<any> => {
   try {
     const jobId = req.params.id;
     // const sessionToken = req.cookies.token;
@@ -81,10 +85,9 @@ export const ApplyForJob: RequestHandler = async (req, res): Promise<any> => {
 // Match the job ids of the array with the job ids of the applications
 // Return the job applications list
 
-export const GetJobApplicationsPostedByEmployer: RequestHandler = async (
-  req,
-  res
-): Promise<any> => {
+export const GetJobApplicationsPostedByEmployer: RequestHandler<
+  ParamsType
+> = async (req, res): Promise<any> => {
   try {
     // const token = req.cookies.token;
     // const userData = verifyJwtToken(token);
@@ -119,10 +122,11 @@ export const GetJobApplicationsPostedByEmployer: RequestHandler = async (
 // Get the selected application id from the URL params
 // Update the status of the particular application for the job
 
-export const ReviewJobApplications: RequestHandler = async (
-  req,
-  res
-): Promise<any> => {
+export const ReviewJobApplications: RequestHandler<
+  ParamsType,
+  {},
+  { status: string }
+> = async (req, res): Promise<any> => {
   const applicationId = req.params.id;
   const { status } = req.body;
   try {
@@ -148,10 +152,9 @@ export const ReviewJobApplications: RequestHandler = async (
 // Get the selected user id from the URL params
 // Filter the job applications by matching the applier Id with the id coming from the url params.
 
-export const GetJobApplicationsAppliedByApplier: RequestHandler = async (
-  req,
-  res
-): Promise<any> => {
+export const GetJobApplicationsAppliedByApplier: RequestHandler<
+  ParamsType
+> = async (req, res): Promise<any> => {
   const applierId = req.params.id;
   try {
     const jobApplicationsByApplier = await JobApplicationModel.find({
@@ -174,7 +177,7 @@ export const GetJobApplicationsAppliedByApplier: RequestHandler = async (
 
 // Get single job application
 
-export const GetSingleJobApplication: RequestHandler = async (
+export const GetSingleJobApplication: RequestHandler<ParamsType> = async (
   req,
   res
 ): Promise<any> => {

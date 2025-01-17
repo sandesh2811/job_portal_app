@@ -3,10 +3,15 @@ import NewUserModel from "../../models/RegistrationModel/registerModel";
 import { comparePasswords } from "../../utils/bcrypt";
 import { generateJwtToken } from "../../utils/jwtToken";
 import mongoose from "mongoose";
+import { LoginDataType } from "../../validators/AuthValidators/loginSchema";
+import { RegisterDataType } from "../../validators/AuthValidators/registerSchema";
 
 // Handling user registration
 
-export const Register: RequestHandler = async (req, res): Promise<any> => {
+export const Register: RequestHandler<{}, {}, RegisterDataType> = async (
+  req,
+  res
+): Promise<any> => {
   try {
     const { email, password, username, role } = req.body;
 
@@ -36,7 +41,10 @@ export const Register: RequestHandler = async (req, res): Promise<any> => {
 
 // Handling user login
 
-export const Login: RequestHandler = async (req, res): Promise<any> => {
+export const Login: RequestHandler<{}, {}, LoginDataType> = async (
+  req,
+  res
+): Promise<any> => {
   try {
     const { username, password } = req.body;
 
@@ -56,11 +64,14 @@ export const Login: RequestHandler = async (req, res): Promise<any> => {
       );
 
       res.cookie("token", jwtToken, {
-        httpOnly: true,
-        // secure: false,
-        sameSite: "strict",
+        httpOnly: process.env.NODE_ENV === "development" ? false : true,
+        secure: process.env.NODE_ENV === "development" ? false : true,
+        sameSite: "none",
         maxAge: 15 * 60 * 1000,
+        path: "/",
       });
+
+      res.cookie("test", "test-cookie");
 
       // Alternative approach!
       const userId = user._id as mongoose.Types.ObjectId;
@@ -72,14 +83,12 @@ export const Login: RequestHandler = async (req, res): Promise<any> => {
         role: user.role,
       };
 
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "Login successful",
-          userData,
-          jwtToken,
-        });
+      return res.status(200).json({
+        success: true,
+        message: "Login successful",
+        userData,
+        jwtToken,
+      });
     } else {
       return res
         .status(401)

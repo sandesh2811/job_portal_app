@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document, Model, InferSchemaType } from "mongoose";
 
 interface NewJob extends Document {
   title: string;

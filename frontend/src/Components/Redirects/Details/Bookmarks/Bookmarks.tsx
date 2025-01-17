@@ -25,8 +25,9 @@ const Bookmarks = () => {
 
     setBookmarkStatus(data?.message);
 
-    setTimeout(() => {
+    let timerId = setTimeout(() => {
       setBookmarkStatus("");
+      clearTimeout(timerId);
     }, 3000);
   };
 
@@ -44,7 +45,9 @@ const Bookmarks = () => {
           >
             <div className="flex flex-col gap-2 cursor-pointer lg:hover:bg-white/20 duration-300 ease-in-out py-4 mid:flex-row mid:justify-between">
               <span>{bookmark.jobId.title}</span>
-              <span className="text-sm">{bookmark.jobId.salary}</span>
+              <span className="text-sm">
+                {bookmark.jobId.salaryFrom} - {bookmark.jobId.salaryTo}
+              </span>
               <span className="text-sm">{bookmark.jobId.status}</span>
             </div>
             <span
@@ -78,7 +81,7 @@ const Bookmarks = () => {
                   {bookmark.jobId.title}
                 </td>
                 <td className=" w-1/5 py-6 text-center px-5">
-                  {bookmark.jobId.salary}
+                  {bookmark.jobId.salaryFrom} - {bookmark.jobId.salaryTo}
                 </td>
                 <td className=" w-1/5 py-6 text-center px-5">
                   {bookmark.jobId.status}

@@ -1,15 +1,15 @@
-import { RequestHandler } from "express";
+import { RequestHandler } from "express-serve-static-core";
 import mongoose from "mongoose";
 
 import BookmarkModel from "../../models/BookmarkModel/bookmarkModel";
 
 // Adding or removing  bookmark of a job of a user
 
-export const addOrRemoveBookmarkOfUser: RequestHandler = async (
-  req,
-  res,
-  next
-): Promise<void> => {
+export const addOrRemoveBookmarkOfUser: RequestHandler<
+  {},
+  {},
+  BookmarkType
+> = async (req, res, next): Promise<void> => {
   try {
     const { jobId, userId } = req.body;
 
@@ -59,11 +59,11 @@ export const addOrRemoveBookmarkOfUser: RequestHandler = async (
 
 // Removing bookmark by bookmarkId
 
-export const deleteBookmarkOfUser: RequestHandler = async (
-  req,
-  res,
-  next
-): Promise<void> => {
+export const deleteBookmarkOfUser: RequestHandler<
+  {},
+  {},
+  BookmarkType
+> = async (req, res, next): Promise<void> => {
   try {
     const { bookmarkId, userId } = req.body;
 
@@ -88,7 +88,7 @@ export const deleteBookmarkOfUser: RequestHandler = async (
 
 // Getting all the bookmarks for a particular applier
 
-export const getAllBookmarksOfUser: RequestHandler = async (
+export const getAllBookmarksOfUser: RequestHandler<ParamsType> = async (
   req,
   res,
   next

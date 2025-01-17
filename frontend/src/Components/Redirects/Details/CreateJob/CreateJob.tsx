@@ -81,7 +81,6 @@ const CreateJob = () => {
     resolver: zodResolver(CreateJobSchema),
     mode: "onChange",
   });
-
   const [jobCreationRes, setjobCreationRes] = useState<string>("");
 
   const { loginData } = GetLoginData();
@@ -92,8 +91,9 @@ const CreateJob = () => {
   ) => {
     const response = await postNewJob(formData, userId);
     setjobCreationRes(response.message);
-    setTimeout(() => {
+    let timerId = setTimeout(() => {
       setjobCreationRes("");
+      clearTimeout(timerId);
     }, 2000);
     reset();
   };
@@ -262,8 +262,8 @@ const CreateJob = () => {
       <div
         className={
           jobCreationRes !== ""
-            ? "absolute bottom-12 mid:right-10 right-2"
-            : "hidden absolute bottom-12 mid:right-10 right-2"
+            ? "absolute top-5 mid:right-10 right-2"
+            : "hidden absolute top-5 mid:right-10 right-2"
         }
       >
         <Toast>

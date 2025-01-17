@@ -13,4 +13,6 @@ const LoginSchema = z.object({
     .trim(),
 });
 
+export type LoginDataType = z.infer<typeof LoginSchema>;
+
 export default LoginSchema;

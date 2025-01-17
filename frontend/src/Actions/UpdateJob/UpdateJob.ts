@@ -1,8 +1,6 @@
 "use server";
 
 const UpdateJob = async (id: string, updatedData: unknown) => {
-  console.log(updatedData);
-
   try {
     const response = await fetch(`http://localhost:5000/api/jobs/${id}`, {
       method: "PATCH",

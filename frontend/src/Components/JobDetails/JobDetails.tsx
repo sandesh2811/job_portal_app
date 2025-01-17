@@ -44,14 +44,17 @@ const JobDetails = () => {
   const handleJobDeletion = async () => {
     const response = await DeleteJob(jobId);
     setJobSettings(response.message);
-    setTimeout(() => {
+    let timerId = setTimeout(() => {
       setJobSettings("");
+      clearTimeout(timerId);
     }, 3000);
 
-    response.success &&
-      setTimeout(() => {
+    if (response.success) {
+      let routeTimerId = setTimeout(() => {
         router.back();
+        clearTimeout(routeTimerId);
       }, 5000);
+    }
   };
 
   //   Handling job updation
@@ -70,14 +73,17 @@ const JobDetails = () => {
 
     setJobSettings(response.message);
 
-    setTimeout(() => {
+    let timerId = setTimeout(() => {
       setJobSettings("");
+      clearTimeout(timerId);
     }, 3000);
 
-    response.success &&
-      setTimeout(() => {
+    if (response.success) {
+      let routeTimerId = setTimeout(() => {
         router.back();
+        clearTimeout(routeTimerId);
       }, 5000);
+    }
   };
 
   return (

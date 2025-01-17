@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 const JobFilters = () => {
   const [toggleFilters, setToggleFilters] = useState<boolean>(false);
   const [clearFilter, setClearFilter] = useState<boolean>(false);
+
   const dispatch: AppDispatch = useDispatch();
   const resetFilters: SelectedFiltersType = {
     title: "",
@@ -30,7 +31,10 @@ const JobFilters = () => {
         <div className="flex gap-2 items-center">
           {clearFilter && (
             <Button
-              onClick={() => dispatch(getSelectedFilters(resetFilters))}
+              onClick={() => {
+                dispatch(getSelectedFilters(resetFilters)),
+                  setClearFilter(false);
+              }}
               className="bg-transparent text-primaryText underline underline-offset-4 font-light"
             >
               Clear Filters

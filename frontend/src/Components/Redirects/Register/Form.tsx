@@ -42,77 +42,79 @@ const Form = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(handleRegistration)}
-      className="flex flex-col gap-4"
-    >
-      {/* Username */}
-      <div className="flex flex-col gap-2">
-        <span className="font-medium">Username</span>
-        <Input
-          {...register("username")}
-          type="text"
-          name="username"
-          placeholder="eg: Ram"
-          autoComplete="off"
-        />
-        {errors.username && (
-          <span className="text-sm text-red-600">
-            {errors.username.message}
-          </span>
-        )}
-      </div>
-      {/* Password */}
-      <div className="flex flex-col gap-2">
-        <span className="font-medium">Password</span>
-        <Input
-          {...register("password")}
-          type="password"
-          name="password"
-          autoComplete="off"
-        />
-        {errors.password && (
-          <span className="text-sm text-red-600">
-            {errors.password.message}
-          </span>
-        )}
-      </div>
-      {/* Email */}
-      <div className="flex flex-col gap-2">
-        <span className="font-medium">Email</span>
-        <Input
-          {...register("email")}
-          type="string"
-          name="email"
-          autoComplete="off"
-        />
-        {errors.email && (
-          <span className="text-sm text-red-600">{errors.email.message}</span>
-        )}
-      </div>
-      {/* Role */}
-      <div className="flex flex-col gap-2">
-        <span>Role</span>
-        <select
-          {...register("role")}
-          name="role"
-          className="bg-transparent border-[1px] rounded-md p-[13px]"
-        >
-          <option value="employer" className="text-background">
-            Employer
-          </option>
-          <option value="applier" className="text-background">
-            Applier
-          </option>
-        </select>
-        {errors.role && (
-          <span className="text-sm text-red-600">{errors.role.message}</span>
-        )}
-      </div>
-      <Button buttonType="AuthButtons" size="medium">
-        Register
-      </Button>
-    </form>
+    <>
+      <form
+        onSubmit={handleSubmit(handleRegistration)}
+        className="flex flex-col gap-4"
+      >
+        {/* Username */}
+        <div className="flex flex-col gap-2">
+          <span className="font-medium">Username</span>
+          <Input
+            {...register("username")}
+            type="text"
+            name="username"
+            placeholder="eg: Ram"
+            autoComplete="off"
+          />
+          {errors.username && (
+            <span className="text-sm text-red-600">
+              {errors.username.message}
+            </span>
+          )}
+        </div>
+        {/* Password */}
+        <div className="flex flex-col gap-2">
+          <span className="font-medium">Password</span>
+          <Input
+            {...register("password")}
+            type="password"
+            name="password"
+            autoComplete="off"
+          />
+          {errors.password && (
+            <span className="text-sm text-red-600">
+              {errors.password.message}
+            </span>
+          )}
+        </div>
+        {/* Email */}
+        <div className="flex flex-col gap-2">
+          <span className="font-medium">Email</span>
+          <Input
+            {...register("email")}
+            type="string"
+            name="email"
+            autoComplete="off"
+          />
+          {errors.email && (
+            <span className="text-sm text-red-600">{errors.email.message}</span>
+          )}
+        </div>
+        {/* Role */}
+        <div className="flex flex-col gap-2">
+          <span>Role</span>
+          <select
+            {...register("role")}
+            name="role"
+            className="bg-transparent border-[1px] rounded-md p-[13px]"
+          >
+            <option value="employer" className="text-background">
+              Employer
+            </option>
+            <option value="applier" className="text-background">
+              Applier
+            </option>
+          </select>
+          {errors.role && (
+            <span className="text-sm text-red-600">{errors.role.message}</span>
+          )}
+        </div>
+        <Button buttonType="AuthButtons" size="medium">
+          Register
+        </Button>
+      </form>
+    </>
   );
 };
 

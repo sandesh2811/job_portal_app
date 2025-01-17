@@ -8,6 +8,8 @@ import {
   GetSingleJobApplication,
   ReviewJobApplications,
 } from "../../controllers/JobApplicationController/jobApplicationController";
+import verifyJobApplicationData from "../../middleware/jobApplicationMiddleware/checkApplicationData";
+import JobApplicationSchema from "../../validators/JobValidators/appliedJobValidator";
 
 const jobApplicationRouter = express.Router();
 
@@ -27,7 +29,11 @@ const upload = multer({ storage });
 // For applier
 jobApplicationRouter
   .route("/apply/:id")
-  .post(upload.single("file"), ApplyForJob);
+  .post(
+    upload.single("file"),
+    verifyJobApplicationData(JobApplicationSchema),
+    ApplyForJob
+  );
 
 jobApplicationRouter
   .route("/applier/:id")

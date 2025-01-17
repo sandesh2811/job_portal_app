@@ -1,12 +1,14 @@
 Fix zod validation for job updation.
-Fix Job application updation status issue
+Fix Job application updation status issue.
 Fix role based access using cookies.
 
-Fix setTimeout clearing.
-Fix UI.
+
 Fix table issues (showing else where there is nothing)
+Fix the bookmark icons based on bookmark status stored by the user.
 
 
 Add Loading skeleton.
 Format components for cleaner approach.
+fix backend validation for job application.(applier id)
 
+Animations using framer motion

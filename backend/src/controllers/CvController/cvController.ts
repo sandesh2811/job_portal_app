@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 
-const GetCvNameOfApplicants: RequestHandler = async (
+const GetCvNameOfApplicants: RequestHandler<ParamsType> = async (
   req,
   res
 ): Promise<any> => {

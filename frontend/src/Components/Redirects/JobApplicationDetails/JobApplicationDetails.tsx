@@ -29,9 +29,10 @@ const JobApplicationDetails = () => {
     const response = await UpdateApplicationStatus(status, applicationId);
     setapplicationStatusRes(response.message);
 
-    setTimeout(() => {
+    let timerId = setTimeout(() => {
       setapplicationStatusRes("");
       router.back();
+      clearTimeout(timerId);
     }, 3000);
   };
 

@@ -5,8 +5,9 @@ import GetLoginData from "@/utils/Hooks/GetLoginData";
 import setBookmark from "@/Actions/JobBookmarks/SetBookmarks/setBookmark";
 
 import Card from "@/Components/UI/Card";
-import { GoArrowRight, GoBookmark, GoBookmarkFill } from "react-icons/go";
+import { GoArrowRight, GoBookmark, GoBookmarkFill, GoX } from "react-icons/go";
 import Button from "@/Components/UI/Button";
+import Toast from "@/Components/UI/Toast";
 
 import Link from "next/link";
 import { useState } from "react";
@@ -33,8 +34,9 @@ const LatestJobs = () => {
 
     setBookmarkStatus(data?.message);
 
-    setTimeout(() => {
+    let timerId = setTimeout(() => {
       setBookmarkStatus("");
+      clearTimeout(timerId);
     }, 3000);
   };
 
@@ -97,6 +99,20 @@ const LatestJobs = () => {
             </div>
           </Card>
         ))}
+      </div>
+
+      {/* Toast notification */}
+      <div
+        className={
+          bookmarkStatus !== ""
+            ? "absolute top-5 mid:right-10 right-2"
+            : "hidden absolute top-5 mid:right-10 right-2"
+        }
+      >
+        <Toast>
+          <span>{bookmarkStatus}</span>
+          <GoX size={20} className="absolute top-2 right-2 cursor-pointer" />
+        </Toast>
       </div>
     </div>
   );

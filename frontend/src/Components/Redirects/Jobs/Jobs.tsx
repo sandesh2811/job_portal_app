@@ -61,8 +61,9 @@ const Jobs = () => {
 
     setBookmarkStatus(data?.message);
 
-    setTimeout(() => {
+    let timeoutId = setTimeout(() => {
       setBookmarkStatus("");
+      clearTimeout(timeoutId);
     }, 3000);
   };
 

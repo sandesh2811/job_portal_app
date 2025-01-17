@@ -1,12 +1,17 @@
 import { RequestHandler } from "express";
-import NewJobModel from "../../models/JobModels/jobModel";
 import mongoose from "mongoose";
+
+import NewJobModel from "../../models/JobModels/jobModel";
 import BookmarkModel from "../../models/BookmarkModel/bookmarkModel";
+
 import { FilterType, PipelineMatcherType } from "../../Types/types";
 
 // Handling job creation by employer
 
-export const CreateJob: RequestHandler = async (req, res): Promise<any> => {
+export const CreateJob: RequestHandler<{}, {}, CreateJobType> = async (
+  req,
+  res
+): Promise<any> => {
   const {
     title,
     description,
@@ -58,7 +63,11 @@ export const CreateJob: RequestHandler = async (req, res): Promise<any> => {
 
 // Handling job updation by employer
 
-export const UpdateJob: RequestHandler = async (req, res): Promise<any> => {
+export const UpdateJob: RequestHandler<
+  ParamsType,
+  {},
+  UpdateJobType<CreateJobType>
+> = async (req, res): Promise<any> => {
   const jobId = req.params.id;
   const { updatedData } = req.body;
 
@@ -109,7 +118,10 @@ export const UpdateJob: RequestHandler = async (req, res): Promise<any> => {
 
 // Handling job deletion by employer
 
-export const DeleteJob: RequestHandler = async (req, res): Promise<any> => {
+export const DeleteJob: RequestHandler<ParamsType> = async (
+  req,
+  res
+): Promise<any> => {
   const jobId = req.params.id;
 
   try {
@@ -139,7 +151,10 @@ export const DeleteJob: RequestHandler = async (req, res): Promise<any> => {
 
 // Getting all jobs
 
-export const GetAllJobs: RequestHandler = async (req, res): Promise<any> => {
+export const GetAllJobs: RequestHandler<{}, {}, {}, FilterType> = async (
+  req,
+  res
+): Promise<any> => {
   const {
     page,
     limit,
@@ -150,7 +165,7 @@ export const GetAllJobs: RequestHandler = async (req, res): Promise<any> => {
     position,
     experience,
     location,
-  } = req.query as FilterType;
+  } = req.query;
 
   const pageNumber: number = parseInt(page as string) || 1;
   const jobLimit: number = parseInt(limit as string) || 4;
@@ -208,7 +223,10 @@ export const GetAllJobs: RequestHandler = async (req, res): Promise<any> => {
 
 // Get a single job based on id
 
-export const GetSingleJob: RequestHandler = async (req, res): Promise<any> => {
+export const GetSingleJob: RequestHandler<ParamsType> = async (
+  req,
+  res
+): Promise<any> => {
   const id = req.params.id;
   try {
     const job = await NewJobModel.findById(id);
@@ -224,7 +242,7 @@ export const GetSingleJob: RequestHandler = async (req, res): Promise<any> => {
 
 // Get job posted by an employer
 
-export const GetJobsPostedByEmployer: RequestHandler = async (
+export const GetJobsPostedByEmployer: RequestHandler<ParamsType> = async (
   req,
   res
 ): Promise<any> => {

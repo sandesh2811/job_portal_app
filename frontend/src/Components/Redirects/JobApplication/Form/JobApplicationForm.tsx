@@ -55,9 +55,10 @@ const JobApplicationForm = ({ params }: JobProps) => {
   const { loginData } = GetLoginData();
 
   const handleApplicationSubmit: SubmitHandler<JobApplicationType> = async (
-    data: any
+    data: JobApplicationType
   ) => {
     const { id } = await params;
+    console.log(data.file);
 
     const formData = new FormData();
 
@@ -72,14 +73,16 @@ const JobApplicationForm = ({ params }: JobProps) => {
     const res = await postJobApplication(id, formData);
 
     setapplicationRes(res.message);
-    setTimeout(() => {
+    let timerId = setTimeout(() => {
       setapplicationRes("");
+      clearTimeout(timerId);
     }, 2000);
     reset();
 
     if (res.success) {
-      setTimeout(() => {
+      let routeTimerId = setTimeout(() => {
         router.push("/");
+        clearTimeout(routeTimerId);
       }, 5000);
     }
   };

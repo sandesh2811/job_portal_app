@@ -18,4 +18,6 @@ const RegisterSchema = z.object({
   role: z.string({ required_error: "Role cannot be empty!" }),
 });
 
+export type RegisterDataType = z.infer<typeof RegisterSchema>;
+
 export default RegisterSchema;

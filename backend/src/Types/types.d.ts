@@ -1,4 +1,17 @@
 import { JwtPayload } from "jsonwebtoken";
+import { z } from "zod";
+
+import createdJobSchema from "../validators/JobValidators/createdJobValidator";
+import JobApplicationSchema from "../validators/JobValidators/appliedJobValidator";
+// import * as express from "express-serve-static-core";
+
+// declare global {
+//   namespace Express {
+//     interface Request {
+//       customField?: string;
+//     }
+//   }
+// }
 
 declare global {
   // Type declaration for JWT token payload
@@ -24,9 +37,37 @@ declare global {
     companyName?: string;
     location?: string;
   };
+
+  // For typicial params for req.params
+  type ParamsType = {
+    id?: string;
+    filename?: string;
+  };
+
+  // Types used for req.body
+
+  // For bookmark req.body
+  type BookmarkType = {
+    bookmarkId?: string;
+    jobId: string;
+    userId: string;
+  };
+
+  // For the job creation req.body
+  type CreateJobType = z.infer<typeof createdJobSchema>;
+
+  // For the job updation req.body
+  type UpdateJobType<T> = {
+    updatedData: {
+      [k in keyof T]?: T[k];
+    };
+  };
+
+  // For job application req.body
+  type JobApplicationType = z.infer<typeof JobApplicationSchema>;
 }
 
-// For search query
+// For search query / req.query
 
 export type FilterType = {
   title?: string;
