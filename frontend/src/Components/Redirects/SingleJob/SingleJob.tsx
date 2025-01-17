@@ -1,14 +1,10 @@
 "use client";
 
-// import GetSingleJob from "@/utils/Hooks/Jobs/SingleJob/GetSingleJob";
-
 import Button from "@/Components/UI/Button";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
-export const Skills = ["React", "Javascript", "Tailwind CSS", "Nodejs"];
 
 const SingleJob = ({ params }: JobProps) => {
   const [job, setJob] = useState<JobType>();
@@ -40,7 +36,9 @@ const SingleJob = ({ params }: JobProps) => {
           <span>Job Description:</span>
           <p>{job?.description}</p>
         </div>
-        <span className="text-sm mid:text-base">Salary: Rs {job?.salary}</span>
+        <span className="text-sm mid:text-base">
+          Salary: Rs {job?.salaryFrom} - {job?.salaryTo}
+        </span>
         <span className="text-sm mid:text-base">
           Type: {job?.position} Remote
         </span>
@@ -55,12 +53,9 @@ const SingleJob = ({ params }: JobProps) => {
       {/* Required Skills  */}
 
       <div>
-        <span className="text-sm mid:text-base">Required Skills:</span>
-        {Skills.map((skill, idx) => (
-          <li key={idx} className=" text-sm mid:text-base">
-            {skill}
-          </li>
-        ))}
+        <span className="text-sm mid:text-base">
+          Required Skills: {job?.skills}
+        </span>
       </div>
 
       {/*  Company Details */}

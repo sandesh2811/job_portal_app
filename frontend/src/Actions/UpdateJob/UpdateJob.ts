@@ -13,6 +13,8 @@ const UpdateJob = async (id: string, updatedData: unknown) => {
       },
     });
     const responseData = await response.json();
+    console.log(responseData);
+
     return responseData;
   } catch (error) {
     console.log(error);

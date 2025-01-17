@@ -17,7 +17,7 @@ const Bookmarks = () => {
   const userId = typeof id === "string" ? id : "";
 
   //   Fetch all the bookmarks made by user
-  const { loading, bookmarks } = useGetAllBookmarks(userId);
+  const { bookmarks } = useGetAllBookmarks(userId);
 
   // Handling Bookmarks
   const handleBookmark = async (jobId: string, id: string) => {
@@ -35,8 +35,8 @@ const Bookmarks = () => {
     <div className="min-h-[80vh]">
       {/* Mobile Devices */}
 
-      {loading ? (
-        <h3>Loading...</h3>
+      {bookmarks.length === 0 ? (
+        <h3>No bookmarks to show</h3>
       ) : (
         bookmarks.map((bookmark: BookmarkType<JobType>) => (
           <div

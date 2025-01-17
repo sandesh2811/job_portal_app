@@ -23,11 +23,13 @@ import {
 import JobFilters from "./JobFilters";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const Jobs = () => {
-  // Getting all jobs
+  // Get user login data
+  const { loginData } = GetLoginData();
 
+  // Getting all jobs
   const {
     loading,
     allJobs,
@@ -44,9 +46,6 @@ const Jobs = () => {
 
   // Checks if the total page number is null or undefined. If it is undefined or null it returns the value 0  else returns the total page number
   const checkedTotalPageNumber = totalPages ?? 0;
-
-  // Get user login data
-  const { loginData } = GetLoginData();
 
   // Handle bookmark clicks
   const handleBookmarks = async (jobId: string, userId: string) => {

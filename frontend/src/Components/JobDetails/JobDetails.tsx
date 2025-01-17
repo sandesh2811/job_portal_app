@@ -10,14 +10,10 @@ import Button from "../UI/Button";
 import Toast from "../UI/Toast";
 import { GoArrowLeft, GoX } from "react-icons/go";
 
-import {
-  CreateJobSchema,
-  CreateJobType,
-} from "../Redirects/Details/CreateJob/CreateJob";
+import { CreateJobType } from "../Redirects/Details/CreateJob/CreateJob";
 
 import { useParams } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -29,10 +25,7 @@ const JobDetails = () => {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<CreateJobType>({
-    resolver: zodResolver(CreateJobSchema),
-    mode: "onSubmit",
-  });
+  } = useForm<CreateJobType>();
 
   //   Check if the id is of type string or not
   const jobId = typeof id === "string" ? id : "";

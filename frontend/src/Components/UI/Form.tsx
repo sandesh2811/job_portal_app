@@ -50,11 +50,7 @@ const Form = () => {
 
     if (res.success) {
       dispatch(getLoginData(userData));
-      let timerId = setTimeout(() => {
-        router.push("/");
-        clearTimeout(timerId);
-      }, 5000);
-
+      router.push("/");
       reset();
     } else {
       setLoginFailed(res.message);

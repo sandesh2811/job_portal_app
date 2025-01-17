@@ -50,7 +50,7 @@ declare global {
   type BookmarkType = {
     bookmarkId?: string;
     jobId: string;
-    userId: string;
+    userId?: string;
   };
 
   // For the job creation req.body

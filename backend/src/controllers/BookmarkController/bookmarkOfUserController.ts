@@ -59,32 +59,32 @@ export const addOrRemoveBookmarkOfUser: RequestHandler<
 
 // Removing bookmark by bookmarkId
 
-export const deleteBookmarkOfUser: RequestHandler<
-  {},
-  {},
-  BookmarkType
-> = async (req, res, next): Promise<void> => {
-  try {
-    const { bookmarkId, userId } = req.body;
+// export const deleteBookmarkOfUser: RequestHandler<
+//   {},
+//   {},
+//   BookmarkType
+// > = async (req, res, next): Promise<void> => {
+//   try {
+//     const { bookmarkId, userId } = req.body;
 
-    if (!bookmarkId || !userId) {
-      res.status(400).json({ message: "Bookmark id or user id is missing!" });
-    } else {
-      const getCorrectBookmarkOfUser = await BookmarkModel.findOne({ userId });
+//     if (!bookmarkId || !userId) {
+//       res.status(400).json({ message: "Bookmark id or user id is missing!" });
+//     } else {
+//       const getCorrectBookmarkOfUser = await BookmarkModel.findOne({ userId });
 
-      if (getCorrectBookmarkOfUser) {
-        const deletedBookmark = await BookmarkModel.findByIdAndDelete(
-          bookmarkId
-        );
-        res
-          .status(200)
-          .json({ success: true, message: "Bookmark removed successfully!" });
-      }
-    }
-  } catch (error) {
-    next(error);
-  }
-};
+//       if (getCorrectBookmarkOfUser) {
+//         const deletedBookmark = await BookmarkModel.findByIdAndDelete(
+//           bookmarkId
+//         );
+//         res
+//           .status(200)
+//           .json({ success: true, message: "Bookmark removed successfully!" });
+//       }
+//     }
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 // Getting all the bookmarks for a particular applier
 
@@ -97,9 +97,7 @@ export const getAllBookmarksOfUser: RequestHandler<ParamsType> = async (
     const userId = req.params.id;
 
     if (!userId) {
-      res
-        .status(400)
-        .json({ success: false, message: "Job id or user id missing!" });
+      res.status(400).json({ success: false, message: "User id missing!" });
     } else {
       // Finding all the bookmarks for the jobs saved by the user.
 
@@ -111,9 +109,7 @@ export const getAllBookmarksOfUser: RequestHandler<ParamsType> = async (
         (bookmark) => bookmark.jobId !== null
       );
 
-      const jobIdOfBookmarks = bookmarksOfUser.map(
-        (bookmark) => bookmark.jobId
-      );
+      const jobIdOfBookmarks = bookmarksOfUser.map((bookmark) => bookmark._id);
 
       res.status(201).json({
         success: true,
