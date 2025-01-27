@@ -30,7 +30,7 @@ const PostedJobs = () => {
       {/* For mobile screens */}
 
       {!jobsPostedByEmployerLoading &&
-        (newPostedJobs.length === 0 ? (
+        (newPostedJobs?.length === 0 ? (
           <div className="hidden mid:flex flex-col items-center gap-4">
             <span>Haven't created any jobs!</span>
             <Link href={`/createjob/${userId}`}>
@@ -38,7 +38,7 @@ const PostedJobs = () => {
             </Link>
           </div>
         ) : (
-          newPostedJobs.map((job) => (
+          newPostedJobs?.map((job) => (
             <Link
               key={job._id}
               href={`/jobdetails/${job._id}`}
@@ -65,7 +65,7 @@ const PostedJobs = () => {
       {/* For laptop screens */}
 
       {!jobsPostedByEmployerLoading &&
-        (newPostedJobs.length === 0 ? (
+        (newPostedJobs?.length === 0 ? (
           <div className="hidden mid:flex flex-col items-center gap-4 ">
             <span>Haven't created any jobs!</span>
             <Link href={`/createjob/${userId}`}>
@@ -83,7 +83,7 @@ const PostedJobs = () => {
               </tr>
             </thead>
             <tbody>
-              {newPostedJobs.map((job) => (
+              {newPostedJobs?.map((job) => (
                 <tr
                   key={job._id}
                   className="border-b-[1.3px] hover:bg-white/20 duration-300 ease-in-out cursor-pointer"

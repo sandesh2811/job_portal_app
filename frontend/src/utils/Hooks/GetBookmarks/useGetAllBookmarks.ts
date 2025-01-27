@@ -1,24 +1,36 @@
+import {
+  BookmarkSchemaReturnDataSchema,
+  BookmarkSchemaReturnType,
+} from "@/Validators/ReturnDataTypeValidators";
 import { useQuery } from "@tanstack/react-query";
+import { z } from "zod";
 
-const getBookmarks = async (userId: string) => {
+const getBookmarks = async (
+  userId: string
+): Promise<BookmarkSchemaReturnType> => {
   try {
     const response = await fetch(`/api/bookmarks/${userId}`, {
       method: "GET",
       credentials: "include",
     });
 
-    const responseData = await response.json();
+    const data = await response.json();
+    const responseData = await BookmarkSchemaReturnDataSchema.parseAsync(data);
 
     return responseData;
   } catch (error) {
-    console.log(error);
+    if (error instanceof z.ZodError) {
+      console.log(error.errors);
+
+      throw new Error(`Data validation failed`);
+    } else {
+      throw new Error("Failed to fetch job applications!");
+    }
   }
 };
 
 const useGetAllBookmarks = (userId: string) => {
-  const { data, isLoading: bookmarksLoading } = useQuery<
-    BookmarkType<JobType>[]
-  >({
+  const { data, isLoading: bookmarksLoading } = useQuery({
     queryKey: ["bookmarks"],
     queryFn: () => getBookmarks(userId),
   });

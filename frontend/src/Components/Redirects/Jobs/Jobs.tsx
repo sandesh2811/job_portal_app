@@ -92,12 +92,10 @@ const Jobs = () => {
           <JobFilters />
         </div>
 
-        {/* <Skeleton /> */}
-
         {/*Jobs Section*/}
         {!jobsLoading && (
           <div className="flex flex-col gap-4 mid:items-center md:grid grid-cols-2 grid-rows-2 place-content-center place-items-center">
-            {data?.jobs.map((job: JobType) => (
+            {data?.jobs.map((job) => (
               <Card key={job._id}>
                 {/* Top */}
                 <div className="flex flex-col gap-1">
@@ -151,39 +149,41 @@ const Jobs = () => {
         )}
 
         {/* Pagination */}
-        <div className="flex justify-between items-center">
-          <Button
-            size="medium"
-            className={
-              pageNumber === 1 || pageNumber <= 0
-                ? "flex gap-1 items-center cursor-not-allowed"
-                : "flex gap-1 items-center"
-            }
-            disabled={pageNumber === 1 || pageNumber <= 0}
-            onClick={() => DecreasePageNumber(setPageNumber)}
-          >
-            <GoArrowLeft /> Prev
-          </Button>
-          <Button
-            size="medium"
-            className={
-              pageNumber === checkedTotalPageNumber ||
-              pageNumber > checkedTotalPageNumber ||
-              (userInput !== "" && data?.jobs.length < jobLimit)
-                ? "flex gap-1 items-center cursor-not-allowed"
-                : "flex gap-1 items-center"
-            }
-            disabled={
-              (pageNumber === checkedTotalPageNumber ||
+        {!jobsLoading && (
+          <div className="flex justify-between items-center">
+            <Button
+              size="medium"
+              className={
+                pageNumber === 1 || pageNumber <= 0
+                  ? "flex gap-1 items-center cursor-not-allowed"
+                  : "flex gap-1 items-center"
+              }
+              disabled={pageNumber === 1 || pageNumber <= 0}
+              onClick={() => DecreasePageNumber(setPageNumber)}
+            >
+              <GoArrowLeft /> Prev
+            </Button>
+            <Button
+              size="medium"
+              className={
+                pageNumber === checkedTotalPageNumber ||
                 pageNumber > checkedTotalPageNumber ||
-                (userInput !== "" && data?.jobs.length < jobLimit)) &&
-              true
-            }
-            onClick={() => IncreasePageNumber(setPageNumber)}
-          >
-            Next <GoArrowRight />
-          </Button>
-        </div>
+                (userInput !== "" && (data?.jobs.length ?? 0) < jobLimit)
+                  ? "flex gap-1 items-center cursor-not-allowed"
+                  : "flex gap-1 items-center"
+              }
+              disabled={
+                (pageNumber === checkedTotalPageNumber ||
+                  pageNumber > checkedTotalPageNumber ||
+                  (userInput !== "" && (data?.jobs.length ?? 0) < jobLimit)) &&
+                true
+              }
+              onClick={() => IncreasePageNumber(setPageNumber)}
+            >
+              Next <GoArrowRight />
+            </Button>
+          </div>
+        )}
 
         {/* Toast Notification */}
 

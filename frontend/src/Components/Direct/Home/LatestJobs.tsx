@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 const LatestJobs = () => {
-  const { latestJobsList, latestJobLoading } = useGetLatestJobs();
+  const { data, latestJobLoading } = useGetLatestJobs();
 
   const [bookmarkedJobs, setBookmarkedJobs] = useState<BookmarkedJobType>({});
   const [bookmarkStatus, setBookmarkStatus] = useState<string>("");
@@ -50,7 +50,7 @@ const LatestJobs = () => {
       md:grid grid-cols-2 grid-rows-2 place-content-center place-items-center"
       >
         {!latestJobLoading &&
-          latestJobsList?.map((job) => (
+          data?.latestJobs?.map((job) => (
             <Card key={job._id}>
               {/* Top */}
               <div className="flex flex-col gap-1">

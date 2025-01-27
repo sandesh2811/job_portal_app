@@ -1,33 +1,33 @@
+import {
+  LatestJobReturnType,
+  LatestJobSchema,
+} from "@/Validators/ReturnDataTypeValidators";
 import { useQuery } from "@tanstack/react-query";
+import { z } from "zod";
 
-const getLatestJobs = async () => {
+const getLatestJobs = async (): Promise<LatestJobReturnType> => {
   try {
     const res = await fetch(`/api/jobs/latestjobs`, {
       method: "GET",
       credentials: "include",
     });
-    const data = await res.json();
-    const { latestJobs } = data;
+    const resData = await res.json();
+    const data = await LatestJobSchema.parseAsync(resData);
 
-    if (res.ok) {
-      return latestJobs;
-    }
+    return data;
   } catch (error) {
-    console.log("Oops! Something went wrong!", error);
-    // throw new Error("Oops! Something went wrong!");
+    throw new Error("Failed to fetch job applications!");
   }
 };
 
 const useGetLatestJobs = () => {
-  const { data: latestJobsList, isLoading: latestJobLoading } = useQuery<
-    JobType[]
-  >({
+  const { data, isLoading: latestJobLoading } = useQuery({
     queryFn: getLatestJobs,
     queryKey: ["latestJobs"],
   });
 
   return {
-    latestJobsList,
+    data,
     latestJobLoading,
   };
 };

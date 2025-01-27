@@ -39,7 +39,7 @@ const Bookmarks = () => {
         (data?.bookmarksOfUser.length === 0 ? (
           <h3>No bookmarks to show</h3>
         ) : (
-          data?.bookmarksOfUser.map((bookmark: BookmarkType<JobType>) => (
+          data?.bookmarksOfUser?.map((bookmark) => (
             <div
               key={bookmark._id}
               className="md:hidden flex justify-between items-center border-b-[1.2px]"

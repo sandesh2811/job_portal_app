@@ -82,7 +82,7 @@ export const getAllBookmarksOfUser: RequestHandler<ParamsType> = async (
 
       const jobIdOfBookmarks = bookmarksOfUser.map((bookmark) => bookmark._id);
 
-      res.status(201).json({
+      res.status(200).json({
         success: true,
         message: "All bookmarks obtained successfully!",
         bookmarksOfUser,

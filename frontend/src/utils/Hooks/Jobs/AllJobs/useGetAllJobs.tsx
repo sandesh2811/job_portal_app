@@ -1,4 +1,8 @@
 import useGetSelectedFilters from "../../GetSelectedFilters/useGetSelectedFilters";
+import {
+  JobReturnDataSchema,
+  JobReturnType,
+} from "@/Validators/ReturnDataTypeValidators";
 
 import { useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -12,7 +16,7 @@ const getAllJobs = async ({
   experience,
   position,
   location,
-}: QueryParams): Promise<ReturnDataType<"jobs", JobType[]>> => {
+}: QueryParams): Promise<JobReturnType> => {
   try {
     const res = await fetch(
       `/api/jobs?page=${pageNumber}&limit=${jobLimit}&searchQuery=${searchQuery}&title=${title}&salaryFrom=${salary.from}&salaryTo=${salary.to}&experience=${experience}&position=${position}&location=${location}`,
@@ -21,7 +25,8 @@ const getAllJobs = async ({
         credentials: "include",
       }
     );
-    const data = await res.json();
+    const resData = await res.json();
+    const data = await JobReturnDataSchema.parseAsync(resData);
 
     return data;
   } catch (error) {
@@ -36,9 +41,7 @@ const useGetAllJobs = () => {
   const selectedFilters = useGetSelectedFilters();
   const { title, salary, experience, position, location } = selectedFilters;
 
-  const { data, isLoading: jobsLoading } = useQuery<
-    ReturnDataType<"jobs", JobType>
-  >({
+  const { data, isLoading: jobsLoading } = useQuery({
     queryKey: [
       "allJobs",
       jobLimit,

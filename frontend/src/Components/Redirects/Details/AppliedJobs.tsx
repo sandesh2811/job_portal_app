@@ -14,7 +14,8 @@ const AppliedJobs = () => {
   const userId = typeof id === "string" ? id : "";
 
   //   Fetch job applications
-  const { data, appliedJobsLoading } = useGetAppliedJobsByApplier(userId);
+  const { data, appliedJobsLoading, appliedJobsError, error } =
+    useGetAppliedJobsByApplier(userId);
 
   // Check if the job if closed/deleted or not
   const appliedJobsWhichAreAvailable = data?.jobApplicationsByApplier.filter(
@@ -26,7 +27,8 @@ const AppliedJobs = () => {
       {/* For mobile screens */}
 
       {!appliedJobsLoading &&
-        (appliedJobsWhichAreAvailable.length === 0 ? (
+        !appliedJobsError &&
+        (appliedJobsWhichAreAvailable?.length === 0 ? (
           <div className="mid:hidden flex flex-col items-center gap-4 ">
             <span>Haven't applied to any jobs!</span>
             <Link href="/jobs">
@@ -34,7 +36,7 @@ const AppliedJobs = () => {
             </Link>
           </div>
         ) : (
-          appliedJobsWhichAreAvailable.map((appliedJob) => (
+          appliedJobsWhichAreAvailable?.map((appliedJob) => (
             <div
               key={appliedJob._id}
               className="flex justify-between items-center gap-2 border-b-[1.2px]  cursor-pointer py-4 mid:hidden"
@@ -54,9 +56,6 @@ const AppliedJobs = () => {
                   {appliedJob.status}
                 </span>
               </div>
-              <span className="underline underline-offset-4 text-sm cursor-pointer">
-                Details
-              </span>
             </div>
           ))
         ))}
@@ -64,7 +63,8 @@ const AppliedJobs = () => {
       {/* For laptop screens */}
 
       {!appliedJobsLoading &&
-        (appliedJobsWhichAreAvailable.length === 0 ? (
+        !appliedJobsError &&
+        (appliedJobsWhichAreAvailable?.length === 0 ? (
           <div className="hidden mid:flex flex-col items-center gap-4 ">
             <span>Haven't applied to any jobs!</span>
             <Link href="/jobs">
@@ -81,7 +81,7 @@ const AppliedJobs = () => {
               </tr>
             </thead>
             <tbody>
-              {appliedJobsWhichAreAvailable.map((appliedJob) => (
+              {appliedJobsWhichAreAvailable?.map((appliedJob) => (
                 <tr key={appliedJob._id} className="border-b-[1.3px]">
                   <td className=" w-1/5 py-6 text-center px-5">
                     {appliedJob.jobId.title}

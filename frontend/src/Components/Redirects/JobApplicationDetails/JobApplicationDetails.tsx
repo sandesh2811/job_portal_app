@@ -12,7 +12,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const singleJobDetails = () => {
+const singleJobApplicationDetails = () => {
   const { id } = useParams();
   const [status, setStatus] = useState<string>("");
   const [applicationStatusRes, setapplicationStatusRes] = useState<string>("");
@@ -39,10 +39,13 @@ const singleJobDetails = () => {
   };
 
   const GetCV = async () => {
-    const res = await fetch(`/api/uploads/files/${data?.singleJob?.fileName}`, {
-      method: "GET",
-      credentials: "include",
-    });
+    const res = await fetch(
+      `/api/uploads/files/${data?.singleJobApplication?.fileName}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
     const resData = await res.json();
     if (resData.success) {
       setFileName(resData.fileName);
@@ -58,25 +61,25 @@ const singleJobDetails = () => {
 
           <div className="flex flex-col gap-2">
             <h2 className="text-2xl mid:text-3xl">
-              {data?.singleJob?.jobId.title}
+              {data?.singleJobApplication.jobId.title}
             </h2>
 
             <div className="text-sm mid:text-base mb-3 flex flex-col gap-1">
               <span>Job Description:</span>
-              <p>{data?.singleJob?.jobId.description}</p>
+              <p>{data?.singleJobApplication.jobId.description}</p>
             </div>
             <span className="text-sm mid:text-base">
-              Salary: Rs {data?.obApplication?.jobId.salaryFrom} -{" "}
-              {data?.singleJob?.jobId.salaryTo}
+              Salary: Rs {data?.singleJobApplication.jobId.salaryFrom} -{" "}
+              {data?.singleJobApplication.jobId.salaryTo}
             </span>
             <span className="text-sm mid:text-base">
-              Type: {data?.singleJob?.jobId.position} Remote
+              Type: {data?.singleJobApplication.jobId.position} Remote
             </span>
             <span className="text-sm mid:text-base">
-              Required Candidates: {data?.singleJob?.jobId.required}
+              Required Candidates: {data?.singleJobApplication.jobId.required}
             </span>
             <span className="text-sm mid:text-base">
-              Experience: {data?.singleJob?.jobId.experience} years
+              Experience: {data?.singleJobApplication.jobId.experience} years
             </span>
           </div>
 
@@ -84,7 +87,7 @@ const singleJobDetails = () => {
 
           <div>
             <span className="text-sm mid:text-base">
-              Required Skills: {data?.singleJob?.jobId.skills}
+              Required Skills: {data?.singleJobApplication.jobId.skills}
             </span>
           </div>
 
@@ -92,10 +95,10 @@ const singleJobDetails = () => {
 
           <div className="flex flex-col gap-2">
             <span className="text-sm mid:text-base">
-              Company name: {data?.singleJob?.jobId.companyName}
+              Company name: {data?.singleJobApplication.jobId.companyName}
             </span>
             <span className="text-sm mid:text-base">
-              Location: {data?.singleJob?.jobId.location}
+              Location: {data?.singleJobApplication.jobId.location}
             </span>
           </div>
 
@@ -107,17 +110,21 @@ const singleJobDetails = () => {
             {/* User Details */}
 
             <div className="flex flex-col gap-3">
-              <span>Name: {data?.singleJob?.fullname}</span>
-              <span>Experience: {data?.singleJob?.experience} year</span>
-              <span>Phone Number: {data?.singleJob?.phonenumber}</span>
-              <span>Email: {data?.singleJob?.email}</span>
+              <span>Name: {data?.singleJobApplication.fullname}</span>
+              <span>
+                Experience: {data?.singleJobApplication.experience} year
+              </span>
+              <span>
+                Phone Number: {data?.singleJobApplication.phonenumber}
+              </span>
+              <span>Email: {data?.singleJobApplication.email}</span>
               <div className="flex items-center gap-2 justify-center">
                 <span>CV:</span>
                 <span
                   className="cursor-pointer underline underline-offset-4"
                   onClick={() => GetCV()}
                 >
-                  {data?.singleJob?.fileName}
+                  {data?.singleJobApplication.fileName}
                 </span>
               </div>
             </div>
@@ -133,11 +140,11 @@ const singleJobDetails = () => {
               >
                 <option
                   className="text-background"
-                  value={data?.singleJob?.status}
+                  value={data?.singleJobApplication.status}
                 >
-                  {data?.singleJob?.status}
+                  {data?.singleJobApplication.status}
                 </option>
-                {data?.singleJob?.status === "Pending" && (
+                {data?.singleJobApplication.status === "Pending" && (
                   <>
                     <option className="text-background" value="Accepted">
                       Accepted
@@ -147,7 +154,7 @@ const singleJobDetails = () => {
                     </option>
                   </>
                 )}
-                {data?.singleJob?.status === "Accepted" && (
+                {data?.singleJobApplication.status === "Accepted" && (
                   <>
                     <option className="text-background" value="Pending">
                       Pending
@@ -157,7 +164,7 @@ const singleJobDetails = () => {
                     </option>
                   </>
                 )}
-                {data?.singleJob?.status === "Rejected" && (
+                {data?.singleJobApplication.status === "Rejected" && (
                   <>
                     <option className="text-background" value="Pending">
                       Pending
@@ -209,4 +216,4 @@ const singleJobDetails = () => {
   );
 };
 
-export default singleJobDetails;
+export default singleJobApplicationDetails;

@@ -22,7 +22,6 @@ type ResponseDataType = {
 // For jobs that are fetched
 
 type JobType = {
-  createdAt: ReactNode;
   _id: string;
   title: string;
   description: string;
@@ -119,5 +118,4 @@ type ReturnDataType<Key extends string, Value> = {
   success?: boolean;
   message: string;
   totalPages?: number;
-  [key in Key]: Value;
-};
+} & { [key in Key]: Value };

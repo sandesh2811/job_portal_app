@@ -104,12 +104,13 @@ export const GetJobApplicationsPostedByEmployer: RequestHandler<
       jobId: { $in: jobIds },
     }).populate("jobId");
     res.status(200).json({
-      // message: `List of jobs posted by ${userData.username}`,
+      success: true,
       message: "List of all jobs!",
       jobApplicationsToTheJob,
     });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: "Error from application controller : Internal Server Error!",
       error,
     });
@@ -181,13 +182,20 @@ export const GetSingleJobApplication: RequestHandler<ParamsType> = async (
   const applicationId = req.params.id;
 
   try {
-    const singleJob = await JobApplicationModel.findById(
+    const singleJobApplication = await JobApplicationModel.findById(
       applicationId
     ).populate("jobId");
 
-    res.status(200).json({ message: "Required job application!", singleJob });
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Required job application!",
+        singleJobApplication,
+      });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: "Error from application controller : Internal Server Error!",
       error,
     });

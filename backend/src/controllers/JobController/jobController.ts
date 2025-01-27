@@ -229,12 +229,12 @@ export const GetSingleJob: RequestHandler<ParamsType> = async (
   try {
     const job = await NewJobModel.findById(id);
     if (!job) {
-      res.status(404).json({ message: "Cannot find any job!" });
+      res.status(404).json({ success: false, message: "Cannot find any job!" });
     } else {
-      res.status(200).json({ message: "Required Job", job });
+      res.status(200).json({ success: true, message: "Required Job", job });
     }
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
@@ -253,10 +253,12 @@ export const GetJobsPostedByEmployer: RequestHandler<ParamsType> = async (
     if (!jobs) {
       res.status(404).json({ message: "Cannot find any job!" });
     } else {
-      res.status(200).json({ message: "All jobs posted by employer", jobs });
+      res
+        .status(200)
+        .json({ success: true, message: "All jobs posted by employer", jobs });
     }
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
@@ -272,8 +274,10 @@ export const GetLatestJobPostings: RequestHandler = async (
       { $limit: 4 },
     ]);
 
-    res.status(200).json({ message: "All Jobs", latestJobs });
+    res.status(200).json({ success: true, message: "All Jobs", latestJobs });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error", error });
+    res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error", error });
   }
 };
