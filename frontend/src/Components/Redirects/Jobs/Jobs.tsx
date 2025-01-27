@@ -31,9 +31,8 @@ const Jobs = () => {
 
   // Getting all jobs
   const {
-    loading,
-    allJobs,
-    totalPages,
+    data,
+    jobsLoading,
     pageNumber,
     jobLimit,
     setPageNumber,
@@ -45,7 +44,7 @@ const Jobs = () => {
   const [bookmarkedJobs, setBookmarkedJobs] = useState<BookmarkedJobType>({});
 
   // Checks if the total page number is null or undefined. If it is undefined or null it returns the value 0  else returns the total page number
-  const checkedTotalPageNumber = totalPages ?? 0;
+  const checkedTotalPageNumber = data?.totalPages ?? 0;
 
   // Handle bookmark clicks
   const handleBookmarks = async (jobId: string, userId: string) => {
@@ -68,7 +67,7 @@ const Jobs = () => {
 
   return (
     <>
-      <div className="min-h-[90vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col justify-evenly  gap-6 ">
+      <div className="min-h-[90vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col justify-evenly  gap-6">
         <div className="flex justify-between items-center">
           {/* Searching Section */}
           <div className="flex justify-center mid:justify-start">
@@ -96,9 +95,9 @@ const Jobs = () => {
         {/* <Skeleton /> */}
 
         {/*Jobs Section*/}
-        {!loading && (
+        {!jobsLoading && (
           <div className="flex flex-col gap-4 mid:items-center md:grid grid-cols-2 grid-rows-2 place-content-center place-items-center">
-            {allJobs.map((job: JobType) => (
+            {data?.jobs.map((job: JobType) => (
               <Card key={job._id}>
                 {/* Top */}
                 <div className="flex flex-col gap-1">
@@ -170,14 +169,14 @@ const Jobs = () => {
             className={
               pageNumber === checkedTotalPageNumber ||
               pageNumber > checkedTotalPageNumber ||
-              (userInput !== "" && allJobs.length < jobLimit)
+              (userInput !== "" && data?.jobs.length < jobLimit)
                 ? "flex gap-1 items-center cursor-not-allowed"
                 : "flex gap-1 items-center"
             }
             disabled={
               (pageNumber === checkedTotalPageNumber ||
                 pageNumber > checkedTotalPageNumber ||
-                (userInput !== "" && allJobs.length < jobLimit)) &&
+                (userInput !== "" && data?.jobs.length < jobLimit)) &&
               true
             }
             onClick={() => IncreasePageNumber(setPageNumber)}

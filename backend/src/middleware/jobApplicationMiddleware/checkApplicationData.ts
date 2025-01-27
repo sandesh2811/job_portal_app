@@ -3,7 +3,7 @@ import { ZodSchema } from "zod";
 
 const verifyJobApplicationData =
   (jobApplicationSchema: ZodSchema) =>
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { fullname, applierId, phonenumber, experience, email } = req.body;
     const fileName = req.file?.filename;
 

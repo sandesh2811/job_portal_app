@@ -67,7 +67,7 @@ export const UpdateJob: RequestHandler<
   ParamsType,
   {},
   UpdateJobType<CreateJobType>
-> = async (req, res): Promise<any> => {
+> = async (req, res): Promise<void> => {
   const jobId = req.params.id;
   const { updatedData } = req.body;
 
@@ -106,13 +106,11 @@ export const UpdateJob: RequestHandler<
       { new: true }
     );
 
-    return res
+    res
       .status(201)
       .json({ success: true, message: "Job updated successfully!", job });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ success: false, message: "Internal Server Error" });
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
@@ -121,14 +119,14 @@ export const UpdateJob: RequestHandler<
 export const DeleteJob: RequestHandler<ParamsType> = async (
   req,
   res
-): Promise<any> => {
+): Promise<void> => {
   const jobId = req.params.id;
 
   try {
     const job = await NewJobModel.findOne({ _id: jobId });
 
     if (!job) {
-      return res
+      res
         .status(404)
         .json({ success: false, message: "Cannot find and  delete job!" });
     } else {
@@ -138,14 +136,12 @@ export const DeleteJob: RequestHandler<ParamsType> = async (
       // Deleting the respective bookmarks for the job
       await BookmarkModel.deleteMany({ jobId: jobId });
 
-      return res
+      res
         .status(200)
         .json({ success: true, message: "Job deleted successfully!" });
     }
   } catch (error) {
-    return res
-      .status(500)
-      .json({ success: false, message: "Internal Server Error" });
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
@@ -154,7 +150,7 @@ export const DeleteJob: RequestHandler<ParamsType> = async (
 export const GetAllJobs: RequestHandler<{}, {}, {}, FilterType> = async (
   req,
   res
-): Promise<any> => {
+): Promise<void> => {
   const {
     page,
     limit,
@@ -199,7 +195,7 @@ export const GetAllJobs: RequestHandler<{}, {}, {}, FilterType> = async (
     ]);
 
     if (!jobs) {
-      return res.status(404).json({ message: "Cannot find any job!" });
+      res.status(404).json({ message: "Cannot find any job!" });
     } else {
       const countDocuments = await NewJobModel.countDocuments();
       const totalPages = Math.ceil(countDocuments / jobLimit);
@@ -214,10 +210,12 @@ export const GetAllJobs: RequestHandler<{}, {}, {}, FilterType> = async (
         { $set: { status: "Expired" } }
       );
 
-      return res.status(200).json({ message: "All Jobs", jobs, totalPages });
+      res
+        .status(200)
+        .json({ success: true, message: "All Jobs", jobs, totalPages });
     }
   } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
@@ -226,17 +224,17 @@ export const GetAllJobs: RequestHandler<{}, {}, {}, FilterType> = async (
 export const GetSingleJob: RequestHandler<ParamsType> = async (
   req,
   res
-): Promise<any> => {
+): Promise<void> => {
   const id = req.params.id;
   try {
     const job = await NewJobModel.findById(id);
     if (!job) {
-      return res.status(404).json({ message: "Cannot find any job!" });
+      res.status(404).json({ message: "Cannot find any job!" });
     } else {
-      return res.status(200).json({ message: "Required Job", job });
+      res.status(200).json({ message: "Required Job", job });
     }
   } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -245,7 +243,7 @@ export const GetSingleJob: RequestHandler<ParamsType> = async (
 export const GetJobsPostedByEmployer: RequestHandler<ParamsType> = async (
   req,
   res
-): Promise<any> => {
+): Promise<void> => {
   const id = req.params.id;
   const convertedId = new mongoose.Types.ObjectId(id);
 
@@ -253,14 +251,12 @@ export const GetJobsPostedByEmployer: RequestHandler<ParamsType> = async (
     const jobs = await NewJobModel.find({ createdBy: convertedId });
 
     if (!jobs) {
-      return res.status(404).json({ message: "Cannot find any job!" });
+      res.status(404).json({ message: "Cannot find any job!" });
     } else {
-      return res
-        .status(200)
-        .json({ message: "All jobs posted by employer", jobs });
+      res.status(200).json({ message: "All jobs posted by employer", jobs });
     }
   } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -269,15 +265,15 @@ export const GetJobsPostedByEmployer: RequestHandler<ParamsType> = async (
 export const GetLatestJobPostings: RequestHandler = async (
   req,
   res
-): Promise<any> => {
+): Promise<void> => {
   try {
     const latestJobs = await NewJobModel.aggregate([
       { $sort: { createdAt: -1 } },
       { $limit: 4 },
     ]);
 
-    return res.status(200).json({ message: "All Jobs", latestJobs });
+    res.status(200).json({ message: "All Jobs", latestJobs });
   } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error", error });
+    res.status(500).json({ message: "Internal Server Error", error });
   }
 };

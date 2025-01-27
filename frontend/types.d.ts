@@ -1,3 +1,24 @@
+// For fetching all jobs
+
+type QueryParams = {
+  pageNumber: number;
+  jobLimit: number;
+  searchQuery: string;
+  title: string;
+  salary: {
+    from: string;
+    to: string;
+  };
+  experience: string;
+  position: string;
+  location: string;
+};
+
+type ResponseDataType = {
+  jobs: JobType[];
+  totalPages: number;
+};
+
 // For jobs that are fetched
 
 type JobType = {
@@ -90,4 +111,13 @@ type SelectedFiltersType = {
 
 type SelectedFiltersState = {
   selectedFilters: SelectedFiltersType;
+};
+
+// Use query return types
+
+type ReturnDataType<Key extends string, Value> = {
+  success?: boolean;
+  message: string;
+  totalPages?: number;
+  [key in Key]: Value;
 };

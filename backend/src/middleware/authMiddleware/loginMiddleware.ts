@@ -7,15 +7,13 @@ import { Request, Response, NextFunction } from "express";
 
 const verfiyLoginCredentials =
   (loginSchema: ZodSchema) =>
-  async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const newUserData = req.body;
     try {
       const validData = await loginSchema.parseAsync(newUserData);
       req.body = validData;
       next();
     } catch (error: any) {
-      console.log("Error from middleware", error);
-
       next(error.errors[0].message);
     }
   };

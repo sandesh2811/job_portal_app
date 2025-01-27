@@ -34,7 +34,7 @@ const ButtonVariants = cva("rounded-md border-none", {
       Apply: "bg-CTA_Buttons text-background",
     },
     size: {
-      small: "text-sm px-2 py-1 ",
+      small: "text-sm px-2 py-1",
       medium: "text-md px-3 py-2",
       large: "px-10 py-2",
     },

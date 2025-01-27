@@ -9,7 +9,11 @@ interface userTokenData {
   exp: number;
 }
 
-const verifyUserRole: RequestHandler = async (req, res, next): Promise<any> => {
+const verifyUserRole: RequestHandler = async (
+  req,
+  res,
+  next
+): Promise<void> => {
   try {
     const userSession = req.cookies.token;
 
@@ -24,7 +28,7 @@ const verifyUserRole: RequestHandler = async (req, res, next): Promise<any> => {
     // }
     next();
   } catch (error) {
-    return res.status(404).json({ message: "Please login to continue" });
+    res.status(404).json({ message: "Please login to continue" });
   }
 };
 

@@ -1,32 +1,27 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+const fetchJobsPostedByEmployer = async (id: string) => {
+  try {
+    const res = await fetch(`/api/jobs/employer/${id}`, {
+      method: "GET",
+      credentials: "include",
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log("Oops something went wrong!", error);
+  }
+};
 
 const useGetJobsPostedByEmployer = (id: string) => {
-  const [postedJobs, setPostedJobs] = useState<JobType[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const { data, isLoading: jobsPostedByEmployerLoading } = useQuery<JobType[]>({
+    queryKey: ["jobsPostedByEmployer"],
+    queryFn: () => fetchJobsPostedByEmployer(id),
+  });
 
-  const fetchJobsPostedByEmployer = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/jobs/employer/${id}`, {
-        method: "GET",
-        credentials: "include",
-      });
-      const data = await res.json();
-      const { jobs } = data;
-
-      setPostedJobs(jobs);
-    } catch (error) {
-      console.log("Oops something went wrong!", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchJobsPostedByEmployer();
-  }, []);
   return {
-    postedJobs,
+    data,
+    jobsPostedByEmployerLoading,
   };
 };
 

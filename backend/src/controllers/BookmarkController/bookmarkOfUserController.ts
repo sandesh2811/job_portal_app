@@ -57,35 +57,6 @@ export const addOrRemoveBookmarkOfUser: RequestHandler<
   }
 };
 
-// Removing bookmark by bookmarkId
-
-// export const deleteBookmarkOfUser: RequestHandler<
-//   {},
-//   {},
-//   BookmarkType
-// > = async (req, res, next): Promise<void> => {
-//   try {
-//     const { bookmarkId, userId } = req.body;
-
-//     if (!bookmarkId || !userId) {
-//       res.status(400).json({ message: "Bookmark id or user id is missing!" });
-//     } else {
-//       const getCorrectBookmarkOfUser = await BookmarkModel.findOne({ userId });
-
-//       if (getCorrectBookmarkOfUser) {
-//         const deletedBookmark = await BookmarkModel.findByIdAndDelete(
-//           bookmarkId
-//         );
-//         res
-//           .status(200)
-//           .json({ success: true, message: "Bookmark removed successfully!" });
-//       }
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
 // Getting all the bookmarks for a particular applier
 
 export const getAllBookmarksOfUser: RequestHandler<ParamsType> = async (

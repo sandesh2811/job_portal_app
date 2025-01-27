@@ -3,6 +3,8 @@ import "./globals.css";
 import Navbar from "@/Components/Direct/Navbar/Navbar";
 import Footer from "@/Components/Direct/Home/Footer";
 import Providers from "@/Components/Provider/Provider";
+import QueryProvider from "@/Components/ReactQueryProvider/QueryProvider";
+import ReduxPersistProvider from "@/Components/ReduxPersist/ReduxPersistProvider";
 
 export const metadata: Metadata = {
   title: "Find Jobs",
@@ -18,11 +20,15 @@ export default function RootLayout({
     <html lang="en">
       <body className="font-Epilogue text-primaryText">
         <div className="relative overflow-x-hidden">
-          <Providers>
-            <Navbar />
-            {children}
-            <Footer />
-          </Providers>
+          <QueryProvider>
+            <Providers>
+              <ReduxPersistProvider>
+                <Navbar />
+                {children}
+                <Footer />
+              </ReduxPersistProvider>
+            </Providers>
+          </QueryProvider>
         </div>
       </body>
     </html>

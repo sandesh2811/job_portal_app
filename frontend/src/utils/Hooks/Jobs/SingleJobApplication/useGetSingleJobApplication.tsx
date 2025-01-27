@@ -1,27 +1,25 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+const getSingleJob = async (applicationId: string) => {
+  try {
+    const res = await fetch(`/api/jobApplication/details/${applicationId}`);
+    const data = await res.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const useGetSingleJobApplication = (applicationId: string) => {
-  const [jobApplication, setJobApplication] =
-    useState<JobApplicationType<JobType>>();
-  const getSingleJob = async () => {
-    try {
-      const res = await fetch(
-        `http://localhost:5000/api/jobApplication/details/${applicationId}`
-      );
-      const data = await res.json();
-      const { singleJob } = data;
+  const { data, isLoading: singleApplicationLoading } = useQuery<JobType>({
+    queryKey: ["singleApplication"],
+    queryFn: () => getSingleJob(applicationId),
+  });
 
-      setJobApplication(singleJob);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getSingleJob();
-  }, []);
   return {
-    jobApplication,
+    data,
+    singleApplicationLoading,
   };
 };
 

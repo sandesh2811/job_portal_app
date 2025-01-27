@@ -1,6 +1,7 @@
 "use client";
 
 import useGetSingleJobApplication from "@/utils/Hooks/Jobs/SingleJobApplication/useGetSingleJobApplication";
+
 import UpdateApplicationStatus from "@/Actions/UpdateApplicationStatus/UpdateApplicationStatus";
 
 import Button from "@/Components/UI/Button";
@@ -11,7 +12,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const JobApplicationDetails = () => {
+const singleJobDetails = () => {
   const { id } = useParams();
   const [status, setStatus] = useState<string>("");
   const [applicationStatusRes, setapplicationStatusRes] = useState<string>("");
@@ -22,7 +23,8 @@ const JobApplicationDetails = () => {
   const applicationId = typeof id === "string" ? id : "";
 
   //   Fetch single job
-  const { jobApplication } = useGetSingleJobApplication(applicationId);
+  const { data, singleApplicationLoading } =
+    useGetSingleJobApplication(applicationId);
 
   //   Job Updation Response
   const handleJobUpdation = async () => {
@@ -37,10 +39,10 @@ const JobApplicationDetails = () => {
   };
 
   const GetCV = async () => {
-    const res = await fetch(
-      `http://localhost:5000/api/uploads/files/${jobApplication?.fileName}`,
-      { method: "GET", credentials: "include" }
-    );
+    const res = await fetch(`/api/uploads/files/${data?.singleJob?.fileName}`, {
+      method: "GET",
+      credentials: "include",
+    });
     const resData = await res.json();
     if (resData.success) {
       setFileName(resData.fileName);
@@ -48,153 +50,163 @@ const JobApplicationDetails = () => {
     }
   };
 
-  console.log(status);
-
   return (
     <div className="min-h-[90vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col gap-6 bg-[#282828]/70">
-      {/* Job Introduction */}
+      {!singleApplicationLoading && (
+        <>
+          {/* Job Introduction */}
 
-      <div className="flex flex-col gap-2">
-        <h2 className="text-2xl mid:text-3xl">{jobApplication?.jobId.title}</h2>
+          <div className="flex flex-col gap-2">
+            <h2 className="text-2xl mid:text-3xl">
+              {data?.singleJob?.jobId.title}
+            </h2>
 
-        <div className="text-sm mid:text-base mb-3 flex flex-col gap-1">
-          <span>Job Description:</span>
-          <p>{jobApplication?.jobId.description}</p>
-        </div>
-        <span className="text-sm mid:text-base">
-          Salary: Rs {jobApplication?.jobId.salaryFrom} -{" "}
-          {jobApplication?.jobId.salaryTo}
-        </span>
-        <span className="text-sm mid:text-base">
-          Type: {jobApplication?.jobId.position} Remote
-        </span>
-        <span className="text-sm mid:text-base">
-          Required Candidates: {jobApplication?.jobId.required}
-        </span>
-        <span className="text-sm mid:text-base">
-          Experience: {jobApplication?.jobId.experience} years
-        </span>
-      </div>
-
-      {/* Required Skills  */}
-
-      <div>
-        <span className="text-sm mid:text-base">
-          Required Skills: {jobApplication?.jobId.skills}
-        </span>
-      </div>
-
-      {/*  Company Details */}
-
-      <div className="flex flex-col gap-2">
-        <span className="text-sm mid:text-base">
-          Company name: {jobApplication?.jobId.companyName}
-        </span>
-        <span className="text-sm mid:text-base">
-          Location: {jobApplication?.jobId.location}
-        </span>
-      </div>
-
-      {/* Applier Details */}
-
-      <h2 className="text-2xl mid:text-3xl">Applier Details</h2>
-
-      <div className="text-sm mid:text-base mb-3 flex flex-col  gap-4  mid:flex-row justify-between mid:items-center">
-        {/* User Details */}
-
-        <div className="flex flex-col gap-3">
-          <span>Name: {jobApplication?.fullname}</span>
-          <span>Experience: {jobApplication?.experience} year</span>
-          <span>Phone Number: {jobApplication?.phonenumber}</span>
-          <span>Email: {jobApplication?.email}</span>
-          <div className="flex items-center gap-2 justify-center">
-            <span>CV:</span>
-            <span
-              className="cursor-pointer underline underline-offset-4"
-              onClick={() => GetCV()}
-            >
-              {jobApplication?.fileName}
+            <div className="text-sm mid:text-base mb-3 flex flex-col gap-1">
+              <span>Job Description:</span>
+              <p>{data?.singleJob?.jobId.description}</p>
+            </div>
+            <span className="text-sm mid:text-base">
+              Salary: Rs {data?.obApplication?.jobId.salaryFrom} -{" "}
+              {data?.singleJob?.jobId.salaryTo}
+            </span>
+            <span className="text-sm mid:text-base">
+              Type: {data?.singleJob?.jobId.position} Remote
+            </span>
+            <span className="text-sm mid:text-base">
+              Required Candidates: {data?.singleJob?.jobId.required}
+            </span>
+            <span className="text-sm mid:text-base">
+              Experience: {data?.singleJob?.jobId.experience} years
             </span>
           </div>
-        </div>
 
-        {/* Application Status */}
+          {/* Required Skills  */}
 
-        <div>
-          <select
-            name="applicationStatus"
-            className="bg-transparent  border-[1px] rounded-md p-[13px] w-full"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
+          <div>
+            <span className="text-sm mid:text-base">
+              Required Skills: {data?.singleJob?.jobId.skills}
+            </span>
+          </div>
+
+          {/*  Company Details */}
+
+          <div className="flex flex-col gap-2">
+            <span className="text-sm mid:text-base">
+              Company name: {data?.singleJob?.jobId.companyName}
+            </span>
+            <span className="text-sm mid:text-base">
+              Location: {data?.singleJob?.jobId.location}
+            </span>
+          </div>
+
+          {/* Applier Details */}
+
+          <h2 className="text-2xl mid:text-3xl">Applier Details</h2>
+
+          <div className="text-sm mid:text-base mb-3 flex flex-col  gap-4  mid:flex-row justify-between mid:items-center">
+            {/* User Details */}
+
+            <div className="flex flex-col gap-3">
+              <span>Name: {data?.singleJob?.fullname}</span>
+              <span>Experience: {data?.singleJob?.experience} year</span>
+              <span>Phone Number: {data?.singleJob?.phonenumber}</span>
+              <span>Email: {data?.singleJob?.email}</span>
+              <div className="flex items-center gap-2 justify-center">
+                <span>CV:</span>
+                <span
+                  className="cursor-pointer underline underline-offset-4"
+                  onClick={() => GetCV()}
+                >
+                  {data?.singleJob?.fileName}
+                </span>
+              </div>
+            </div>
+
+            {/* Application Status */}
+
+            <div>
+              <select
+                name="applicationStatus"
+                className="bg-transparent  border-[1px] rounded-md p-[13px] w-full"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option
+                  className="text-background"
+                  value={data?.singleJob?.status}
+                >
+                  {data?.singleJob?.status}
+                </option>
+                {data?.singleJob?.status === "Pending" && (
+                  <>
+                    <option className="text-background" value="Accepted">
+                      Accepted
+                    </option>
+                    <option className="text-background" value="Rejected">
+                      Rejected
+                    </option>
+                  </>
+                )}
+                {data?.singleJob?.status === "Accepted" && (
+                  <>
+                    <option className="text-background" value="Pending">
+                      Pending
+                    </option>
+                    <option className="text-background" value="Rejected">
+                      Rejected
+                    </option>
+                  </>
+                )}
+                {data?.singleJob?.status === "Rejected" && (
+                  <>
+                    <option className="text-background" value="Pending">
+                      Pending
+                    </option>
+                    <option className="text-background" value="Accepted">
+                      Accepted
+                    </option>
+                  </>
+                )}
+              </select>
+            </div>
+          </div>
+
+          {/* CTA Button */}
+
+          <div className="flex justify-between items-center">
+            <span
+              onClick={() => router.back()}
+              className="flex gap-2 items-center underline underline-offset-4 text-sm mid:text-base cursor-pointer"
+            >
+              <GoArrowLeft />
+              Return
+            </span>
+            <Button onClick={() => handleJobUpdation()} size="large">
+              Update
+            </Button>
+          </div>
+
+          {/* Toast Notification */}
+
+          <div
+            className={
+              applicationStatusRes !== ""
+                ? "absolute top-5 mid:right-10 right-2"
+                : "hidden absolute top-5 mid:right-10 right-2"
+            }
           >
-            <option className="text-background" value={jobApplication?.status}>
-              {jobApplication?.status}
-            </option>
-            {jobApplication?.status === "Pending" && (
-              <>
-                <option className="text-background" value="Accepted">
-                  Accepted
-                </option>
-                <option className="text-background" value="Rejected">
-                  Rejected
-                </option>
-              </>
-            )}
-            {jobApplication?.status === "Accepted" && (
-              <>
-                <option className="text-background" value="Pending">
-                  Pending
-                </option>
-                <option className="text-background" value="Rejected">
-                  Rejected
-                </option>
-              </>
-            )}
-            {jobApplication?.status === "Rejected" && (
-              <>
-                <option className="text-background" value="Pending">
-                  Pending
-                </option>
-                <option className="text-background" value="Accepted">
-                  Accepted
-                </option>
-              </>
-            )}
-          </select>
-        </div>
-      </div>
-
-      {/* CTA Button */}
-
-      <div className="flex justify-between items-center">
-        <span
-          onClick={() => router.back()}
-          className="flex gap-2 items-center underline underline-offset-4 text-sm mid:text-base cursor-pointer"
-        >
-          <GoArrowLeft />
-          Return
-        </span>
-        <Button onClick={() => handleJobUpdation()} size="large">
-          Update
-        </Button>
-      </div>
-
-      {/* Toast Notification */}
-
-      <div
-        className={
-          applicationStatusRes !== ""
-            ? "absolute top-5 mid:right-10 right-2"
-            : "hidden absolute top-5 mid:right-10 right-2"
-        }
-      >
-        <Toast>
-          <span>{applicationStatusRes}</span>
-          <GoX size={20} className="absolute top-2 right-2 cursor-pointer" />
-        </Toast>
-      </div>
+            <Toast>
+              <span>{applicationStatusRes}</span>
+              <GoX
+                size={20}
+                className="absolute top-2 right-2 cursor-pointer"
+              />
+            </Toast>
+          </div>
+        </>
+      )}
     </div>
   );
 };
 
-export default JobApplicationDetails;
+export default singleJobDetails;

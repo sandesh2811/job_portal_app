@@ -10,13 +10,26 @@ import Card from "@/Components/UI/Card";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 
+const Logout = async () => {
+  const response = await fetch("/api/auth/logout", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const responseData = await response.json();
+
+  return responseData;
+};
+
 const Profile = () => {
   const { loginData } = GetLoginData();
   const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
 
   // Logic for removing session from cookies!
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
+    await Logout();
+
     dispatch(
       getLoginData({
         userName: "",
@@ -24,7 +37,7 @@ const Profile = () => {
         role: "",
       })
     );
-    router.push("/login");
+    router.push("/");
   };
 
   return (

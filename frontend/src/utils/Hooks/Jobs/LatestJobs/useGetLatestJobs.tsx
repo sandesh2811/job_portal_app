@@ -1,34 +1,34 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+const getLatestJobs = async () => {
+  try {
+    const res = await fetch(`/api/jobs/latestjobs`, {
+      method: "GET",
+      credentials: "include",
+    });
+    const data = await res.json();
+    const { latestJobs } = data;
+
+    if (res.ok) {
+      return latestJobs;
+    }
+  } catch (error) {
+    console.log("Oops! Something went wrong!", error);
+    // throw new Error("Oops! Something went wrong!");
+  }
+};
 
 const useGetLatestJobs = () => {
-  const [latestJobsList, setLatestJobsList] = useState<JobType[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  // Fetch the jobs posted by an employer
-  const fetchLatestJobs = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/jobs/latestjobs`, {
-        method: "GET",
-        credentials: "include",
-      });
-      const data = await res.json();
-      const { latestJobs } = data;
-
-      setLatestJobsList(latestJobs);
-    } catch (error) {
-      console.log("Oops something went wrong!", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchLatestJobs();
-  }, []);
+  const { data: latestJobsList, isLoading: latestJobLoading } = useQuery<
+    JobType[]
+  >({
+    queryFn: getLatestJobs,
+    queryKey: ["latestJobs"],
+  });
 
   return {
     latestJobsList,
+    latestJobLoading,
   };
 };
 

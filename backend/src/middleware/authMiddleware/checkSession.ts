@@ -8,21 +8,20 @@ const checkUserSession: RequestHandler = async (
   req,
   res,
   next
-): Promise<any> => {
+): Promise<void> => {
   const userSession = req.cookies.token;
-  const demo = req.headers["authorization"];
-
-  console.log(demo);
+  console.log(userSession);
 
   if (userSession) {
     const userDataFromToken = verifyJwtToken(userSession);
 
-    // return res.status(200).json({
-    //   message: "Authenticated!",
-    //   userDetails: userDataFromToken,
-    // });
+    res.status(200).json({
+      message: "Authenticated!",
+      userDetails: userDataFromToken,
+    });
+    next();
   } else {
-    return res.status(404).json({ message: "Please login to continue!" });
+    res.status(404).json({ message: "Please login to continue!" });
   }
 };
 

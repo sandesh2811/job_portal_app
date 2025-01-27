@@ -7,7 +7,7 @@ import { Request, Response, NextFunction } from "express";
 
 const verfiyRegisteredCredentials =
   (registerSchema: ZodSchema) =>
-  async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const newUserData = req.body;
     try {
       const validData = await registerSchema.parseAsync(newUserData);

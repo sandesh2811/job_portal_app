@@ -3,7 +3,7 @@ import { ZodSchema } from "zod";
 
 const verifyJobData =
   (jobSchema: ZodSchema) =>
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const jobData = req.body;
     try {
       const verifiedJobData = await jobSchema.parseAsync(jobData);

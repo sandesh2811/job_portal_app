@@ -11,14 +11,14 @@ import { RegisterDataType } from "../../validators/AuthValidators/registerSchema
 export const Register: RequestHandler<{}, {}, RegisterDataType> = async (
   req,
   res
-): Promise<any> => {
+): Promise<void> => {
   try {
     const { email, password, username, role } = req.body;
 
     const userExists = await NewUserModel.findOne({ email });
 
     if (userExists) {
-      return res.status(400).json({ message: "User already exists!" });
+      res.status(400).json({ message: "User already exists!" });
     } else {
       // Creating a new user with hashed password
       const newUser = await NewUserModel.create({
@@ -28,14 +28,12 @@ export const Register: RequestHandler<{}, {}, RegisterDataType> = async (
         role,
       });
 
-      return res
+      res
         .status(201)
         .json({ success: true, message: "User created successfully", newUser });
     }
   } catch (error) {
-    return res
-      .status(500)
-      .json({ success: false, message: "Internal server error!" });
+    res.status(500).json({ success: false, message: "Internal server error!" });
   }
 };
 
@@ -44,72 +42,67 @@ export const Register: RequestHandler<{}, {}, RegisterDataType> = async (
 export const Login: RequestHandler<{}, {}, LoginDataType> = async (
   req,
   res
-): Promise<any> => {
+): Promise<void> => {
   try {
     const { username, password } = req.body;
 
     const user = await NewUserModel.findOne({ username });
 
     if (!user) {
-      return res.status(400).json({ message: "Invalid credentials!" });
-    }
-
-    const passwordsMatch = await comparePasswords(password, user.password);
-
-    if (passwordsMatch) {
-      const jwtToken = generateJwtToken(
-        user.username,
-        user._id as string,
-        user.role
-      );
-
-      res.cookie("token", jwtToken, {
-        httpOnly: process.env.NODE_ENV === "development" ? false : true,
-        secure: process.env.NODE_ENV === "development" ? false : true,
-        sameSite: "none",
-        maxAge: 15 * 60 * 1000,
-        path: "/",
-      });
-
-      res.cookie("test", "test-cookie");
-
-      // Alternative approach!
-      const userId = user._id as mongoose.Types.ObjectId;
-      const convertedUserId = userId.toString();
-
-      const userData = {
-        userName: user.username,
-        userId: convertedUserId,
-        role: user.role,
-      };
-
-      return res.status(200).json({
-        success: true,
-        message: "Login successful",
-        userData,
-        jwtToken,
-      });
+      res.status(400).json({ message: "Invalid credentials!" });
     } else {
-      return res
-        .status(401)
-        .json({ success: false, message: "Incorrect username or password!" });
+      const passwordsMatch = await comparePasswords(password, user.password);
+
+      if (passwordsMatch) {
+        const jwtToken = generateJwtToken(
+          user.username,
+          user._id as string,
+          user.role
+        );
+
+        res.cookie("token", jwtToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "development" ? false : true,
+          sameSite: process.env.NODE_ENV === "development" ? "strict" : "none",
+          maxAge: 15 * 60 * 1000,
+        });
+
+        const userId = user._id as mongoose.Types.ObjectId;
+        const convertedUserId = userId.toString();
+
+        const userData = {
+          userName: user.username,
+          userId: convertedUserId,
+          role: user.role,
+        };
+
+        res.status(200).json({
+          success: true,
+          message: "Login successful",
+          userData,
+          jwtToken,
+        });
+      } else {
+        res
+          .status(401)
+          .json({ success: false, message: "Incorrect username or password!" });
+      }
     }
   } catch (error) {
     console.log("Error from controller!", error);
-    return res.status(500).json({ message: "Internal server error!" });
+    res.status(500).json({ message: "Internal server error!" });
   }
 };
 
 // Handling user logout
 
-export const Logout: RequestHandler = async (req, res): Promise<any> => {
+export const Logout: RequestHandler = async (req, res): Promise<void> => {
   try {
     if (!req.cookies.token) {
-      return res.status(404).json({ message: "Couldn't logout!" });
+      res.status(404).json({ message: "Couldn't logout!" });
     }
-    res.clearCookie("token");
-    return res.status(200).json({ message: "Removed session!" });
+    res.clearCookie("token").status(200).json({ message: "Removed session!" });
   } catch (error) {
-    return res.status(500).json({ message: "Internal server error!" });
+    res.status(500).json({ message: "Internal server error!" });
   }
 };

@@ -17,7 +17,7 @@ const Bookmarks = () => {
   const userId = typeof id === "string" ? id : "";
 
   //   Fetch all the bookmarks made by user
-  const { bookmarks } = useGetAllBookmarks(userId);
+  const { data, bookmarksLoading } = useGetAllBookmarks(userId);
 
   // Handling Bookmarks
   const handleBookmark = async (jobId: string, id: string) => {
@@ -35,34 +35,35 @@ const Bookmarks = () => {
     <div className="min-h-[80vh]">
       {/* Mobile Devices */}
 
-      {bookmarks.length === 0 ? (
-        <h3>No bookmarks to show</h3>
-      ) : (
-        bookmarks.map((bookmark: BookmarkType<JobType>) => (
-          <div
-            key={bookmark._id}
-            className="md:hidden flex justify-between items-center border-b-[1.2px]"
-          >
-            <div className="flex flex-col gap-2 cursor-pointer lg:hover:bg-white/20 duration-300 ease-in-out py-4 mid:flex-row mid:justify-between">
-              <span>{bookmark.jobId.title}</span>
-              <span className="text-sm">
-                {bookmark.jobId.salaryFrom} - {bookmark.jobId.salaryTo}
-              </span>
-              <span className="text-sm">{bookmark.jobId.status}</span>
-            </div>
-            <span
-              onClick={() => handleBookmark(bookmark.jobId._id, userId)}
-              className="underline underline-offset-4 text-sm cursor-pointer"
+      {!bookmarksLoading &&
+        (data?.bookmarksOfUser.length === 0 ? (
+          <h3>No bookmarks to show</h3>
+        ) : (
+          data?.bookmarksOfUser.map((bookmark: BookmarkType<JobType>) => (
+            <div
+              key={bookmark._id}
+              className="md:hidden flex justify-between items-center border-b-[1.2px]"
             >
-              Remove
-            </span>
-          </div>
-        ))
-      )}
+              <div className="flex flex-col gap-2 cursor-pointer lg:hover:bg-white/20 duration-300 ease-in-out py-4 mid:flex-row mid:justify-between">
+                <span>{bookmark.jobId.title}</span>
+                <span className="text-sm">
+                  {bookmark.jobId.salaryFrom} - {bookmark.jobId.salaryTo}
+                </span>
+                <span className="text-sm">{bookmark.jobId.status}</span>
+              </div>
+              <span
+                onClick={() => handleBookmark(bookmark.jobId._id, userId)}
+                className="underline underline-offset-4 text-sm cursor-pointer"
+              >
+                Remove
+              </span>
+            </div>
+          ))
+        ))}
 
       {/* For laptop screens */}
 
-      {bookmarks.length === 0 ? (
+      {data?.bookmarksOfUser.length === 0 ? (
         <h3>No bookmarks to show</h3>
       ) : (
         <table className="hidden mid:block w-full">
@@ -75,25 +76,26 @@ const Bookmarks = () => {
             </tr>
           </thead>
           <tbody>
-            {bookmarks.map((bookmark) => (
-              <tr key={bookmark._id} className="border-b-[1.3px]">
-                <td className=" w-1/5 py-6 text-center px-5">
-                  {bookmark.jobId.title}
-                </td>
-                <td className=" w-1/5 py-6 text-center px-5">
-                  {bookmark.jobId.salaryFrom} - {bookmark.jobId.salaryTo}
-                </td>
-                <td className=" w-1/5 py-6 text-center px-5">
-                  {bookmark.jobId.status}
-                </td>
-                <td
-                  onClick={() => handleBookmark(bookmark.jobId._id, userId)}
-                  className=" w-1/5 py-6 text-center px-5 underline underline-offset-4 cursor-pointer"
-                >
-                  Remove
-                </td>
-              </tr>
-            ))}
+            {!bookmarksLoading &&
+              data?.bookmarksOfUser.map((bookmark) => (
+                <tr key={bookmark._id} className="border-b-[1.3px]">
+                  <td className=" w-1/5 py-6 text-center px-5">
+                    {bookmark.jobId.title}
+                  </td>
+                  <td className=" w-1/5 py-6 text-center px-5">
+                    {bookmark.jobId.salaryFrom} - {bookmark.jobId.salaryTo}
+                  </td>
+                  <td className=" w-1/5 py-6 text-center px-5">
+                    {bookmark.jobId.status}
+                  </td>
+                  <td
+                    onClick={() => handleBookmark(bookmark.jobId._id, userId)}
+                    className=" w-1/5 py-6 text-center px-5 underline underline-offset-4 cursor-pointer"
+                  >
+                    Remove
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       )}

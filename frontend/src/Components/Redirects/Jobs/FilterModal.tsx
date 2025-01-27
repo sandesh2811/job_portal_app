@@ -8,8 +8,6 @@ import { GoX } from "react-icons/go";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-// Make dynamic
-
 const JobTitles = [
   "Frontend",
   "Backend",
@@ -32,8 +30,23 @@ const FilterModal = ({ setToggleFilters, setClearFilter }: ModalTypeProps) => {
 
   const dispatch: AppDispatch = useDispatch();
 
+  const handleNoChange = (): boolean => {
+    if (
+      jobFilters.title === "" &&
+      jobFilters.salary.from === "" &&
+      jobFilters.salary.to === "" &&
+      jobFilters.experience === "" &&
+      jobFilters.position === "" &&
+      jobFilters.location === ""
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
-    <div className="bg-teal-700 rounded-sm w-[80%] min-h-[50vh] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-md flex justify-between flex-col p-6">
+    <div className="bg-black/80 rounded-sm w-[80%] min-h-[50vh] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-md flex justify-between flex-col p-6">
       {/* Top/CTA Button */}
 
       <div className="flex justify-end items-center">
@@ -55,7 +68,7 @@ const FilterModal = ({ setToggleFilters, setClearFilter }: ModalTypeProps) => {
             return (
               <div key={idx} className="flex gap-3">
                 <span
-                  className="cursor-pointer hover:bg-red-400"
+                  className="cursor-pointer hover:bg-secondaryText hover:text-background"
                   onClick={() =>
                     setJobFilters((prev) => ({ ...prev, title: title }))
                   }
@@ -196,7 +209,9 @@ const FilterModal = ({ setToggleFilters, setClearFilter }: ModalTypeProps) => {
 
       <div className="flex justify-end items-center">
         <Button
+          className={handleNoChange() ? "cursor-not-allowed" : "cursor-pointer"}
           size="large"
+          disabled={handleNoChange()}
           onClick={() => {
             dispatch(getSelectedFilters(jobFilters)), setClearFilter(true);
           }}
