@@ -186,13 +186,11 @@ export const GetSingleJobApplication: RequestHandler<ParamsType> = async (
       applicationId
     ).populate("jobId");
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Required job application!",
-        singleJobApplication,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Required job application!",
+      singleJobApplication,
+    });
   } catch (error) {
     res.status(500).json({
       success: false,
