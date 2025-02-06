@@ -1,6 +1,6 @@
-import Hero from "@/Components/Direct/Home/Hero";
-import LatestJobs from "@/Components/Direct/Home/LatestJobs";
-import Services from "@/Components/Direct/Home/Services";
+import Hero from "@/Components/HomePage/Hero";
+import LatestJobs from "@/Components/pages/LatestJobs";
+import Services from "@/Components/HomePage/Services";
 
 export default function Home() {
   return (

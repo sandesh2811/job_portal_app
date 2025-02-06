@@ -1,4 +1,4 @@
-import JobDetails from "@/Components/JobDetails/JobDetails";
+import JobDetails from "@/Components/pages/JobDetails";
 
 const JobDetailsPage = () => {
   return <JobDetails />;

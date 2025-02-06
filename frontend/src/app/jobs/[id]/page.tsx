@@ -1,7 +1,7 @@
-import SingleJob from "@/Components/Redirects/SingleJob/SingleJob";
+import SingleJob from "@/Components/pages/SingleJob";
 
-const SingleJobPage = ({ params }: JobProps) => {
-  return <SingleJob params={params} />;
+const SingleJobPage = () => {
+  return <SingleJob />;
 };
 
 export default SingleJobPage;

@@ -34,9 +34,23 @@ type JobType = {
   status: string;
   companyName: string;
   location: string;
-  createdAt: Date;
+  createdAt: Date | string;
   updatedAt: Date;
   expiresAt: Date;
+};
+
+type FormDataType = {
+  title: string;
+  description: string;
+  salaryFrom: string;
+  salaryTo: string;
+  required: string;
+  skills: string;
+  position: string;
+  experience: string;
+  status: string;
+  companyName: string;
+  location: string;
 };
 
 // For job that is dynamically fetched

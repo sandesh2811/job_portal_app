@@ -1,4 +1,4 @@
-import AccessDenied from "@/Components/Redirects/AccessDenied/AccessDenied";
+import AccessDenied from "@/Components/AccessDenied";
 
 const AccessDeniedPage = () => {
   return (

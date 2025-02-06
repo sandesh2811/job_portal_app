@@ -1,4 +1,4 @@
-import Details from "@/Components/Redirects/Details/Details";
+import Details from "@/Components/pages/Details";
 
 const CreateJobsPage = () => {
   return <Details />;

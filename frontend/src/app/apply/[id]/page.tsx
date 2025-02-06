@@ -1,7 +1,7 @@
-import ApplyForJob from "@/Components/Redirects/JobApplication/ApplyForJob";
+import ApplyForJob from "@/Components/pages/ApplyForJob";
 
-const ApplyForJobPage = ({ params }: JobProps) => {
-  return <ApplyForJob params={params} />;
+const ApplyForJobPage = () => {
+  return <ApplyForJob />;
 };
 
 export default ApplyForJobPage;

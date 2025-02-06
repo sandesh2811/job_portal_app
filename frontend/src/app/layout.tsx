@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/Components/Direct/Navbar/Navbar";
-import Footer from "@/Components/Direct/Home/Footer";
-import Providers from "@/Components/Provider/Provider";
+import Navbar from "@/Components/HomePage/Navbar";
+import Footer from "@/Components/HomePage/Footer";
+import Providers from "@/Components/ReduxProvider/Provider";
 import QueryProvider from "@/Components/ReactQueryProvider/QueryProvider";
+
 import ReduxPersistProvider from "@/Components/ReduxPersist/ReduxPersistProvider";
 
 export const metadata: Metadata = {
