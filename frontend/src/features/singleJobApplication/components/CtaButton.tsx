@@ -4,40 +4,36 @@ import Button from "@/Components/UI/Button";
 import { GoArrowLeft } from "react-icons/go";
 
 import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 type CtaButtonProps = {
   applicationId: string;
-  setApplicationStatusRes: Dispatch<SetStateAction<string>>;
   status: string;
 };
 
-const CtaButton = ({
-  applicationId,
-  setApplicationStatusRes,
-  status,
-}: CtaButtonProps) => {
+const CtaButton = ({ applicationId, status }: CtaButtonProps) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex items-center justify-between">
       <span
         onClick={() => router.back()}
-        className="flex gap-2 items-center underline underline-offset-4 text-sm mid:text-base cursor-pointer"
+        className="flex cursor-pointer items-center gap-2 text-sm underline underline-offset-4 mid:text-lg"
       >
-        <GoArrowLeft />
+        <GoArrowLeft className="text-xl" />
         Return
       </span>
       <Button
         onClick={() =>
           handleJobApplicationStatus({
             applicationId,
-            setApplicationStatusRes,
             status,
             router,
+            queryClient,
           })
         }
-        size="large"
+        className="bg-primaryText text-background"
       >
         Update
       </Button>

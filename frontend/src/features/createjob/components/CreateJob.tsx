@@ -7,14 +7,14 @@ import GetLoginData from "@/utils/GetLoginData";
 import handleJobCreation from "@/features/createjob/utils/handleJobCreation";
 
 import Button from "@/Components/UI/Button";
-import Input from "@/Components/UI/Input";
-import ToastContainer from "@/Components/Toast/ToastContainer";
 import TextInput from "@/Components/UI/TextInput";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import SelectOption from "@/Components/UI/SelectOption";
+import { useQueryClient } from "@tanstack/react-query";
+import InputFieldContainer from "@/Components/FormInputFieldContainer/InputFieldContainer";
+import InvalidateAndRefetchQuery from "@/utils/InvalidateAndRefetchQuery";
 
 const CreateJob = () => {
   const {
@@ -27,97 +27,72 @@ const CreateJob = () => {
     resolver: zodResolver(CreateJobSchema),
     mode: "onChange",
   });
-  const [jobCreationRes, setJobCreationRes] = useState<string>("");
 
   const { loginData } = GetLoginData();
   const { userId } = loginData;
+  const queryClient = useQueryClient();
 
   const handleFormSubmit = handleSubmit(async (formData: CreateJobType) => {
-    await handleJobCreation({ formData, reset, setJobCreationRes, userId });
+    const response = await handleJobCreation({
+      formData,
+      reset,
+      userId,
+    });
+
+    if (response) {
+      const keys = ["jobsPostedByEmployer", "allJobs", "latestJobs"];
+
+      InvalidateAndRefetchQuery({ queryClient, queryKey: keys });
+    }
   });
 
   return (
     <>
       {/* Create job form */}
 
-      <form onSubmit={handleFormSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleFormSubmit} className="flex w-full flex-col gap-4">
         {/* Job title and location */}
-        <div className="flex flex-col  gap-6 w-full justify-evenly md:flex-row">
-          <TextInput
-            className="md:w-[350px] midLg:w-[395px] xl:w-[495px]"
-            control={control}
-            text="Job Title"
-            name="title"
-          />
 
-          <TextInput
-            className="md:w-[350px] midLg:w-[395px] xl:w-[495px]"
-            control={control}
-            text="Location"
-            name="location"
-          />
-        </div>
+        <InputFieldContainer>
+          <TextInput control={control} text="Job Title" name="title" />
+
+          <TextInput control={control} text="Location" name="location" />
+        </InputFieldContainer>
 
         {/* Salary */}
-        <div className="flex flex-col  md:flex-row gap-6 justify-evenly">
-          <TextInput
-            className="md:w-[350px] midLg:w-[395px] xl:w-[495px]"
-            control={control}
-            text="Salary From"
-            name="salaryFrom"
-          />
+        <InputFieldContainer>
+          <TextInput control={control} text="Salary From" name="salaryFrom" />
 
-          <TextInput
-            className="md:w-[350px] midLg:w-[395px] xl:w-[495px]"
-            control={control}
-            text="Salary To"
-            name="salaryTo"
-          />
-        </div>
+          <TextInput control={control} text="Salary To" name="salaryTo" />
+        </InputFieldContainer>
 
         {/* Experience and Position */}
-        <div className="flex flex-col md:flex-row  gap-6 justify-evenly">
-          <TextInput
-            className="md:w-[350px] midLg:w-[395px] xl:w-[495px]"
-            control={control}
-            text="Experience"
-            name="experience"
-          />
+        <InputFieldContainer>
+          <TextInput control={control} text="Experience" name="experience" />
 
-          <TextInput
-            className="md:w-[350px] midLg:w-[395px] xl:w-[495px]"
-            control={control}
-            text="Location"
-            name="location"
-          />
-        </div>
+          <TextInput control={control} text="Position" name="position" />
+        </InputFieldContainer>
 
         {/* No of required employees and required skills  */}
 
-        <div className="flex flex-col  md:flex-row gap-6 justify-evenly">
+        <InputFieldContainer>
           <TextInput
-            className="md:w-[350px] midLg:w-[395px] xl:w-[495px]"
             control={control}
             text="Required Candidates"
             name="required"
           />
 
-          <TextInput
-            className="md:w-[350px] midLg:w-[395px] xl:w-[495px]"
-            control={control}
-            text="Required Skills"
-            name="skills"
-          />
-        </div>
+          <TextInput control={control} text="Required Skills" name="skills" />
+        </InputFieldContainer>
 
         {/* Job status and Company name */}
-        <div className="flex flex-col md:flex-row gap-6 justify-evenly">
-          <div className="flex flex-col gap-2 ">
-            <span>Status</span>
+        <InputFieldContainer>
+          <div className="flex flex-1 flex-col gap-2">
+            <span className="text-sm font-semibold">Status</span>
             <select
               {...register("status")}
               name="status"
-              className="bg-transparent border-[1px] rounded-md p-[13px] md:w-[350px] midLg:w-[395px] xl:w-[495px]"
+              className="flex-1 rounded-[2px] border-[1px] border-primaryText bg-transparent p-2 focus:outline-none mid:px-2"
             >
               <SelectOption value="Available" title="Available" />
             </select>
@@ -127,21 +102,18 @@ const CreateJob = () => {
               </span>
             )}
           </div>
-          <TextInput
-            className="md:w-[350px] midLg:w-[395px] xl:w-[495px]"
-            control={control}
-            text="Company Name"
-            name="companyName"
-          />
-        </div>
+          <TextInput control={control} text="Company Name" name="companyName" />
+        </InputFieldContainer>
 
         {/* Job description */}
-        <div className="flex flex-col gap-2 w-full">
-          <span>Job Description</span>
+        <div className="flex w-full flex-col gap-2">
+          <span className="text-sm font-semibold mid:text-base">
+            Job Description
+          </span>
           <textarea
             {...register("description")}
             name="description"
-            className="bg-transparent border-[1px] rounded-md p-2"
+            className="rounded-[2px] border-[1px] border-primaryText bg-transparent p-2"
           ></textarea>
           {errors.description && (
             <span className="text-sm text-red-600">
@@ -151,15 +123,15 @@ const CreateJob = () => {
         </div>
 
         {/* Button */}
-        <div className="flex justify-center mt-3">
-          <Button type="submit" size="large">
+        <div className="mt-3 flex justify-center">
+          <Button
+            type="submit"
+            className="w-full bg-primaryText text-background"
+          >
             Create
           </Button>
         </div>
       </form>
-
-      {/* Toast notification */}
-      <ToastContainer value={jobCreationRes} />
     </>
   );
 };

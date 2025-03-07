@@ -9,6 +9,7 @@ import CompanyDetails from "@/Components/JobAndCompanyDetails/CompanyDetails";
 import CtaButton from "@/features/singlejob/components/CtaButton";
 
 import { useParams } from "next/navigation";
+import MainContainer from "../MainContainer";
 
 const SingleJob = () => {
   const { id } = useParams();
@@ -22,7 +23,7 @@ const SingleJob = () => {
   return (
     <>
       {!singleJobLoading && (
-        <div className="min-h-[80vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col justify-center  gap-6 bg-[#282828]/30">
+        <MainContainer className="my-8 min-h-[70vh]">
           {/* Job Introduction */}
           <JobDetails
             title={prefix?.title}
@@ -45,7 +46,7 @@ const SingleJob = () => {
 
           {/* CTA Buttons */}
           <CtaButton jobId={data?.job._id} />
-        </div>
+        </MainContainer>
       )}
     </>
   );

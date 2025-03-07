@@ -10,25 +10,14 @@ type AllJobsContainerProps = {
         jobs: JobType[];
       }
     | undefined;
-  setBookmarkStatus: Dispatch<SetStateAction<string>>;
 };
 
-const AllJobsContainer = ({
-  jobsLoading,
-  data,
-  setBookmarkStatus,
-}: AllJobsContainerProps) => {
+const AllJobsContainer = ({ jobsLoading, data }: AllJobsContainerProps) => {
   return (
     <>
       {!jobsLoading && (
-        <div className="flex flex-col gap-4 mid:items-center md:grid grid-cols-2 grid-rows-2 place-content-center place-items-center">
-          {data?.jobs.map((job) => (
-            <JobCard
-              key={job._id}
-              job={job}
-              setBookmarkStatus={setBookmarkStatus}
-            />
-          ))}
+        <div className="flex grid-cols-2 grid-rows-2 flex-wrap gap-4 mid:gap-6 md:grid lg:gap-10">
+          {data?.jobs.map((job) => <JobCard key={job._id} job={job} />)}
         </div>
       )}
     </>

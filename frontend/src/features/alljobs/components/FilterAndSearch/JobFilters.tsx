@@ -26,27 +26,31 @@ const JobFilters = () => {
 
   return (
     <>
-      {!toggleFilters ? (
-        <div className="flex gap-2 items-center">
-          {clearFilter && (
-            <Button
-              onClick={() => {
-                dispatch(getSelectedFilters(resetFilters)),
-                  setClearFilter(false);
-              }}
-              className="bg-transparent text-primaryText underline underline-offset-4 font-light"
-            >
-              Clear Filters
-            </Button>
-          )}
+      <div
+        className={
+          clearFilter
+            ? "flex w-full flex-row-reverse items-center justify-between gap-2 whitespace-nowrap mid:w-auto mid:flex-row"
+            : "flex items-center gap-2 whitespace-nowrap mid:flex-row"
+        }
+      >
+        {clearFilter && (
           <Button
-            onClick={() => setToggleFilters(true)}
-            className="bg-transparent text-primaryText underline underline-offset-4 font-light"
+            onClick={() => {
+              dispatch(getSelectedFilters(resetFilters)), setClearFilter(false);
+            }}
+            className="bg-transparent p-0 font-light text-primaryText underline underline-offset-4"
           >
-            Filters
+            Clear Filters
           </Button>
-        </div>
-      ) : (
+        )}
+        <Button
+          onClick={() => setToggleFilters(true)}
+          className="bg-transparent p-0 font-light text-primaryText underline underline-offset-4"
+        >
+          Filters
+        </Button>
+      </div>
+      {toggleFilters && (
         <FilterModal
           setToggleFilters={setToggleFilters}
           setClearFilter={setClearFilter}

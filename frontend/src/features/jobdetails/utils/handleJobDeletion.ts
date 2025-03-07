@@ -1,31 +1,31 @@
-import DeleteJob from "@/features/jobdetails/api/actions/DeleteJob";
-
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { Dispatch, SetStateAction } from "react";
+import toast from "react-hot-toast";
 
 type HandleJobDeletionType = {
   jobId: string;
-  setJobSettings: Dispatch<SetStateAction<string>>;
   router: AppRouterInstance;
+  mutateAsync: (id: string) => Promise<BaseReturnType>;
 };
 
 const handleJobDeletion = async ({
   jobId,
-  setJobSettings,
   router,
+  mutateAsync,
 }: HandleJobDeletionType) => {
-  const response = await DeleteJob(jobId);
-  setJobSettings(response.message);
-  let timerId = setTimeout(() => {
-    setJobSettings("");
-    clearTimeout(timerId);
-  }, 3000);
+  try {
+    const response = await mutateAsync(jobId);
 
-  if (response.success) {
-    let routeTimerId = setTimeout(() => {
+    if (!response.success) {
+      toast.error(response.message);
+      return;
+    }
+    toast.success(response.message);
+    const routeTimerId = setTimeout(() => {
       router.back();
       clearTimeout(routeTimerId);
     }, 5000);
+  } catch (error) {
+    throw new Error("Error deleting job!");
   }
 };
 

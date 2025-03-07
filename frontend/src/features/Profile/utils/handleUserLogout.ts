@@ -4,6 +4,7 @@ import { getLoginData } from "@/Store/Features/userLoginState";
 import { AppDispatch } from "@/Store/store";
 
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import toast from "react-hot-toast";
 
 type HandleUserLogoutProps = {
   router: AppRouterInstance;
@@ -14,16 +15,20 @@ const handleUserLogout = async ({
   router,
   dispatch,
 }: HandleUserLogoutProps) => {
-  await Logout();
+  const response = await Logout();
 
-  dispatch(
-    getLoginData({
-      userName: "",
-      userId: "",
-      role: "",
-    })
-  );
-  router.push("/");
+  if (response.success) {
+    dispatch(
+      getLoginData({
+        userName: "",
+        userId: "",
+        role: "",
+      }),
+    );
+    router.push("/");
+  } else {
+    toast.error(response.message);
+  }
 };
 
 export default handleUserLogout;

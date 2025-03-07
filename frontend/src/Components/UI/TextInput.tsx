@@ -22,8 +22,8 @@ const TextInput = <T extends { [key: string]: any }>({
   } = useController({ control, name });
 
   return (
-    <div className="flex flex-col gap-2">
-      <span className="font-medium">{text}</span>
+    <div className="flex flex-1 flex-col gap-2">
+      <span className="text-sm font-semibold mid:text-base">{text}</span>
       <Input
         {...control.register(name)}
         type="text"
@@ -32,7 +32,7 @@ const TextInput = <T extends { [key: string]: any }>({
         {...props}
       />
       {errors[name] && (
-        <span className="text-sm text-red-600">
+        <span className="text-xs text-red-600 mid:text-sm">
           {errors[name].message?.toString()}
         </span>
       )}

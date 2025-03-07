@@ -8,10 +8,12 @@ type FormFooterProps = {
 
 const FormFooter = ({ heading, href, text }: FormFooterProps) => {
   return (
-    <div className="flex gap-1 items-center justify-center text-secondaryText">
-      <span className="text-sm">{heading}</span>
-      <Link href={href}>
-        <span className="text-sm underline underline-offset-3 ">{text}</span>
+    <div className="flex items-center justify-center gap-1 text-secondaryText">
+      <span className="text-xs mid:text-sm">{heading}</span>
+      <Link href={href} className="flex items-center justify-center">
+        <span className="text-xs underline underline-offset-2 mid:text-sm">
+          {text}
+        </span>
       </Link>
     </div>
   );

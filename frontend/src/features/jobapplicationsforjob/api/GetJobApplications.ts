@@ -1,3 +1,4 @@
+import api from "@/axios/axios";
 import {
   JobApplicationToTheJobReturnDataSchema,
   JobApplicationToTheJobType,
@@ -6,20 +7,17 @@ import {
 import { z } from "zod";
 
 const getJobsApplicationsToTheJob = async (
-  id: string
+  id: string,
 ): Promise<JobApplicationToTheJobType> => {
   try {
-    const res = await fetch(`/api/jobApplication/${id}`, {
-      method: "GET",
-      credentials: "include",
-    });
-    const resData = await res.json();
+    const fetchJobApplicationsToTheJob = await api.get(`jobApplication/${id}`);
 
-    const data = await JobApplicationToTheJobReturnDataSchema.parseAsync(
-      resData
-    );
+    const { data } = fetchJobApplicationsToTheJob;
 
-    return data;
+    const parsedData =
+      await JobApplicationToTheJobReturnDataSchema.parseAsync(data);
+
+    return parsedData;
   } catch (error) {
     if (error instanceof z.ZodError) {
       console.log(error.errors);

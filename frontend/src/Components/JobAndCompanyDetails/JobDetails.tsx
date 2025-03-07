@@ -21,7 +21,7 @@ const JobDetails = ({
     <div className="flex flex-col gap-2">
       <h2 className="text-2xl mid:text-3xl">{title}</h2>
 
-      <div className="text-sm mid:text-base mb-3 flex flex-col gap-1">
+      <div className="mb-3 flex flex-col gap-1 text-sm mid:text-base">
         <span>Job Description:</span>
         <p>{description}</p>
       </div>

@@ -27,20 +27,23 @@ const Card = ({
 
 export default Card;
 
-const CardVariants = cva("rounded-md p-3 tracking-wide shadow-md", {
-  variants: {
-    CardStyle: {
-      Jobs: "bg-primaryText text-background  flex flex-col justify-between",
-      Services:
-        "bg-primaryText text-background flex flex-col items-center gap-3 text-center",
+const CardVariants = cva(
+  "rounded-md p-4 lg:p-6 xl:p-8 tracking-wide shadow-md",
+  {
+    variants: {
+      CardStyle: {
+        Jobs: "bg-primaryText text-background  flex flex-col justify-between",
+        Services:
+          "bg-primaryText text-background flex flex-col items-center gap-3 text-center",
+      },
+      CardSize: {
+        PrimarySize:
+          "min-h-[35vh] w-[100vw] lg:w-[440px] xl:w-[520px] md:w-[45vw] ",
+      },
     },
-    CardSize: {
-      PrimarySize:
-        "min-h-[30vh] w-[290px] mid:w-[600px] md:w-[360px] xl:w-[495px]",
+    defaultVariants: {
+      CardStyle: "Jobs",
+      CardSize: "PrimarySize",
     },
   },
-  defaultVariants: {
-    CardStyle: "Jobs",
-    CardSize: "PrimarySize",
-  },
-});
+);

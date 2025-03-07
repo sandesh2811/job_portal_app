@@ -1,5 +1,6 @@
 import Button from "@/Components/UI/Button";
 import Link from "next/link";
+import { forwardRef } from "react";
 
 type NoJobsOrJobApplicationsOrBookmarksProps = {
   href: string;
@@ -7,19 +8,18 @@ type NoJobsOrJobApplicationsOrBookmarksProps = {
   title: string;
 };
 
-const NoJobsOrJobApplicationsOrBookmarksMobile = ({
-  href,
-  buttonText,
-  title,
-}: NoJobsOrJobApplicationsOrBookmarksProps) => {
+const NoJobsOrJobApplicationsOrBookmarksMobile = forwardRef<
+  HTMLDivElement,
+  NoJobsOrJobApplicationsOrBookmarksProps
+>(({ href, buttonText, title }, ref) => {
   return (
-    <div className="hidden mid:flex flex-col items-center gap-4">
+    <div ref={ref} className="hidden flex-col items-center gap-4 mid:flex">
       <span>{title}</span>
       <Link href={href}>
         <Button buttonType="Apply">{buttonText}</Button>
       </Link>
     </div>
   );
-};
+});
 
 export default NoJobsOrJobApplicationsOrBookmarksMobile;

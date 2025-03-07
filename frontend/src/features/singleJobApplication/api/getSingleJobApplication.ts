@@ -1,3 +1,4 @@
+import api from "@/axios/axios";
 import {
   SingleJobApplicationReturnType,
   SingleJobApplicationSchema,
@@ -6,15 +7,14 @@ import {
 import { z } from "zod";
 
 const getSingleJobApplication = async (
-  applicationId: string
+  applicationId: string,
 ): Promise<SingleJobApplicationReturnType> => {
   try {
-    const res = await fetch(`/api/jobApplication/details/${applicationId}`);
-    const resData = await res.json();
+    const response = await api.get(`/jobApplication/details/${applicationId}`);
+    const { data } = response;
+    const resData = await SingleJobApplicationSchema.parseAsync(data);
 
-    const data = await SingleJobApplicationSchema.parseAsync(resData);
-
-    return data;
+    return resData;
   } catch (error) {
     if (error instanceof z.ZodError) {
       throw new Error("Data validation failed");

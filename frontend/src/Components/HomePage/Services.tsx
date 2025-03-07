@@ -1,4 +1,5 @@
 import Card from "@/Components/UI/Card";
+import MainContainer from "@/Components/MainContainer";
 
 const ServicesList = [
   {
@@ -20,9 +21,9 @@ const ServicesList = [
 
 const Services = () => {
   return (
-    <div className="min-h-[60vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 gap-4 flex flex-col tracking-wide">
+    <MainContainer className="mb-36 min-h-[60vh]">
       <h2 className="text-4xl font-semibold">Our Services</h2>
-      <div className="flex flex-col gap-6 mid:items-center md:grid grid-cols-2 grid-rows-2 place-content-center place-items-center">
+      <div className="flex grid-cols-2 grid-rows-2 flex-col place-content-center place-items-center gap-6 mid:items-center md:grid">
         {ServicesList.map((service, idx) => (
           <Card CardStyle="Services" key={idx}>
             <h2 className="text-2xl leading-7">{service.title}</h2>
@@ -30,7 +31,7 @@ const Services = () => {
           </Card>
         ))}
       </div>
-    </div>
+    </MainContainer>
   );
 };
 

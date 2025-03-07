@@ -11,13 +11,13 @@ const ToastContainer = ({ value }: ToastContainerProps) => {
     <div
       className={
         value !== ""
-          ? "absolute top-5 mid:right-10 right-2"
-          : "hidden absolute top-5 mid:right-10 right-2"
+          ? "absolute right-2 top-5 mid:right-10"
+          : "absolute right-2 top-5 hidden mid:right-10"
       }
     >
       <Toast>
         <span>{value}</span>
-        <GoX size={20} className="absolute top-2 right-2 cursor-pointer" />
+        <GoX size={20} className="absolute right-2 top-2 cursor-pointer" />
       </Toast>
     </div>
   );

@@ -4,28 +4,28 @@ import useGetSingleJobApplication from "@/features/singleJobApplication/hooks/us
 import CheckIdType from "@/utils/CheckIdType";
 
 import JobSummary from "@/features/singleJobApplication/components/JobSummary";
-import ToastContainer from "@/Components/Toast/ToastContainer";
 import UserDetails from "@/features/singleJobApplication/components/UserDetails";
 import ApplicationStatus from "@/features/singleJobApplication/components/ApplicationStatus";
 import CtaButton from "@/features/singleJobApplication/components/CtaButton";
+import MainContainer from "@/Components/MainContainer";
 
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { SingleJobApplicationReturnType } from "@/Validators/ReturnDataTypeValidators";
 
-const singleJobApplicationDetails = () => {
+const SingleJobApplicationDetails = () => {
   const { id } = useParams();
   const [status, setStatus] = useState<string>("");
-  const [applicationStatusRes, setApplicationStatusRes] = useState<string>("");
 
   //   Check if the is is of type string or not
   const applicationId = CheckIdType(id);
 
-  //   Fetch single job
+  //   Fetch single job application
   const { data, singleApplicationLoading } =
     useGetSingleJobApplication(applicationId);
 
   return (
-    <div className="min-h-[90vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col gap-6 bg-[#282828]/70">
+    <MainContainer className="my-8 min-h-[90vh]">
       {!singleApplicationLoading && (
         <>
           {/* Job Introduction */}
@@ -33,36 +33,37 @@ const singleJobApplicationDetails = () => {
           <JobSummary data={data} />
 
           {/* Applier Details Section*/}
-
-          <h2 className="text-2xl mid:text-3xl">Applier Details</h2>
-
-          <div className="text-sm mid:text-base mb-3 flex flex-col  gap-4  mid:flex-row justify-between mid:items-center">
-            {/* User Details */}
-
-            <UserDetails data={data} />
-
-            {/* Application Status */}
-
-            <ApplicationStatus
-              data={data}
-              setStatus={setStatus}
-              status={status}
-            />
-          </div>
+          <ApplierDetails setStatus={setStatus} data={data} status={status} />
 
           {/* CTA Button */}
-          <CtaButton
-            setApplicationStatusRes={setApplicationStatusRes}
-            status={status}
-            applicationId={applicationId}
-          />
-
-          {/* Toast Notification */}
-          <ToastContainer value={applicationStatusRes} />
+          <CtaButton status={status} applicationId={applicationId} />
         </>
       )}
-    </div>
+    </MainContainer>
   );
 };
 
-export default singleJobApplicationDetails;
+export default SingleJobApplicationDetails;
+
+type ApplierDetailsProps = {
+  data: SingleJobApplicationReturnType | undefined;
+  setStatus: Dispatch<SetStateAction<string>>;
+  status: string;
+};
+
+const ApplierDetails = ({ data, setStatus, status }: ApplierDetailsProps) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <h2 className="text-2xl mid:text-3xl">Applier Details</h2>
+      <div className="mb-3 flex flex-col justify-between gap-4 text-sm mid:flex-row mid:items-center mid:text-base">
+        {/* User Details */}
+
+        <UserDetails data={data} />
+
+        {/* Application Status */}
+
+        <ApplicationStatus data={data} setStatus={setStatus} status={status} />
+      </div>
+    </div>
+  );
+};

@@ -8,13 +8,13 @@ const PostedJobsMobile = ({ job }: PostedJobsMobileProps) => {
   return (
     <JobsAndApplicationContainer href={`/jobdetails/${job._id}`}>
       <>
-        <span>{job.companyName}</span>
-        <span className="text-sm">{job.title}</span>
+        <span className="text-xl font-medium">{job.title}</span>
+        <span className="text-sm">{job.companyName}</span>
         <span
           className={
             job.status === "Expired"
               ? "text-sm text-red-500"
-              : "text-sm text-green-500 "
+              : "text-sm text-green-500"
           }
         >
           {job.status}

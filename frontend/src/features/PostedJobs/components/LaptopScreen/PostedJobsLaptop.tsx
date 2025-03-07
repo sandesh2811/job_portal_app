@@ -11,21 +11,25 @@ const PostedJobsLaptop = ({ job }: PostedJobsProps) => {
 
   return (
     <tr
-      className="border-b-[1.3px] hover:bg-white/20 duration-300 ease-in-out cursor-pointer"
+      className="cursor-pointer border-2 border-primaryText duration-300 ease-in-out hover:bg-black/20"
       onClick={() => RedirectUser(`/jobdetails/${job._id}`, router)}
     >
-      <td className=" w-1/5 py-6 text-center px-5">{job.companyName}</td>
-      <td className=" w-1/5 py-6 text-center px-5">{job.title}</td>
+      <td className="w-1/5 border-r-2 border-primaryText px-5 py-6 text-center">
+        {job.title}
+      </td>
+      <td className="w-1/5 border-r-2 border-primaryText px-5 py-6 text-center">
+        {job.companyName}
+      </td>
       <td
         className={
           job.status === "Expired"
-            ? "text-red-500 w-1/5 py-6 text-center px-5"
-            : "text-green-500 w-1/5 py-6 text-center px-5"
+            ? "w-1/5 border-r-2 border-primaryText px-5 py-6 text-center text-red-500"
+            : "w-1/5 border-r-2 border-primaryText px-5 py-6 text-center text-green-500"
         }
       >
         {job.status}
       </td>
-      <td className=" w-1/5 py-6 text-center px-5">
+      <td className="w-1/5 border-r-2 border-primaryText px-5 py-6 text-center">
         {job.createdAt as string}
       </td>
     </tr>

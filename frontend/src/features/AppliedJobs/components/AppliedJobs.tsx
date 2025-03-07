@@ -5,8 +5,11 @@ import useGetAppliedJobsByApplier from "@/features/AppliedJobs/hooks/useGetAppli
 
 import NoAppliedJobsMobile from "@/Components/FallbackUI/NoJobsOrJobApplicationsOrBookmarksMobile";
 import NoAppliedJobsLaptop from "@/Components/FallbackUI/NoJobsOrJobApplicationsOrBookmarksLaptop";
-import AppliedJobsTableContainer from "@/features/AppliedJobs/components/LaptopScreen/AppliedJobsContainerTable";
+import AppliedJobsTableContainer, {
+  headings,
+} from "@/features/AppliedJobs/components/LaptopScreen/AppliedJobsContainerTable";
 import AppliedJobsContainerMobile from "@/features/AppliedJobs/components/MobileScreen/AppliedJobsContainerMobile";
+import Loading from "@/Components/Loading/PostedJobs/Loading";
 
 import { useParams } from "next/navigation";
 
@@ -17,14 +20,18 @@ const AppliedJobs = () => {
   const userId = typeof id === "string" ? id : "";
 
   //   Fetch job applications
-  const { data, appliedJobsLoading, appliedJobsError, error } =
+  const { data, appliedJobsLoading, appliedJobsError } =
     useGetAppliedJobsByApplier(userId);
 
   // Check if the job if closed/deleted or not
   const appliedJobsWhichAreAvailable = CheckJobAvailability(data);
 
+  if (appliedJobsLoading) {
+    return <Loading headings={headings} dataLength={3} colsNumber={3} />;
+  }
+
   return (
-    <div className="min-h-[80vh]">
+    <div>
       {/* For mobile screens */}
 
       {!appliedJobsLoading &&

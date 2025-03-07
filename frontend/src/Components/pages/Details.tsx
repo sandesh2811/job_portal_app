@@ -7,6 +7,7 @@ import JobApplicationsForJob from "@/features/jobapplicationsforjob/components/J
 import CreateJob from "@/features/createjob/components/CreateJob";
 import AppliedJobs from "@/features/AppliedJobs/components/AppliedJobs";
 import Bookmarks from "@/features/bookmarks/components/Bookmarks";
+import MainContainer from "@/Components/MainContainer";
 
 import { usePathname } from "next/navigation";
 
@@ -14,15 +15,15 @@ const Details = () => {
   const pathname = usePathname();
 
   return (
-    <div className="min-h-[90vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col gap-6 bg-[#282828]/70 ">
-      <Filters />
+    <MainContainer className="my-8 min-h-[70vh] justify-normal gap-6">
+      <Filters pathname={pathname} />
       {pathname.startsWith("/details") && <Profile />}
       {pathname.startsWith("/postedjobs") && <PostedJobs />}
       {pathname.startsWith("/jobapplications") && <JobApplicationsForJob />}
       {pathname.startsWith("/createjob") && <CreateJob />}
       {pathname.startsWith("/appliedjobs") && <AppliedJobs />}
       {pathname.startsWith("/bookmarks") && <Bookmarks />}
-    </div>
+    </MainContainer>
   );
 };
 

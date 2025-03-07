@@ -20,7 +20,7 @@ const UserDetails = ({ data }: UserDetailsProps) => {
       <span>Experience: {prefix?.experience} year</span>
       <span>Phone Number: {prefix?.phonenumber}</span>
       <span>Email: {prefix?.email}</span>
-      <div className="flex items-center gap-2 justify-center">
+      <div className="flex items-center gap-2">
         <span>CV:</span>
         <span
           className="cursor-pointer underline underline-offset-4"

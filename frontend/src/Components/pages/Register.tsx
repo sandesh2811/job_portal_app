@@ -1,10 +1,11 @@
 import RegisterContainer from "@/features/auth/components/Register/RegisterContainer";
+import MainContainer from "@/Components/MainContainer";
 
 const Register = () => {
   return (
-    <div className="h-[80vh] flex flex-col justify-center items-center px-4 midLg:max-w-[850px] xl:max-w-[1050px] mx-auto tracking-wide">
+    <MainContainer className="my-2 min-h-[80vh] items-center justify-center mid:my-16">
       <RegisterContainer />
-    </div>
+    </MainContainer>
   );
 };
 

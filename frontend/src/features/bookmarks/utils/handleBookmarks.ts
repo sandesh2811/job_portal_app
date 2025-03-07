@@ -1,26 +1,30 @@
-import setBookmark from "@/features/bookmarks/api/actions/setBookmark";
+import setBookmark from "@/features/bookmarks/api/setBookmark";
+import InvalidateAndRefetchQuery from "@/utils/InvalidateAndRefetchQuery";
+import { QueryClient } from "@tanstack/react-query";
 
-import { Dispatch, SetStateAction } from "react";
+import toast from "react-hot-toast";
 
 type HandleBookmarkType = {
+  queryClient: QueryClient;
   jobId: string;
   id: string;
-  setBookmarkStatus: Dispatch<SetStateAction<string>>;
 };
 
 const handleBookmark = async ({
+  queryClient,
   jobId,
   id,
-  setBookmarkStatus,
 }: HandleBookmarkType) => {
   const data = await setBookmark(jobId, id);
 
-  setBookmarkStatus(data?.message);
+  if (!data.success) {
+    toast.error(data.message);
+    return;
+  }
 
-  let timerId = setTimeout(() => {
-    setBookmarkStatus("");
-    clearTimeout(timerId);
-  }, 3000);
+  toast.success(data.message);
+
+  InvalidateAndRefetchQuery({ queryClient, queryKey: ["bookmarks"] });
 };
 
 export default handleBookmark;

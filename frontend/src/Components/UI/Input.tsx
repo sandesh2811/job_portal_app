@@ -1,6 +1,6 @@
 import cn from "@/utils/cn";
 import { cva, VariantProps } from "class-variance-authority";
-import { InputHTMLAttributes } from "react";
+import { forwardRef, InputHTMLAttributes } from "react";
 
 interface InputProps
   extends InputHTMLAttributes<HTMLInputElement>,
@@ -10,40 +10,37 @@ interface InputProps
   placeholder?: string;
 }
 
-const Input = ({
-  type,
-  name,
-  placeholder,
-  className,
-  inputVars,
-  inputBoxSize,
-  ...props
-}: InputProps) => {
-  return (
-    <input
-      {...props}
-      className={cn(InputVariants({ inputVars, inputBoxSize, className }))}
-      type={type}
-      name={name}
-      placeholder={placeholder}
-    />
-  );
-};
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  (
+    { type, name, placeholder, className, inputVars, inputBoxSize, ...props },
+    ref,
+  ) => {
+    return (
+      <input
+        ref={ref}
+        {...props}
+        className={cn(InputVariants({ inputVars, inputBoxSize, className }))}
+        type={type}
+        name={name}
+        placeholder={placeholder}
+      />
+    );
+  },
+);
 
 export default Input;
 
-const InputVariants = cva("rounded-md bg-transparent ", {
+const InputVariants = cva("rounded-[2px] bg-transparent focus:outline-none", {
   variants: {
     inputVars: {
       primary: "border-[1px] border-secondaryText",
     },
     inputBoxSize: {
-      sm: "text-sm px-2 py-1",
-      md: "text-md p-3 ",
+      all: "text-sm md:text-md p-2",
     },
   },
   defaultVariants: {
     inputVars: "primary",
-    inputBoxSize: "md",
+    inputBoxSize: "all",
   },
 });

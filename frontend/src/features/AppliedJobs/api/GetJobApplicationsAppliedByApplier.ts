@@ -1,3 +1,4 @@
+import api from "@/axios/axios";
 import {
   AppliedJobReturnDataSchema,
   AppliedJobReturnType,
@@ -5,18 +6,18 @@ import {
 import { z } from "zod";
 
 const fetchJobsPostedByEmployer = async (
-  id: string
+  id: string,
 ): Promise<AppliedJobReturnType> => {
   try {
-    const res = await fetch(`/api/jobApplication/applier/${id}`, {
-      method: "GET",
-      credentials: "include",
-    });
-    const resData = await res.json();
+    const getJobsPostedByEmployer = await api.get(
+      `jobApplication/applier/${id}`,
+    );
 
-    const data = await AppliedJobReturnDataSchema.parseAsync(resData);
+    const { data } = getJobsPostedByEmployer;
 
-    return data;
+    const parsedData = await AppliedJobReturnDataSchema.parseAsync(data);
+
+    return parsedData;
   } catch (error) {
     if (error instanceof z.ZodError) {
       throw new Error("Data validation failed");

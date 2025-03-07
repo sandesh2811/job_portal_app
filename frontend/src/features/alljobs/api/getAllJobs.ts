@@ -1,3 +1,4 @@
+import api from "@/axios/axios";
 import {
   JobReturnDataSchema,
   JobReturnType,
@@ -14,17 +15,25 @@ const getAllJobs = async ({
   location,
 }: QueryParams): Promise<JobReturnType> => {
   try {
-    const res = await fetch(
-      `/api/jobs?page=${pageNumber}&limit=${jobLimit}&searchQuery=${searchQuery}&title=${title}&salaryFrom=${salary.from}&salaryTo=${salary.to}&experience=${experience}&position=${position}&location=${location}`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    );
-    const resData = await res.json();
-    const data = await JobReturnDataSchema.parseAsync(resData);
+    const fetchAllJobs = await api.get("jobs", {
+      params: {
+        page: pageNumber,
+        limit: jobLimit,
+        searchQuery: searchQuery,
+        title: title,
+        salaryFrom: salary.from,
+        salaryTo: salary.to,
+        experience: experience,
+        position: position,
+        location: location,
+      },
+    });
 
-    return data;
+    const { data } = fetchAllJobs;
+
+    const parsedData = await JobReturnDataSchema.parseAsync(data);
+
+    return parsedData;
   } catch (error) {
     throw new Error("Oops! Something went wrong!");
   }

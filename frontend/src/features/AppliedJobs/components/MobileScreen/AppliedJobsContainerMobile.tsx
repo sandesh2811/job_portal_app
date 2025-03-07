@@ -10,7 +10,7 @@ const AppliedJobsContainerMobile = ({
   return appliedJobsWhichAreAvailable?.map((appliedJob) => (
     <div
       key={appliedJob._id}
-      className="flex justify-between items-center gap-2 border-b-[1.2px]  cursor-pointer py-4 mid:hidden"
+      className="flex cursor-pointer items-center justify-between gap-2 border-b-[1.2px] border-primaryText py-4 mid:hidden"
     >
       <AppliedJobsMobile appliedJob={appliedJob} />
     </div>

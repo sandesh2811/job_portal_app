@@ -1,31 +1,21 @@
+"use client";
+
 import useGetLatestJobs from "@/features/latestjobs/hooks/useGetLatestJobs";
 
 import JobCard from "@/Components/JobCard/JobCard";
+import CardSkeleton from "@/Components/UI/CardSkeleton";
 
-import { Dispatch, SetStateAction } from "react";
+const LatestJobsContainer = () => {
+  let { data, latestJobLoading } = useGetLatestJobs();
 
-type LatestJobsContainerProps = {
-  setBookmarkStatus: Dispatch<SetStateAction<string>>;
-};
-
-const LatestJobsContainer = ({
-  setBookmarkStatus,
-}: LatestJobsContainerProps) => {
-  const { data, latestJobLoading } = useGetLatestJobs();
+  if (latestJobLoading) {
+    return <CardSkeleton />;
+  }
 
   return (
-    <div
-      className="flex flex-col gap-8 mid:items-center 
-    md:grid grid-cols-2 grid-rows-2 place-content-center place-items-center"
-    >
+    <div className="flex grid-cols-2 grid-rows-2 flex-wrap gap-4 mid:gap-6 md:grid lg:gap-10">
       {!latestJobLoading &&
-        data?.latestJobs?.map((job) => (
-          <JobCard
-            key={job._id}
-            job={job}
-            setBookmarkStatus={setBookmarkStatus}
-          />
-        ))}
+        data?.latestJobs?.map((job) => <JobCard key={job._id} job={job} />)}
     </div>
   );
 };

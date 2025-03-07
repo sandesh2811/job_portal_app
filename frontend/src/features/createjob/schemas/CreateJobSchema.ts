@@ -27,9 +27,9 @@ export const CreateJobSchema = z.object({
       message: "Number of required candidates cannot exceed 3 characters!",
     }),
   skills: z
-    .string({ message: "Number of required skills is required!" })
+    .string({ message: "Skills is required!" })
     .min(5, {
-      message: "Number of required skills cannot be less than 5 characters!",
+      message: "Required skills cannot be less than 5 characters!",
     })
     .max(40, {
       message: "Number of required skills cannot exceed 40 characters!",

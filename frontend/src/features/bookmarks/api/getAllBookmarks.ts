@@ -1,22 +1,23 @@
+import api from "@/axios/axios";
+
 import {
   BookmarkSchemaReturnDataSchema,
   BookmarkSchemaReturnType,
 } from "@/Validators/ReturnDataTypeValidators";
+
 import { z } from "zod";
 
 const getBookmarks = async (
-  userId: string
+  userId: string,
 ): Promise<BookmarkSchemaReturnType> => {
   try {
-    const response = await fetch(`/api/bookmarks/${userId}`, {
-      method: "GET",
-      credentials: "include",
-    });
+    const fetchAllBookmarks = await api.get(`bookmarks/${userId}`);
 
-    const data = await response.json();
-    const responseData = await BookmarkSchemaReturnDataSchema.parseAsync(data);
+    const { data } = fetchAllBookmarks;
 
-    return responseData;
+    const parsedData = await BookmarkSchemaReturnDataSchema.parseAsync(data);
+
+    return parsedData;
   } catch (error) {
     if (error instanceof z.ZodError) {
       console.log(error.errors);

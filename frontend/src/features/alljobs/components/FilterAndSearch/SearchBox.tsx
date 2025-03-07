@@ -22,13 +22,13 @@ const SearchBox = ({
         type="string"
         name="search"
         placeholder="Search..."
-        className="rounded-none"
+        className="rounded-none mid:w-[200px]"
         autoComplete="off"
         value={userInput}
         onChange={(e) => setUserInput(e.target.value)}
       />
       <Button
-        className="rounded-none"
+        className="rounded-none bg-primaryText text-background midLg:px-3 midLg:py-1 lg:text-base"
         onClick={() => searchQuery(userInput, setSearchQuery)}
       >
         Search

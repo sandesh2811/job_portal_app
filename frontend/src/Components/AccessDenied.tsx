@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 const AccessDenied = () => {
   return (
-    <div className="min-h-[70vh] midLg:max-w-[850px] xl:max-w-[1050px] mx-auto p-4 tracking-wide flex flex-col items-center justify-center gap-6">
+    <div className="mx-auto flex min-h-[70vh] flex-col items-center justify-center gap-6 p-4 tracking-wide midLg:max-w-[850px] xl:max-w-[1050px]">
       <h3 className="text-xl">Access Denied!</h3>
       <div className="flex flex-col items-center gap-3 text-center">
         <h1 className="text-9xl">403</h1>

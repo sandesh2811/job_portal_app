@@ -10,20 +10,18 @@ import JobApplicationSchema, {
 
 import Button from "@/Components/UI/Button";
 import TextInput from "@/Components/UI/TextInput";
-import ToastContainer from "@/Components/Toast/ToastContainer";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { useParams, useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 const JobApplicationForm = () => {
   const { control, handleSubmit, reset } = useForm<JobApplicationType>({
     resolver: zodResolver(JobApplicationSchema),
     mode: "onChange",
   });
-  const [applicationRes, setapplicationRes] = useState<string>("");
 
   const router = useRouter();
   const { id } = useParams();
@@ -36,14 +34,16 @@ const JobApplicationForm = () => {
   // Extract the userid from the user login data
   const userId = loginData.userId;
 
+  const queryClient = useQueryClient();
+
   const handleFormSubmit = handleSubmit(async (data) => {
     await handleJobApplicationSubmit({
       data,
       jobId,
       router,
-      setapplicationRes,
       userId,
       reset,
+      queryClient,
     });
   });
 
@@ -51,7 +51,6 @@ const JobApplicationForm = () => {
     <>
       <form
         onSubmit={handleFormSubmit}
-        action="#"
         className="flex flex-col gap-4 mid:w-[500px]"
       >
         <TextInput control={control} name="fullname" text="Full Name" />
@@ -61,9 +60,6 @@ const JobApplicationForm = () => {
         <TextInput control={control} name="file" text="CV" type="file" />
         <Button type="submit">Submit</Button>
       </form>
-
-      {/* Toast Notification */}
-      <ToastContainer value={applicationRes} />
     </>
   );
 };

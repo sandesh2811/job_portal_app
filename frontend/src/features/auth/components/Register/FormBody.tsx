@@ -33,7 +33,7 @@ const FormBody = () => {
 
   return (
     <>
-      <form onSubmit={handleUserRegistration} className="flex flex-col gap-4">
+      <form onSubmit={handleUserRegistration} className="flex flex-col gap-6">
         {/* Username */}
         <TextInput
           control={control}
@@ -47,6 +47,7 @@ const FormBody = () => {
           name="password"
           text="Password"
           type="password"
+          placeholder="********"
         />
 
         {/* Email */}
@@ -63,7 +64,7 @@ const FormBody = () => {
           <select
             {...register("role")}
             name="role"
-            className="bg-transparent border-[1px] rounded-md p-[13px]"
+            className="rounded-[2px] border-[1px] border-primaryText bg-transparent p-2"
           >
             <SelectOption value="employer" title="Employer" />
             <SelectOption value="applier" title="Applier" />
@@ -72,7 +73,10 @@ const FormBody = () => {
             <span className="text-sm text-red-600">{errors.role.message}</span>
           )}
         </div>
-        <Button buttonType="AuthButtons" size="medium">
+        <Button
+          buttonType="AuthButtons"
+          className="bg-primaryText uppercase text-background"
+        >
           Register
         </Button>
       </form>

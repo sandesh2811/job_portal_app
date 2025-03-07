@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useGetSingleJobApplication = (applicationId: string) => {
   const { data, isLoading: singleApplicationLoading } = useQuery({
-    queryKey: ["singleApplication"],
+    queryKey: ["singleApplication", "singleJob"],
     queryFn: () => getSingleJobApplication(applicationId),
   });
 

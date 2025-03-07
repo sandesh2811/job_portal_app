@@ -16,7 +16,7 @@ const Profile = () => {
   const router = useRouter();
 
   return (
-    <div className="h-[50vh] flex justify-center items-center">
+    <div className="flex h-[50vh] items-center justify-center">
       <Card>
         <UserInfo />
         <Button

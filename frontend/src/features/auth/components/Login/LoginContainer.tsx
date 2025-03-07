@@ -4,11 +4,11 @@ import FormFooter from "@/features/auth/components/FormFooter";
 
 const LoginContainer = () => {
   return (
-    <div className="w-full min-h-[50vh] p-3 flex flex-col justify-evenly gap-3 border-2 border-secondaryText mid:w-[550px] mid:p-8 rounded-md">
+    <div className="flex min-h-[400px] w-full flex-col justify-evenly gap-4 rounded-[5px] border-2 border-secondaryText p-4 mid:min-h-[500px] mid:max-w-[680px] mid:gap-9 mid:p-14">
       {/* Headings */}
       <FormHeader
-        heading="Log into your account"
-        subHeading="  Enter your username and password to login to your account"
+        heading="Welcome Back!"
+        subHeading="Please enter your username and password to login"
       />
 
       {/* Form */}

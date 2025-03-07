@@ -1,30 +1,33 @@
-import postNewJob from "@/features/createjob/api/actions/postNewJob";
+import postNewJob from "@/features/createjob/api/postNewJob";
 
 import { CreateJobType } from "@/features/createjob/schemas/CreateJobSchema";
 
+import toast from "react-hot-toast";
+
 import { UseFormReset } from "react-hook-form";
-import { Dispatch, SetStateAction } from "react";
 
 type HandleJobCreationType = {
   formData: CreateJobType;
-  setJobCreationRes: Dispatch<SetStateAction<string>>;
   reset: UseFormReset<CreateJobType>;
   userId: string;
 };
 
 const handleJobCreation = async ({
   formData,
-  setJobCreationRes,
   reset,
   userId,
-}: HandleJobCreationType): Promise<void> => {
+}: HandleJobCreationType): Promise<boolean> => {
   const response = await postNewJob(formData, userId);
-  setJobCreationRes(response.message);
-  let timerId = setTimeout(() => {
-    setJobCreationRes("");
-    clearTimeout(timerId);
-  }, 2000);
+
+  if (!response.success) {
+    toast.error(response.message);
+    return false;
+  }
+
+  toast.success(response.message);
   reset();
+
+  return response.success;
 };
 
 export default handleJobCreation;

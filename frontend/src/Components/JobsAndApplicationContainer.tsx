@@ -12,7 +12,7 @@ const JobsAndApplicationContainer = ({
 }: JobsAndApplicationContainerProps) => {
   return (
     <Link href={href} className="mid:hidden">
-      <div className="flex flex-col gap-2 border-b-[1.2px] cursor-pointer py-4 mid:flex-row mid:justify-between">
+      <div className="flex cursor-pointer flex-col gap-2 border-b-[1.2px] border-primaryText py-4 mid:flex-row mid:justify-between">
         {children}
       </div>
     </Link>

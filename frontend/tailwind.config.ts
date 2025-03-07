@@ -24,6 +24,7 @@ export default {
     },
     fontFamily: {
       Epilogue: ["Epilogue", "sans-serif"],
+      Manrope: ["Manrope", "serif"],
     },
   },
   plugins: [],

@@ -15,7 +15,7 @@ const FilterAndSearchContainer = ({
   setUserInput,
 }: FilterAndSearchContainerProps) => {
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex flex-col items-start justify-between gap-4 mid:flex-row mid:items-center">
       {/* Search Box */}
       <SearchBox
         setSearchQuery={setSearchQuery}

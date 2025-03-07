@@ -1,3 +1,9 @@
+type MetadataParmasType = {
+  params: {
+    id: string;
+  };
+};
+
 // For fetching all jobs
 
 type QueryParams = {
@@ -133,3 +139,26 @@ type ReturnDataType<Key extends string, Value> = {
   message: string;
   totalPages?: number;
 } & { [key in Key]: Value };
+
+// _________________SERVER_ACTIONS_______________
+// Server actions return type
+type BaseReturnType = {
+  success: boolean;
+  message: string;
+};
+
+type LoginReturnType = {
+  userData: LoginDataType;
+} & BaseReturnType;
+
+type CreatedJobReturnType = {
+  newJob: JobType;
+} & BaseReturnType;
+
+type UpdatedJobReturnType = {
+  job: JobType;
+} & BaseReturnType;
+
+type UpdatedApplicationReturnType = {
+  updatedApplication: JobApplicationType;
+} & BaseReturnType;

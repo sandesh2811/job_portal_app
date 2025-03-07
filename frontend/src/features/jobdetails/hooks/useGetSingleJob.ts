@@ -1,10 +1,10 @@
-import getSingleJob from "@/features/singlejob/api/getSingleJob";
+import getSingleJob from "@/features/jobdetails/api/getSingleJob";
 
 import { useQuery } from "@tanstack/react-query";
 
 const useGetSingleJob = (id: string) => {
   const { data, isLoading: singleJobLoading } = useQuery({
-    queryKey: ["singleJob"],
+    queryKey: ["singleJob", id],
     queryFn: () => getSingleJob(id),
   });
 

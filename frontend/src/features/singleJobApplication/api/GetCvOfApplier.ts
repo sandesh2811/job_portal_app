@@ -1,3 +1,4 @@
+import api from "@/axios/axios";
 import { Dispatch, SetStateAction } from "react";
 
 type GetCVProps = {
@@ -6,14 +7,11 @@ type GetCVProps = {
 };
 
 const GetCV = async ({ fileName, setFileName }: GetCVProps) => {
-  const res = await fetch(`/api/uploads/files/${fileName}`, {
-    method: "GET",
-    credentials: "include",
-  });
-  const resData = await res.json();
-  if (resData.success) {
-    setFileName(resData.fileName);
-    window.open(`http://localhost:5000/${fileName}`);
+  const res = await api.get(`/uploads/files/${fileName}`);
+
+  if (res.data.success) {
+    setFileName(res.data.fileName);
+    window.open(`/api/${fileName}`);
   }
 };
 

@@ -5,7 +5,7 @@ const UserInfo = () => {
   return (
     <>
       <div className="flex justify-center">
-        <span className="block w-[80px] h-[80px] bg-background rounded-full"></span>
+        <span className="block h-[80px] w-[80px] rounded-full bg-background"></span>
       </div>
       <div>
         <h3 className="text-lg">Welcome back {loginData.userName}</h3>

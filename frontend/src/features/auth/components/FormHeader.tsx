@@ -5,11 +5,11 @@ type FormHeaderProps = {
 
 const FormHeader = ({ heading, subHeading }: FormHeaderProps) => {
   return (
-    <div>
-      <h3 className="text-xl font-semibold leading-5 mid:text-2xl">
-        {heading}
-      </h3>
-      <span className="text-sm leading-5 text-secondaryText">{subHeading}</span>
+    <div className="flex flex-col gap-1 mid:gap-2">
+      <h3 className="text-2xl font-semibold mid:text-4xl">{heading}</h3>
+      <span className="text-xs tracking-wide text-secondaryText mid:text-base mid:leading-5">
+        {subHeading}
+      </span>
     </div>
   );
 };

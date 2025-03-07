@@ -13,20 +13,24 @@ const JobApplicationsLaptop = ({ application }: JobApplicationsLaptopProps) => {
   return (
     <tr
       onClick={() => RedirectUser(`/jobapplicationdetails/${id}`, router)}
-      className="border-b-[1.3px] hover:bg-white/20 duration-300 ease-in-out cursor-pointer"
+      className="cursor-pointer border-2 border-primaryText duration-300 ease-in-out hover:bg-black/20"
     >
-      <td className=" w-1/5 py-6 text-center px-5">
+      <td className="w-1/5 border-r-2 border-primaryText px-5 py-6 text-center">
         {application.jobId.title}
       </td>
-      <td className=" w-1/5 py-6 text-center px-5">{application.fullname}</td>
-      <td className=" w-1/5 py-6 text-center px-5">{application.email}</td>
+      <td className="w-1/5 border-r-2 border-primaryText px-5 py-6 text-center">
+        {application.fullname}
+      </td>
+      <td className="w-1/5 border-r-2 border-primaryText px-5 py-6 text-center">
+        {application.email}
+      </td>
       <td
         className={
           application.status === "Accepted"
-            ? "text-green-500 w-1/5 py-6 text-center px-5"
+            ? "w-1/5 border-r-2 border-primaryText px-5 py-6 text-center text-green-500"
             : application.status === "Rejected"
-            ? "text-red-500 w-1/5 py-6 text-center px-5"
-            : "w-1/5 py-6 text-center px-5"
+              ? "w-1/5 px-5 py-6 text-center text-red-500"
+              : "w-1/5 border-r-2 border-primaryText px-5 py-6 text-center"
         }
       >
         {application.status}

@@ -8,20 +8,16 @@ type CtaButtonProps = {
 
 const CtaButton = ({ jobId }: CtaButtonProps) => {
   return (
-    <div className="flex justify-between items-center ">
+    <div className="flex items-center justify-between">
       <Link
         href="/jobs"
-        className="flex gap-2 items-center underline underline-offset-4 text-sm mid:text-base"
+        className="flex cursor-pointer items-center gap-2 text-sm underline underline-offset-4 mid:text-lg"
       >
         <GoArrowLeft />
         Return to jobs
       </Link>
       <Link href={`/apply/${jobId}`}>
-        <Button
-          buttonType="Apply"
-          size="small"
-          className="flex gap-2 items-center "
-        >
+        <Button buttonType="Apply" className="flex items-center gap-2">
           Apply <GoArrowRight />
         </Button>
       </Link>

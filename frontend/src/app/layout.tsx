@@ -7,8 +7,13 @@ import QueryProvider from "@/Components/ReactQueryProvider/QueryProvider";
 
 import ReduxPersistProvider from "@/Components/ReduxPersist/ReduxPersistProvider";
 
+import { Toaster } from "react-hot-toast";
+
 export const metadata: Metadata = {
-  title: "Find Jobs",
+  title: {
+    default: "Find Jobs",
+    template: "%s | Find Jobs",
+  },
   description: "A better way to find and apply to the job.",
 };
 
@@ -19,11 +24,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-Epilogue text-primaryText">
+      <body className="font-Manrope text-primaryText">
         <div className="relative overflow-x-hidden">
           <QueryProvider>
             <Providers>
               <ReduxPersistProvider>
+                <Toaster position="top-right" reverseOrder={false} />
                 <Navbar />
                 {children}
                 <Footer />

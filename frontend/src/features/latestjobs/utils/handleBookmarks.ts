@@ -19,7 +19,7 @@ const handleBookmarks = async (
 
   setBookmarkStatus(data?.message);
 
-  let timerId = setTimeout(() => {
+  const timerId = setTimeout(() => {
     setBookmarkStatus("");
     clearTimeout(timerId);
   }, 3000);

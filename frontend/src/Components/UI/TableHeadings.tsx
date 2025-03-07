@@ -7,7 +7,10 @@ const TableHeadings = ({ data }: TableHeadingsProps) => {
     <tr>
       {data.map((heading) => {
         return (
-          <th key={heading} className="w-1/5 font-normal py-6">
+          <th
+            key={heading}
+            className="w-1/5 border-r-2 border-primaryText py-6 text-xl font-semibold"
+          >
             {heading}
           </th>
         );

@@ -21,7 +21,7 @@ const ApplicationStatus = ({
     <div>
       <select
         name="applicationStatus"
-        className="bg-transparent  border-[1px] rounded-md p-[13px] w-full"
+        className="w-full rounded-[2px] border-[1px] border-primaryText bg-transparent p-2 focus:outline-none"
         value={status}
         onChange={(e) => setStatus(e.target.value)}
       >

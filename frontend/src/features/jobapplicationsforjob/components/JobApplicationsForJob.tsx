@@ -5,8 +5,11 @@ import CheckIdType from "@/utils/CheckIdType";
 
 import NoJobApplicationsMobile from "@/Components/FallbackUI/NoJobsOrJobApplicationsOrBookmarksMobile";
 import NoJobApplicationsLaptop from "@/Components/FallbackUI/NoJobsOrJobApplicationsOrBookmarksLaptop";
-import JobApplicationsContainerTable from "@/features/jobapplicationsforjob/components/LaptopScreen/JobApplicationsContainerTable";
+import JobApplicationsContainerTable, {
+  headings,
+} from "@/features/jobapplicationsforjob/components/LaptopScreen/JobApplicationsContainerTable";
 import JobApplicationsContainerMobile from "@/features/jobapplicationsforjob/components/MobileScreen/JobApplicationsContainerMobile";
+import Loading from "@/Components/Loading/PostedJobs/Loading";
 
 import { useParams } from "next/navigation";
 
@@ -19,8 +22,12 @@ const JobApplicationsForJob = () => {
   //   Fetch job applications
   const { jobApplicationsLoading, data } = useGetJobApplications(userId);
 
+  if (jobApplicationsLoading) {
+    return <Loading headings={headings} dataLength={5} colsNumber={4} />;
+  }
+
   return (
-    <div className="min-h-[80vh]">
+    <div>
       {/* For mobile screens */}
 
       {!jobApplicationsLoading &&

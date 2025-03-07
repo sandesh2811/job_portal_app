@@ -2,9 +2,12 @@ import GetJobsPostedByEmployer from "@/features/PostedJobs/hooks/useGetJobsPoste
 import CheckIdType from "@/utils/CheckIdType";
 
 import PostedJobsContainerMobile from "@/features/PostedJobs/components/MobileScreen/PostedJobsContainerMobile";
-import PostedJobsTableContainer from "@/features/PostedJobs/components/LaptopScreen/PostedJobsContainerTable";
+import PostedJobsTableContainer, {
+  headings,
+} from "@/features/PostedJobs/components/LaptopScreen/PostedJobsContainerTable";
 import NoPostedJobsMobile from "@/Components/FallbackUI/NoJobsOrJobApplicationsOrBookmarksMobile";
 import NoPostedJobsLaptop from "@/Components/FallbackUI/NoJobsOrJobApplicationsOrBookmarksLaptop";
+import Loading from "@/Components/Loading/PostedJobs/Loading";
 
 import { useParams } from "next/navigation";
 import formatCreatedDate from "@/utils/formatCreatedDate";
@@ -21,8 +24,12 @@ const PostedJobs = () => {
   //   Format the date to basic date only and replace it with the original created date
   const newPostedJobs = formatCreatedDate(data);
 
+  if (jobsPostedByEmployerLoading) {
+    return <Loading headings={headings} dataLength={5} colsNumber={4} />;
+  }
+
   return (
-    <div className="min-h-[80vh]">
+    <div>
       {/* For mobile screens */}
 
       {!jobsPostedByEmployerLoading &&

@@ -4,9 +4,11 @@ import { getSelectedFilters } from "@/Store/Features/selectedFilters";
 import Button from "@/Components/UI/Button";
 import Input from "@/Components/UI/Input";
 import { GoX } from "react-icons/go";
+import SelectOption from "@/Components/UI/SelectOption";
 
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { AnimatePresence, motion as m } from "motion/react";
 
 const JobTitles = [
   "Frontend",
@@ -15,6 +17,16 @@ const JobTitles = [
   "Designing",
   "Quality Assurance",
 ];
+
+const experienceInYears = ["None", "1", "2", "3", "4", "5"];
+const positions = [
+  "None",
+  "Junior Level",
+  "Mid Level",
+  "Senior Level",
+  "Intern",
+];
+const locations = ["None", "Pokhara", "Butwal", "Kathmandu"];
 
 const FilterModal = ({ setToggleFilters, setClearFilter }: ModalTypeProps) => {
   const [jobFilters, setJobFilters] = useState({
@@ -46,180 +58,180 @@ const FilterModal = ({ setToggleFilters, setClearFilter }: ModalTypeProps) => {
   };
 
   return (
-    <div className="bg-black/80 rounded-sm w-[80%] min-h-[50vh] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-md flex justify-between flex-col p-6">
-      {/* Top/CTA Button */}
+    <AnimatePresence>
+      <m.div
+        key={"filter_modal"}
+        initial={{ left: "50%", top: "-50%" }}
+        animate={{ left: "50%", top: "15%" }}
+        exit={{ left: 0, top: "-50%" }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+        className="absolute flex min-h-[40vh] w-[90vw] translate-x-[-50%] flex-col justify-between gap-4 rounded-sm border-[1.28px] border-primaryText bg-background p-4 shadow-lg md:gap-6 md:p-8 lg:w-[800px]"
+      >
+        {/* Top/CTA Button */}
 
-      <div className="flex justify-end items-center">
-        <GoX
-          size={30}
-          className="cursor-pointer"
-          onClick={() => setToggleFilters(false)}
-        />
-      </div>
-
-      {/* Filter Contents */}
-
-      <div className="h-full flex flex-col gap-3">
-        {/* Based on job title */}
-
-        <div className="flex flex-col gap-2 mid:items-center mid:flex-row min-h-[10vh]">
-          <span>Title: </span>
-          {JobTitles.map((title, idx) => {
-            return (
-              <div key={idx} className="flex gap-3">
-                <span
-                  className="cursor-pointer hover:bg-secondaryText hover:text-background"
-                  onClick={() =>
-                    setJobFilters((prev) => ({ ...prev, title: title }))
-                  }
-                >
-                  {title}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Salary */}
-
-        <div className="flex flex-col mid:flex-row mid:items-center gap-2 min-h-[10vh]">
-          <span>Salary:</span>
-
-          <Input
-            name="lowest"
-            type="string"
-            placeholder="From"
-            inputBoxSize="sm"
-            onChange={(e) =>
-              setJobFilters((prev) => ({
-                ...prev,
-                salary: {
-                  ...prev.salary,
-                  from: e.target.value,
-                },
-              }))
-            }
-          />
-          <Input
-            name="highest"
-            type="string"
-            placeholder="To"
-            inputBoxSize="sm"
-            onChange={(e) =>
-              setJobFilters((prev) => ({
-                ...prev,
-                salary: {
-                  ...prev.salary,
-                  to: e.target.value,
-                },
-              }))
-            }
+        <div className="flex items-center justify-end">
+          <GoX
+            size={30}
+            className="cursor-pointer"
+            onClick={() => setToggleFilters(false)}
           />
         </div>
 
-        {/* Experience */}
+        {/* Filter Contents */}
 
-        <div className="flex gap-4 items-center min-h-[10vh]">
-          <span className="flex flex-col">
-            Experience <span className="text-xs">(in years or above)</span>
-          </span>
-          <select
-            className="bg-transparent border-[1px] rounded-md px-4 py-2 w-[150px]"
-            onChange={(e) =>
-              setJobFilters((prev) => ({ ...prev, experience: e.target.value }))
+        <div className="flex flex-col gap-4 md:gap-6">
+          {/* Based on job title */}
+
+          <div className="flex flex-col gap-2">
+            <span className="text-lg font-medium md:text-2xl">Job Title</span>
+            <div className="flex flex-row flex-wrap justify-between gap-2">
+              {JobTitles.map((title, idx) => {
+                return (
+                  <div key={idx} className="flex gap-3">
+                    <span
+                      className="cursor-pointer hover:bg-secondaryText hover:text-background"
+                      onClick={() =>
+                        setJobFilters((prev) => ({ ...prev, title: title }))
+                      }
+                    >
+                      {title}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/*Based on Salary */}
+
+          <div className="flex flex-col gap-2">
+            <span className="text-lg font-medium md:text-2xl">Salary</span>
+            <div className="flex flex-col justify-between gap-2 md:flex-row md:gap-6">
+              <Input
+                name="lowest"
+                type="string"
+                placeholder="From"
+                className="flex-1"
+                onChange={(e) =>
+                  setJobFilters((prev) => ({
+                    ...prev,
+                    salary: {
+                      ...prev.salary,
+                      from: e.target.value,
+                    },
+                  }))
+                }
+              />
+              <Input
+                name="highest"
+                type="string"
+                placeholder="To"
+                className="flex-1"
+                onChange={(e) =>
+                  setJobFilters((prev) => ({
+                    ...prev,
+                    salary: {
+                      ...prev.salary,
+                      to: e.target.value,
+                    },
+                  }))
+                }
+              />
+            </div>
+          </div>
+
+          {/*Based on Experience & Position */}
+
+          <div className="flex flex-col justify-between gap-4 md:flex-row md:gap-6">
+            <div className="flex flex-1 flex-col gap-2">
+              <span className="flex flex-col gap-1 text-lg font-medium md:flex-row md:items-center md:text-2xl">
+                Experience <span className="text-xs">(in years or above)</span>
+              </span>
+              <select
+                className="rounded-sm border-[1px] border-primaryText bg-transparent px-2 py-1 md:px-4 md:py-2"
+                onChange={(e) =>
+                  setJobFilters((prev) => ({
+                    ...prev,
+                    experience: e.target.value,
+                  }))
+                }
+              >
+                {experienceInYears.map((year) => {
+                  return <SelectOption key={year} title={year} value={year} />;
+                })}
+              </select>
+            </div>
+            <div className="flex flex-1 flex-col gap-2">
+              <span className="text-lg font-medium md:text-2xl">Position </span>
+              <select
+                className="rounded-sm border-[1px] border-primaryText bg-transparent px-2 py-1 md:px-4 md:py-2"
+                onChange={(e) =>
+                  setJobFilters((prev) => ({
+                    ...prev,
+                    position: e.target.value,
+                  }))
+                }
+              >
+                {positions.map((position) => {
+                  return (
+                    <SelectOption
+                      key={position}
+                      title={position}
+                      value={position}
+                    />
+                  );
+                })}
+              </select>
+            </div>
+          </div>
+
+          {/*Based on Location */}
+
+          <div className="flex flex-col justify-between gap-4 md:flex-row md:gap-6">
+            <div className="flex flex-1 flex-col gap-2">
+              <span className="text-lg font-medium md:text-2xl">Location </span>
+              <select
+                className="rounded-sm border-[1px] border-primaryText bg-transparent px-2 py-1 md:px-4 md:py-2"
+                onChange={(e) =>
+                  setJobFilters((prev) => ({
+                    ...prev,
+                    location: e.target.value,
+                  }))
+                }
+              >
+                {locations.map((location) => {
+                  return (
+                    <SelectOption
+                      key={location}
+                      title={location}
+                      value={location}
+                    />
+                  );
+                })}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer & CTA Button */}
+
+        <div className="flex items-center justify-end">
+          <Button
+            className={
+              handleNoChange()
+                ? "cursor-not-allowed bg-primaryText text-background"
+                : "cursor-pointer bg-primaryText text-background"
             }
+            disabled={handleNoChange()}
+            onClick={() => {
+              dispatch(getSelectedFilters(jobFilters)), setClearFilter(true);
+            }}
           >
-            <option value="None" className="text-background">
-              None
-            </option>
-            <option value="1" className="text-background">
-              1
-            </option>
-            <option value="2" className="text-background">
-              2
-            </option>
-            <option value="3" className="text-background">
-              3
-            </option>
-            <option value="4" className="text-background">
-              4
-            </option>
-            <option value="5" className="text-background">
-              5
-            </option>
-          </select>
+            Apply
+          </Button>
         </div>
-
-        {/* Job type */}
-
-        <div className="flex flex-col justify-between  min-h-[10vh]">
-          {/* Position */}
-
-          <div className="flex gap-4 items-center">
-            <span>Position: </span>
-            <select
-              className="bg-transparent border-[1px] rounded-md px-4 py-2 w-[150px]"
-              onChange={(e) =>
-                setJobFilters((prev) => ({ ...prev, position: e.target.value }))
-              }
-            >
-              <option value="None" className="text-background">
-                None
-              </option>
-              <option value="SeniorLevel" className="text-background">
-                Senior Level
-              </option>
-              <option value="MidLevel" className="text-background">
-                Mid Level
-              </option>
-              <option value="JuniorLevel" className="text-background">
-                Junior Level
-              </option>
-            </select>
-          </div>
-
-          {/* Location */}
-
-          <div className="flex gap-4 items-center">
-            <span>Location: </span>
-            <select
-              className="bg-transparent border-[1px] rounded-md px-4 py-2 w-[150px]"
-              onChange={(e) =>
-                setJobFilters((prev) => ({ ...prev, location: e.target.value }))
-              }
-            >
-              <option value="None" className="text-background">
-                None
-              </option>
-              <option value="Kathmandu" className="text-background">
-                Kathmandu
-              </option>
-              <option value="Pokhara" className="text-background">
-                Pokhara
-              </option>
-              <option value="Butwal" className="text-background">
-                Butwal
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer & CTA Button */}
-
-      <div className="flex justify-end items-center">
-        <Button
-          className={handleNoChange() ? "cursor-not-allowed" : "cursor-pointer"}
-          size="large"
-          disabled={handleNoChange()}
-          onClick={() => {
-            dispatch(getSelectedFilters(jobFilters)), setClearFilter(true);
-          }}
-        >
-          Apply
-        </Button>
-      </div>
-    </div>
+      </m.div>
+    </AnimatePresence>
   );
 };
 

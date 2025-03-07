@@ -10,10 +10,10 @@ const AppliedJobsMobile = ({ appliedJob }: AppliedJobsMobileProps) => {
       <span
         className={
           appliedJob.status === "Accepted"
-            ? "text-green-500 text-sm"
+            ? "text-sm text-green-500"
             : appliedJob.status === "Rejected"
-            ? "text-red-500 text-sm"
-            : "text-sm"
+              ? "text-sm text-red-500"
+              : "text-sm"
         }
       >
         {appliedJob.status}

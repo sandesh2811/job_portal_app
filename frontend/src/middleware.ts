@@ -11,16 +11,17 @@ interface ExtendedJwtPayload extends JwtPayload {
 
 export const middleware = (request: NextRequest, response: NextResponse) => {
   // Extracting the token from request
-  const cookie = request.cookies.get("token")?.value;
+  const accessToken = request.cookies.get("access_token")?.value;
+  const refreshToken = request.cookies.get("refresh_token")?.value;
 
   //   Extracting the pathaname form url
   const { pathname } = request.nextUrl;
 
   //   Checking if cookie exists. If not then redirecting user to login page
 
-  if (cookie) {
+  if (accessToken) {
     // Decode the cookie to get the payload stored in the token
-    const decodeData: ExtendedJwtPayload = jwtDecode(cookie);
+    const decodeData: ExtendedJwtPayload = jwtDecode(accessToken);
     const { role } = decodeData;
 
     // Checks if a user is valid to access certain routes
@@ -43,7 +44,11 @@ export const middleware = (request: NextRequest, response: NextResponse) => {
     ) {
       return NextResponse.redirect(new URL("/accessdenied", request.url));
     }
-  } else {
+  }
+
+  if (!accessToken && refreshToken) {
+    return;
+  } else if (!accessToken && !refreshToken) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 };

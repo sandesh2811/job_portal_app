@@ -5,7 +5,7 @@ type SelectOptionProps = {
 
 const SelectOption = ({ value, title }: SelectOptionProps) => {
   return (
-    <option className="text-background" value={value}>
+    <option className="rounded-none" value={value}>
       {title}
     </option>
   );

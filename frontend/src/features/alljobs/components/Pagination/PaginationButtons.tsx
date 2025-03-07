@@ -35,13 +35,12 @@ const PaginationButtons = ({
   return (
     <>
       {!jobsLoading && (
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <Button
-            size="medium"
             className={
               pageNumber === 1 || pageNumber <= 0
-                ? "flex gap-1 items-center cursor-not-allowed"
-                : "flex gap-1 items-center"
+                ? "flex cursor-not-allowed items-center gap-2 bg-primaryText text-background"
+                : "flex items-center gap-2 bg-primaryText text-background"
             }
             disabled={pageNumber === 1 || pageNumber <= 0}
             onClick={() => DecreasePageNumber(setPageNumber)}
@@ -49,13 +48,12 @@ const PaginationButtons = ({
             <GoArrowLeft /> Prev
           </Button>
           <Button
-            size="medium"
             className={
               pageNumber === checkedTotalPageNumber ||
               pageNumber > checkedTotalPageNumber ||
               (userInput !== "" && (data?.jobs.length ?? 0) < jobLimit)
-                ? "flex gap-1 items-center cursor-not-allowed"
-                : "flex gap-1 items-center"
+                ? "flex cursor-not-allowed items-center gap-2 bg-primaryText text-background"
+                : "flex items-center gap-2 bg-primaryText text-background"
             }
             disabled={
               (pageNumber === checkedTotalPageNumber ||

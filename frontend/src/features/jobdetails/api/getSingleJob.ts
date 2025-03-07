@@ -7,7 +7,10 @@ import { z } from "zod";
 
 const getSingleJob = async (id: string): Promise<SingleJobReturnType> => {
   try {
-    const res = await fetch(`/api/jobs/${id}`);
+    const res = await fetch(`/api/jobs/${id}`, {
+      method: "GET",
+      credentials: "include",
+    });
     const resData = await res.json();
     const data = await SingleJobReturnDataSchema.parseAsync(resData);
 

@@ -10,16 +10,16 @@ const JobApplicationsMobile = ({ application }: JobApplicationsMobileProps) => {
       key={application._id}
       href={`/jobapplicationdetails/${application._id}`}
     >
-      <span>{application.jobId.title}</span>
+      <span className="text-xl font-medium">{application.jobId.title}</span>
       <span className="text-sm">{application.fullname}</span>
       <span className="text-sm">{application.email}</span>
       <span
         className={
           application.status === "Accepted"
-            ? "text-green-500 text-sm"
+            ? "text-sm text-green-500"
             : application.status === "Rejected"
-            ? "text-red-500 text-sm"
-            : "text-sm"
+              ? "text-sm text-red-500"
+              : "text-sm"
         }
       >
         {application.status}

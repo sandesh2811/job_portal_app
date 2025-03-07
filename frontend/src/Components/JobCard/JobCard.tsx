@@ -5,75 +5,86 @@ import Button from "@/Components/UI/Button";
 import Card from "@/Components/UI/Card";
 import { GoArrowRight, GoBookmark, GoBookmarkFill } from "react-icons/go";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
+import { useQueryClient } from "@tanstack/react-query";
 
 type JobCardProps = {
   job: JobType;
-  setBookmarkStatus: Dispatch<SetStateAction<string>>;
 };
 
-const JobCard = ({ job, setBookmarkStatus }: JobCardProps) => {
+const JobCard = ({ job }: JobCardProps) => {
   const [bookmarkedJobs, setBookmarkedJobs] = useState<BookmarkedJobType>({});
 
   // Get user login data
   const { loginData } = GetLoginData();
 
+  const queryClient = useQueryClient();
+
   return (
     <Card key={job._id}>
       {/* Top */}
-      <div className="flex flex-col gap-1">
-        <div className="flex justify-between items-center">
-          <h3 className="text-2xl">{job.title}</h3>
+      <div className="flex flex-col">
+        <div className="mb-2 flex items-center justify-between">
+          <h3 className="text-xl mid:text-2xl xl:text-[2rem] xl:leading-[2rem]">
+            {job.title}
+          </h3>
           {!bookmarkedJobs[job._id] ? (
             <GoBookmark
-              size={25}
-              className="cursor-pointer"
+              className={
+                loginData.role === "employer"
+                  ? "cursor-not-allowed text-xl mid:text-2xl xl:text-3xl"
+                  : "cursor-pointer text-xl mid:text-2xl xl:text-3xl"
+              }
               onClick={() => {
                 handleBookmarks(
+                  queryClient,
                   job._id,
-                  loginData.userId,
+                  loginData,
                   setBookmarkedJobs,
-                  setBookmarkStatus
                 );
               }}
             />
           ) : (
             <GoBookmarkFill
-              size={25}
-              className="cursor-pointer"
+              className={
+                loginData.role === "employer"
+                  ? "cursor-not-allowed text-xl mid:text-2xl xl:text-3xl"
+                  : "cursor-pointer text-xl mid:text-2xl xl:text-3xl"
+              }
               onClick={() => {
                 handleBookmarks(
+                  queryClient,
                   job._id,
-                  loginData.userId,
+                  loginData,
                   setBookmarkedJobs,
-                  setBookmarkStatus
                 );
               }}
             />
           )}
         </div>
+
         <div className="flex flex-col justify-between">
-          <span className="text-sm">{job.companyName}</span>
-          <span className="text-sm">{job.location}</span>
+          <span className="text-sm text-white/80 midLg:text-base">
+            {job.companyName}
+          </span>
+          <span className="text-sm text-white/80 midLg:text-base">
+            {job.location}
+          </span>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="flex justify-between items-center ">
+      <div className="flex items-center justify-between">
         <Link
           href={`jobs/${job._id}`}
-          className="flex gap-2 items-center underline underline-offset-4 text-sm"
+          className="flex items-center gap-2 text-sm mid:text-lg"
         >
-          See more <GoArrowRight />
+          See more <GoArrowRight className="text-xl xl:text-[28px]" />
         </Link>
         <Link href={`/apply/${job?._id}`}>
-          <Button
-            buttonType="Apply"
-            size="small"
-            className=" bg-background text-primaryText flex gap-2 items-center "
-          >
-            Apply <GoArrowRight />
+          <Button buttonType="Apply" className="flex items-center gap-2 px-0">
+            Apply <GoArrowRight className="text-xl xl:text-[28px]" />
           </Button>
         </Link>
       </div>
