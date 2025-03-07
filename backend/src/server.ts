@@ -5,6 +5,8 @@ dotenv.config();
 import cors from "cors";
 import express, { Application } from "express";
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 
 import connectToDatabase from "./config/dbConnect";
 
@@ -14,18 +16,17 @@ import authRouter from "./routes/AuthRoute/authRoute";
 import jobRouter from "./routes/JobRoute/jobRoute";
 import jobApplicationRouter from "./routes/JobApplicationRoute/jobApplicationRoute";
 import ShowCvOfApplicants from "./routes/CVRoute/cvroute";
-// import checkUserSession from "./middleware/authMiddleware/checkSession";
 import saveBookmarks from "./routes/BookmarkRoute/bookmarkRoute";
 
 const app: Application = express();
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 50,
+  message: "Too many requests , please try again after 15 minutes.",
+});
+
 // Middlewares
-
-// Enables us to use json data
-app.use(express.json());
-
-// Inorder to access the files inside the uploads folder
-app.use(express.static("uploads"));
 
 // Helps to tackle cors error
 const corsOptions = {
@@ -34,6 +35,18 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
+
+// Limits the requests from the user
+app.use(limiter);
+
+// Sets headers for security
+app.use(helmet());
+
+// Enables us to use json data
+app.use(express.json());
+
+// Inorder to access the files inside the uploads folder
+app.use(express.static("uploads"));
 
 // Enables us to use cookies
 app.use(cookieParser());

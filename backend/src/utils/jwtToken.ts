@@ -4,16 +4,32 @@ export const generateJwtToken = (
   username: string,
   userId: string,
   role: string
-): string => {
+): { access_token: string; refresh_token: string } => {
   const jwtPayload = {
     username: username,
     userId: userId,
     role: role,
   };
-  const token = jwt.sign(jwtPayload, process.env.JWT_SECRET_KEY as string, {
-    expiresIn: "15m",
-  });
-  return token;
+  const access_token = jwt.sign(
+    jwtPayload,
+    process.env.JWT_SECRET_KEY as string,
+    {
+      expiresIn: "1m",
+    }
+  );
+
+  const refresh_token = jwt.sign(
+    jwtPayload,
+    process.env.JWT_SECRET_KEY as string,
+    {
+      expiresIn: "7d",
+    }
+  );
+
+  return {
+    access_token,
+    refresh_token,
+  };
 };
 
 export const verifyJwtToken = (token: string) => {

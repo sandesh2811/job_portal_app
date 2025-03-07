@@ -3,15 +3,15 @@ import { z } from "zod";
 
 import createdJobSchema from "../validators/JobValidators/createdJobValidator";
 import JobApplicationSchema from "../validators/JobValidators/appliedJobValidator";
-// import * as express from "express-serve-static-core";
+import * as express from "express-serve-static-core";
 
-// declare global {
-//   namespace Express {
-//     interface Request {
-//       customField?: string;
-//     }
-//   }
-// }
+declare global {
+  namespace Express {
+    interface Request {
+      user?: userData;
+    }
+  }
+}
 
 declare global {
   // Type declaration for JWT token payload

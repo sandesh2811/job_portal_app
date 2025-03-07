@@ -11,7 +11,7 @@ import { FilterType, PipelineMatcherType } from "../../Types/types";
 export const CreateJob: RequestHandler<{}, {}, CreateJobType> = async (
   req,
   res
-): Promise<any> => {
+): Promise<void> => {
   const {
     title,
     description,
@@ -49,15 +49,13 @@ export const CreateJob: RequestHandler<{}, {}, CreateJobType> = async (
       expiresAt: expiryDate,
     });
 
-    return res
+    res
       .status(201)
       .json({ success: true, message: "Job created successfully!", newJob });
   } catch (error) {
     console.log("Error from controller", error);
 
-    return res
-      .status(500)
-      .json({ success: false, message: "Internal Server Error" });
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
@@ -163,6 +161,8 @@ export const GetAllJobs: RequestHandler<{}, {}, {}, FilterType> = async (
     location,
   } = req.query;
 
+  console.log(position);
+
   const pageNumber: number = parseInt(page as string) || 1;
   const jobLimit: number = parseInt(limit as string) || 4;
 
@@ -176,8 +176,7 @@ export const GetAllJobs: RequestHandler<{}, {}, {}, FilterType> = async (
   if (searchQuery)
     pipeline.$match.title = { $regex: searchQuery, $options: "i" };
 
-  if (position)
-    pipeline.$match.position = { $regex: searchQuery, $options: "i" };
+  if (position) pipeline.$match.position = { $regex: position, $options: "i" };
 
   if (location) pipeline.$match.location = { $regex: location, $options: "i" };
 
@@ -198,7 +197,11 @@ export const GetAllJobs: RequestHandler<{}, {}, {}, FilterType> = async (
       res.status(404).json({ message: "Cannot find any job!" });
     } else {
       const countDocuments = await NewJobModel.countDocuments();
-      const totalPages = Math.ceil(countDocuments / jobLimit);
+      let totalPages = Math.ceil(countDocuments / jobLimit);
+
+      if (pipeline && jobs.length < jobLimit) {
+        totalPages = 1;
+      }
 
       const currentDate = new Date();
 
@@ -245,10 +248,13 @@ export const GetJobsPostedByEmployer: RequestHandler<ParamsType> = async (
   res
 ): Promise<void> => {
   const id = req.params.id;
+
   const convertedId = new mongoose.Types.ObjectId(id);
 
   try {
     const jobs = await NewJobModel.find({ createdBy: convertedId });
+
+    console.log(jobs);
 
     if (!jobs) {
       res.status(404).json({ message: "Cannot find any job!" });

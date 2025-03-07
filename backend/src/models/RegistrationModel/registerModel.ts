@@ -5,6 +5,8 @@ export interface NewUser extends Document {
   email: string;
   password: string;
   username: string;
+  refreshToken: string;
+  refreshTokenExpiry: Date;
   role: string;
 }
 
@@ -17,13 +19,23 @@ const NewUserSchema = new Schema<NewUser>(
       required: [true, "Username is required!"],
       unique: true,
     },
+
     password: {
       type: String,
       required: [true, "Password is required!"],
     },
+
     email: {
       type: String,
       required: [true, "Email is required!"],
+    },
+
+    refreshToken: {
+      type: String,
+    },
+
+    refreshTokenExpiry: {
+      type: Date,
     },
     role: {
       type: String,
