@@ -106,7 +106,7 @@ export const Login: RequestHandler<{}, {}, LoginDataType> = async (
       } else {
         res
           .status(401)
-          .json({ success: false, message: "Incorrect username or password!" });
+          .json({ success: false, message: "Invalid Credentials!" });
       }
     }
   } catch (error) {

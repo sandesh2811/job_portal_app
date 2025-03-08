@@ -254,8 +254,6 @@ export const GetJobsPostedByEmployer: RequestHandler<ParamsType> = async (
   try {
     const jobs = await NewJobModel.find({ createdBy: convertedId });
 
-    console.log(jobs);
-
     if (!jobs) {
       res.status(404).json({ message: "Cannot find any job!" });
     } else {
