@@ -4,10 +4,10 @@ import { getSelectedFilters } from "@/Store/Features/selectedFilters";
 import Button from "@/Components/UI/Button";
 import FilterModal from "@/features/alljobs/components/FilterAndSearch/FilterModal";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
-const JobFilters = () => {
+const JobFilters = React.memo(() => {
   const [toggleFilters, setToggleFilters] = useState<boolean>(false);
   const [clearFilter, setClearFilter] = useState<boolean>(false);
 
@@ -58,6 +58,6 @@ const JobFilters = () => {
       )}
     </>
   );
-};
+});
 
 export default JobFilters;

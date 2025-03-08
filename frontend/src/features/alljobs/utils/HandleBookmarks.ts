@@ -25,6 +25,7 @@ const handleBookmarks = async (
 
   if (!data.success) {
     toast.error(data?.message);
+    return;
   }
 
   toast.success(data?.message);

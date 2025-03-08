@@ -1,3 +1,4 @@
+import api from "@/axios/axios";
 import {
   SingleJobReturnDataSchema,
   SingleJobReturnType,
@@ -7,11 +8,10 @@ import { z } from "zod";
 
 const getSingleJob = async (id: string): Promise<SingleJobReturnType> => {
   try {
-    const res = await fetch(`/api/jobs/${id}`, {
-      method: "GET",
-      credentials: "include",
-    });
-    const resData = await res.json();
+    const res = await api.get(`/jobs/${id}`);
+
+    const resData = res.data;
+
     const data = await SingleJobReturnDataSchema.parseAsync(resData);
 
     return data;

@@ -1,5 +1,3 @@
-"use client";
-
 import Button from "@/Components/UI/Button";
 import { GoArrowRight } from "react-icons/go";
 import MainContainer from "@/Components/MainContainer";
