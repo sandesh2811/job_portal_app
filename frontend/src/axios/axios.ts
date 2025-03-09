@@ -1,5 +1,4 @@
 import axios, { AxiosInstance } from "axios";
-import { redirect } from "next/navigation";
 
 const api: AxiosInstance = axios.create({
   baseURL: "http://localhost:5000/api",
@@ -8,29 +7,35 @@ const api: AxiosInstance = axios.create({
 
 export default api;
 
-// const maxRetryRefresh = 5;
+const maxRetryRefresh = 5;
 
-// api.interceptors.response.use(
-//   (response) => response,
-//   async (error) => {
-//     const originalReq = error.config;
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalReq = error.config;
 
-//     if ((error.response.status = 401)) {
-//       originalReq._retryCount = originalReq._retryCount || 0;
+    if (error.response.status !== 401) {
+      return Promise.reject(error);
+    }
 
-//       if (originalReq._retryCount >= maxRetryRefresh) {
-//         redirect("/login");
-//       }
+    if ((error.response.status = 401)) {
+      originalReq._retryCount = originalReq._retryCount || 0;
 
-//       originalReq._retryCount += 1;
-//       try {
-//         await api.get("/auth/refresh");
+      if (originalReq._retryCount >= maxRetryRefresh) {
+        window.location.href = "/login";
+      }
 
-//         return api(originalReq);
-//       } catch (error) {
-//         redirect("/login");
-//       }
-//     }
-//     return Promise.reject(error);
-//   },
-// );
+      originalReq._retryCount += 1;
+      try {
+        await axios.get("http://localhost:5000/api/auth/refresh", {
+          withCredentials: true,
+        });
+
+        return api(originalReq);
+      } catch (error) {
+        window.location.href = "/login";
+        return Promise.reject(error);
+      }
+    }
+  },
+);

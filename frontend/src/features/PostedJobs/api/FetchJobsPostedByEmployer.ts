@@ -19,8 +19,6 @@ const getJobsPostedByEmployer = async (
     return parsedData;
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.log(error.errors);
-
       throw new Error("Data validation failed");
     } else {
       throw new Error("Failed to fetch job applications!");
